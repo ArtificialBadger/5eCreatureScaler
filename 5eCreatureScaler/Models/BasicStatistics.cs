@@ -1,46 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CreatureScaler.Models
 {
     public class BasicStatistics
     {
-        public int Strength
+        public static BasicStatistics Create(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma)
         {
-            get;
-            set;
+            return new BasicStatistics()
+            {
+                Strength = strength,
+                Dexterity = dexterity,
+                Constitution = constitution,
+                Intelligence = intelligence,
+                Wisdom = wisdom,
+                Charisma = charisma,
+                StrengthModifier = CalculateModifier(strength),
+                DexterityModifier = CalculateModifier(dexterity),
+                ConstitutionModifier = CalculateModifier(constitution),
+                IntelligenceModifier = CalculateModifier(intelligence),
+                WisdomModifier = CalculateModifier(wisdom),
+                CharismaModifier = CalculateModifier(charisma),
+            };
         }
 
-        public int Dexterity
+        public static int CalculateModifier(int abilityScore)
         {
-            get;
-            set;
+            return (int)Math.Floor(((abilityScore - 10) / 2f));
         }
 
-        public int Constitution
-        {
-            get;
-            set;
-        }
+        public int StrengthModifier { get; set; }
 
-        public int Intelligence
-        {
-            get;
-            set;
-        }
+        public int DexterityModifier { get; set; }
 
-        public int Wisdom
-        {
-            get;
-            set;
-        }
+        public int ConstitutionModifier { get; set; }
 
-        public int Charisma
-        {
-            get;
-            set;
-        }
+        public int IntelligenceModifier { get; set; }
+
+        public int WisdomModifier { get; set; }
+
+        public int CharismaModifier { get; set; }
+
+        public int Strength {get; set;}
+
+        public int Dexterity { get; set; }
+
+        public int Constitution { get; set; }
+
+        public int Intelligence { get; set; }
+
+        public int Wisdom { get; set; }
+
+        public int Charisma { get; set; }
+
     }
 }

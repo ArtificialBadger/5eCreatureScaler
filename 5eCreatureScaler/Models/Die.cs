@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Models
 {
-    public enum HitDie
+    public enum Die
     {
         D4,
         D6,

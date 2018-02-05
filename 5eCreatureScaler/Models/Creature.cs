@@ -1,13 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CreatureScaler.Models
 {
     public sealed class Creature
     {
+        public static Creature Create(Size size, ChallengeRating challengeRating, int armorClass, BasicStatistics statistics, int hitDieCount)
+        {
+            return new Creature()
+            {
+                ProficiencyBonus = ((challengeRating.ListedChallengeRating - 1) / 4) + 2,
+                ArmorClass = armorClass,
+                Size = size,
+                HitDieSize = SizeToDieMap[size],
+                ChallengeRating = challengeRating,
+                Statistics = statistics,
+                HitDie = hitDieCount,
+                HitPointMaximum = (Math.Floor(hitDieCount * DieToHitPointPerLevelMap[SizeToDieMap[size]]) + (hitDieCount * statistics.Constitution))
+            };
+        }
+
+        private static Dictionary<Size, Die> SizeToDieMap = new Dictionary<Size, Die>
+        {
+            { Size.Tiny, Die.D4 },
+            { Size.Small, Die.D6 },
+            { Size.Medium, Die.D8 },
+            { Size.Large, Die.D10 },
+            { Size.Huge, Die.D12 },
+            { Size.Gargantuan, Die.D20 },
+        };
+
+        private static Dictionary<Die, double> DieToHitPointPerLevelMap = new Dictionary<Die, double>
+        {
+            { Die.D4, 2.5 },
+            { Die.D6, 3.5 },
+            { Die.D8, 4.5 },
+            { Die.D10, 5.5 },
+            { Die.D12, 6.5 },
+            { Die.D20, 10.5 },
+        };
+
         public Size Size
+        {
+            get;
+            set;
+        }
+
+        public Die HitDieSize
+        {
+            get;
+            set;
+        }
+
+        public int HitDie
+        {
+            get;
+            set;
+        }
+
+        public int HitPointMaximum
         {
             get;
             set;
@@ -25,7 +76,7 @@ namespace CreatureScaler.Models
             set;
         }
 
-        public ProficiencyModifier Proficiency
+        public int ProficiencyBonus
         {
             get;
             set;
