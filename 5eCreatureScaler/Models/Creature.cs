@@ -25,7 +25,7 @@ namespace CreatureScaler.Models
             set;
         }
 
-        public int ProficiencyBonus
+        public ProficiencyModifier Proficiency
         {
             get;
             set;
