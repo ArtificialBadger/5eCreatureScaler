@@ -9,15 +9,25 @@ namespace CreatureScaler.Models
         {
             return new Creature()
             {
-                ProficiencyBonus = ((challengeRating.ListedChallengeRating - 1) / 4) + 2,
+                ProficiencyBonus = CalculateProficiencyBonus(challengeRating),
                 ArmorClass = armorClass,
                 Size = size,
                 HitDieSize = SizeToDieMap[size],
                 ChallengeRating = challengeRating,
                 Statistics = statistics,
                 HitDie = hitDieCount,
-                HitPointMaximum = (Math.Floor(hitDieCount * DieToHitPointPerLevelMap[SizeToDieMap[size]]) + (hitDieCount * statistics.Constitution))
+                HitPointMaximum = CalculateHitPoints(size, statistics, hitDieCount),
             };
+        }
+
+        private static int CalculateProficiencyBonus(ChallengeRating challengeRating)
+        {
+            return ((challengeRating.ListedChallengeRating - 1) / 4) + 2;
+        }
+
+        private static int CalculateHitPoints(Size size, BasicStatistics statistics, int hitDieCount)
+        {
+            return (int)(Math.Floor(hitDieCount * DieToHitPointPerLevelMap[SizeToDieMap[size]]) + (hitDieCount * statistics.Constitution));
         }
 
         private static Dictionary<Size, Die> SizeToDieMap = new Dictionary<Size, Die>
@@ -87,6 +97,18 @@ namespace CreatureScaler.Models
             get;
             set;
         }
+
+        public IList<Ability> Abilities
+        {
+            get;
+            set;
+        } = new List<Ability>();
+
+        public IList<Models.Action> Actions
+        {
+            get;
+            set;
+        } = new List<Models.Action>();
 
         //TODO: Advanced Statistics: Honor and Sanity, possible boolean method for easy isAdvanced() check?
     }
