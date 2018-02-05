@@ -18,5 +18,11 @@ namespace CreatureScaler.Models
             get;
             set;
         }
+
+        public int ListedChallengeRating
+        {
+            get;
+            set;
+        }
     }
 }
