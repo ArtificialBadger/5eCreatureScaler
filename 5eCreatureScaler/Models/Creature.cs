@@ -98,17 +98,31 @@ namespace CreatureScaler.Models
             set;
         }
 
-        public IList<Ability> Abilities
+        public IList<Feature> Features
         {
             get;
             set;
-        } = new List<Ability>();
+        } = new List<Feature>();
 
         public IList<Models.Action> Actions
         {
             get;
             set;
         } = new List<Models.Action>();
+
+        public int AttacksPerRound
+        {
+            get;
+            set;
+        }
+
+        public IList<Attack> Attacks
+        {
+            get;
+            set;
+        } = new List<Attack>();
+
+        public IList<string> Languages { get; set; } = new List<string>();
 
         //TODO: Advanced Statistics: Honor and Sanity, possible boolean method for easy isAdvanced() check?
     }

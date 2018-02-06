@@ -14,12 +14,6 @@ namespace CreatureScaler.Models
                 Intelligence = intelligence,
                 Wisdom = wisdom,
                 Charisma = charisma,
-                StrengthModifier = CalculateModifier(strength),
-                DexterityModifier = CalculateModifier(dexterity),
-                ConstitutionModifier = CalculateModifier(constitution),
-                IntelligenceModifier = CalculateModifier(intelligence),
-                WisdomModifier = CalculateModifier(wisdom),
-                CharismaModifier = CalculateModifier(charisma),
             };
         }
 
@@ -28,19 +22,7 @@ namespace CreatureScaler.Models
             return (int)Math.Floor(((abilityScore - 10) / 2f));
         }
 
-        public int StrengthModifier { get; set; }
-
-        public int DexterityModifier { get; set; }
-
-        public int ConstitutionModifier { get; set; }
-
-        public int IntelligenceModifier { get; set; }
-
-        public int WisdomModifier { get; set; }
-
-        public int CharismaModifier { get; set; }
-
-        public int Strength {get; set;}
+        public int Strength { get; set; }
 
         public int Dexterity { get; set; }
 
@@ -52,5 +34,30 @@ namespace CreatureScaler.Models
 
         public int Charisma { get; set; }
 
+        public int Score(AbilityScore abilityScore)
+        {
+            switch (abilityScore)
+            {
+                case AbilityScore.Strength:
+                    return this.Strength;
+                case AbilityScore.Dexterity:
+                    return this.Dexterity;
+                case AbilityScore.Constitution:
+                    return this.Constitution;
+                case AbilityScore.Intelligence:
+                    return this.Intelligence;
+                case AbilityScore.Wisdom:
+                    return this.Wisdom;
+                case AbilityScore.Charisma:
+                    return this.Charisma;
+                default:
+                    throw new ArgumentException(nameof(abilityScore));
+            }
+        }
+
+        public int Modifier(AbilityScore abilityScore)
+        {
+            return CalculateModifier(Score(abilityScore));
+        }
     }
 }
