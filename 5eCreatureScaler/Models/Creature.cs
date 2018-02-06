@@ -5,29 +5,18 @@ namespace CreatureScaler.Models
 {
     public sealed class Creature
     {
-        public static Creature Create(Size size, ChallengeRating challengeRating, int armorClass, BasicStatistics statistics, int hitDieCount)
-        {
-            return new Creature()
-            {
-                ProficiencyBonus = CalculateProficiencyBonus(challengeRating),
-                ArmorClass = armorClass,
-                Size = size,
-                HitDieSize = SizeToDieMap[size],
-                ChallengeRating = challengeRating,
-                Statistics = statistics,
-                HitDie = hitDieCount,
-                HitPointMaximum = CalculateHitPoints(size, statistics, hitDieCount),
-            };
-        }
-
         private static int CalculateProficiencyBonus(ChallengeRating challengeRating)
         {
             return ((challengeRating.ListedChallengeRating - 1) / 4) + 2;
         }
 
-        private static int CalculateHitPoints(Size size, BasicStatistics statistics, int hitDieCount)
+        private static int CalculateHitPoints(Size size, List<AbilityScore> statistics, int hitDieCount)
         {
-            return (int)(Math.Floor(hitDieCount * DieToHitPointPerLevelMap[SizeToDieMap[size]]) + (hitDieCount * statistics.Constitution));
+            return (int)(
+                Math.Floor(hitDieCount * DieToHitPointPerLevelMap[SizeToDieMap[size]])
+                + 
+                hitDieCount * statistics.ByAbility(AbilityType.Constitution)?.Modifier ?? 0
+                );
         }
 
         private static Dictionary<Size, Die> SizeToDieMap = new Dictionary<Size, Die>
@@ -92,7 +81,7 @@ namespace CreatureScaler.Models
             set;
         }
 
-        public BasicStatistics Statistics
+        public List<AbilityScore> Statistics
         {
             get;
             set;
