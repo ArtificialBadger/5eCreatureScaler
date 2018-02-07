@@ -16,7 +16,7 @@ namespace CreatureScaler.Controllers
 
         public IActionResult Statblock()
         {
-            var creature = Creature.Create("Crazy Train", Size.Medium, ChallengeRating.Create(5), 15, BasicStatistics.Create(14, 14, 14, 14, 14, 14), 10);
+            var creature = Creature.Create("Crazy Train", Size.Medium, ChallengeRating.Create(5), 15, AbilityScore.CreateStandard(14, 9, 13, 1, 3, 25), 10);
 
             return View("StatBlockView", creature);
         }

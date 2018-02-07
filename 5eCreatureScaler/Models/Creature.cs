@@ -5,7 +5,7 @@ namespace CreatureScaler.Models
 {
     public sealed class Creature
     {
-        public static Creature Create(String name, Size size, ChallengeRating challengeRating, int armorClass, BasicStatistics statistics, int hitDieCount)
+        public static Creature Create(String name, Size size, ChallengeRating challengeRating, int armorClass, List<AbilityScore> abilityScores, int hitDieCount)
         {
             return new Creature()
             {
@@ -15,9 +15,9 @@ namespace CreatureScaler.Models
                 Size = size,
                 HitDieSize = SizeToDieMap[size],
                 ChallengeRating = challengeRating,
-                Statistics = statistics,
+                Statistics = abilityScores,
                 HitDie = hitDieCount,
-                HitPointMaximum = CalculateHitPoints(size, statistics, hitDieCount),
+                HitPointMaximum = CalculateHitPoints(size, abilityScores, hitDieCount),
             };
         }
 
@@ -26,9 +26,13 @@ namespace CreatureScaler.Models
             return ((challengeRating.ListedChallengeRating - 1) / 4) + 2;
         }
 
-        private static int CalculateHitPoints(Size size, BasicStatistics statistics, int hitDieCount)
+        private static int CalculateHitPoints(Size size, List<AbilityScore> statistics, int hitDieCount)
         {
-            return (int)(Math.Floor(hitDieCount * DieToHitPointPerLevelMap[SizeToDieMap[size]]) + (hitDieCount * statistics.Constitution));
+            return (int)(
+                Math.Floor(hitDieCount * DieToHitPointPerLevelMap[SizeToDieMap[size]])
+                + 
+                hitDieCount * statistics.ByAbility(AbilityType.Constitution)?.Modifier ?? 0
+                );
         }
 
         private static Dictionary<Size, Die> SizeToDieMap = new Dictionary<Size, Die>
@@ -99,17 +103,17 @@ namespace CreatureScaler.Models
             set;
         }
 
-        public BasicStatistics Statistics
+        public List<AbilityScore> Statistics
         {
             get;
             set;
         }
 
-        public IList<Ability> Abilities
+        public IList<Feature> Features
         {
             get;
             set;
-        } = new List<Ability>();
+        } = new List<Feature>();
 
         public IList<Models.Action> Actions
         {
@@ -117,6 +121,18 @@ namespace CreatureScaler.Models
             set;
         } = new List<Models.Action>();
 
-        //TODO: Advanced Statistics: Honor and Sanity, possible boolean method for easy isAdvanced() check?
+        public int AttacksPerRound
+        {
+            get;
+            set;
+        }
+
+        public IList<Attack> Attacks
+        {
+            get;
+            set;
+        } = new List<Attack>();
+
+        public IList<string> Languages { get; set; } = new List<string>();
     }
 }
