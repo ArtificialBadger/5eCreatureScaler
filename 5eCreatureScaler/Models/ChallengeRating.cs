@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CreatureScaler.Models
 {
@@ -35,6 +32,16 @@ namespace CreatureScaler.Models
             {
                 return (int)Math.Ceiling((this.OffensiveChallengeRating + this.DefensiveChallengeRating) / 2f);
             }
+        }
+
+        public int ToProficiencyBonus()
+        {
+            return CalculateProficiencyBonus(this);
+        }
+
+        public static int CalculateProficiencyBonus(ChallengeRating challengeRating)
+        {
+            return ((challengeRating.ListedChallengeRating - 1) / 4) + 2;
         }
     }
 }

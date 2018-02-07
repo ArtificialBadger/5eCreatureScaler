@@ -5,15 +5,24 @@ namespace CreatureScaler.Models
 {
     public sealed class Creature
     {
+        private static int CalculateHitPoints(Size size, List<AbilityScore> statistics, int hitDieCount)
+        {
+            return (int)(
+                Math.Floor(hitDieCount * size.ToHitDie().ToHitPointPerLevel())
+                + 
+                hitDieCount * statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0
+                );
+        }
+
         public static Creature Create(String name, Size size, ChallengeRating challengeRating, int armorClass, List<AbilityScore> abilityScores, int hitDieCount)
         {
             return new Creature()
             {
                 Name = name,
-                ProficiencyBonus = CalculateProficiencyBonus(challengeRating),
+                ProficiencyBonus = challengeRating.ToProficiencyBonus(),
                 ArmorClass = armorClass,
                 Size = size,
-                HitDieSize = SizeToDieMap[size],
+                HitDieSize = size.ToHitDie(),
                 ChallengeRating = challengeRating,
                 Statistics = abilityScores,
                 HitDie = hitDieCount,
@@ -21,118 +30,46 @@ namespace CreatureScaler.Models
             };
         }
 
-        private static int CalculateProficiencyBonus(ChallengeRating challengeRating)
-        {
-            return ((challengeRating.ListedChallengeRating - 1) / 4) + 2;
-        }
+        public int ProficiencyBonus { get; set; }
 
-        private static int CalculateHitPoints(Size size, List<AbilityScore> statistics, int hitDieCount)
-        {
-            return (int)(
-                Math.Floor(hitDieCount * DieToHitPointPerLevelMap[SizeToDieMap[size]])
-                + 
-                hitDieCount * statistics.ByAbility(AbilityType.Constitution)?.Modifier ?? 0
-                );
-        }
+        #region header
+        public String Name { get; set; }
+        public Size Size { get; set; }
+        public CreatureType Type { get; set; }
+        public List<SubType> SubTypes { get; set; } = new List<SubType>();
+        public Alignment Alignment { get; set; }
+        #endregion
 
-        private static Dictionary<Size, Die> SizeToDieMap = new Dictionary<Size, Die>
-        {
-            { Size.Tiny, Die.D4 },
-            { Size.Small, Die.D6 },
-            { Size.Medium, Die.D8 },
-            { Size.Large, Die.D10 },
-            { Size.Huge, Die.D12 },
-            { Size.Gargantuan, Die.D20 },
-        };
+        #region general stats
+        public int ArmorClass { get; set; }
+        public int HitPointMaximum { get; set; }
+        public int HitDie { get; set; }
+        public Die HitDieSize { get; set; }
+        public List<Speed> Speeds { get; set; } = new List<Speed>();
+        #endregion
 
-        private static Dictionary<Die, double> DieToHitPointPerLevelMap = new Dictionary<Die, double>
-        {
-            { Die.D4, 2.5 },
-            { Die.D6, 3.5 },
-            { Die.D8, 4.5 },
-            { Die.D10, 5.5 },
-            { Die.D12, 6.5 },
-            { Die.D20, 10.5 },
-        };
+        #region abilities
+        public List<AbilityScore> Statistics { get; set; } = new List<AbilityScore>();
+        #endregion
 
-        public String Name
-        {
-            get;
-            set;
-        }
+        #region statistics
+        public List<Ability> SavingThrowProficiencies { get; set; }
+        public List<Skill> SkillProficiencies { get; set; } = new List<Skill>();
+        public List<DamageType> DamageResistances { get; set; } = new List<DamageType>();
+        public List<DamageType> DamageImmunities { get; set; } = new List<DamageType>();
+        public List<Condition> ConditionImmunities { get; set; } = new List<Condition>();
+        public List<Sense> Senses { get; set; } = new List<Sense>();
+        public List<Language> Languages { get; set; } = new List<Language>();
+        public ChallengeRating ChallengeRating { get; set; }
+        #endregion
 
-        public Size Size
-        {
-            get;
-            set;
-        }
+        #region monster features
+        public List<Feature> Features { get; set; } = new List<Feature>();
+        #endregion
 
-        public Die HitDieSize
-        {
-            get;
-            set;
-        }
-
-        public int HitDie
-        {
-            get;
-            set;
-        }
-
-        public int HitPointMaximum
-        {
-            get;
-            set;
-        }
-
-        public ChallengeRating ChallengeRating
-        {
-            get;
-            set;
-        }
-
-        public int ArmorClass
-        {
-            get;
-            set;
-        }
-
-        public int ProficiencyBonus
-        {
-            get;
-            set;
-        }
-
-        public List<AbilityScore> Statistics
-        {
-            get;
-            set;
-        }
-
-        public IList<Feature> Features
-        {
-            get;
-            set;
-        } = new List<Feature>();
-
-        public IList<Models.Action> Actions
-        {
-            get;
-            set;
-        } = new List<Models.Action>();
-
-        public int AttacksPerRound
-        {
-            get;
-            set;
-        }
-
-        public IList<Attack> Attacks
-        {
-            get;
-            set;
-        } = new List<Attack>();
-
-        public IList<string> Languages { get; set; } = new List<string>();
+        #region actions
+        public List<Models.Action> Actions { get; set; } = new List<Models.Action>();
+        public List<Attack> Attacks { get; set; } = new List<Attack>();
+        #endregion
     }
 }

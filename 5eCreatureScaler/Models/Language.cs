@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Models
 {
-    public enum Languages
+    public enum Language
     {
         Common,
         Dwarvish,

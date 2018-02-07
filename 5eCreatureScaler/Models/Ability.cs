@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Models
 {
-    public enum AbilityType
+    public enum Ability
     {
         None,
         Strength,
