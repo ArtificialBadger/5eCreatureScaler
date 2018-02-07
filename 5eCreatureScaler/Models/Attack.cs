@@ -8,6 +8,5 @@ namespace CreatureScaler.Models
         public List<DamageRoll> DamageRolls { get; set; } = new List<DamageRoll>();
         public Ability AttackRollAbility { get; set; }
         public int Reach { get; set; }
-        public int MaximumAttacksPerRound { get; set; }
     }
 }
