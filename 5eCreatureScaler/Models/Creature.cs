@@ -5,10 +5,11 @@ namespace CreatureScaler.Models
 {
     public sealed class Creature
     {
-        public static Creature Create(Size size, ChallengeRating challengeRating, int armorClass, BasicStatistics statistics, int hitDieCount)
+        public static Creature Create(String name, Size size, ChallengeRating challengeRating, int armorClass, BasicStatistics statistics, int hitDieCount)
         {
             return new Creature()
             {
+                Name = name,
                 ProficiencyBonus = CalculateProficiencyBonus(challengeRating),
                 ArmorClass = armorClass,
                 Size = size,
@@ -49,6 +50,12 @@ namespace CreatureScaler.Models
             { Die.D12, 6.5 },
             { Die.D20, 10.5 },
         };
+
+        public String Name
+        {
+            get;
+            set;
+        }
 
         public Size Size
         {

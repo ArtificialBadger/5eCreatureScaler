@@ -34,8 +34,8 @@ namespace _5eCreatureScaler
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
-            //app.UseMvc();
         }
     }
 }

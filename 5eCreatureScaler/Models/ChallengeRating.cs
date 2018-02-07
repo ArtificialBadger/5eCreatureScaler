@@ -7,6 +7,16 @@ namespace CreatureScaler.Models
 {
     public sealed class ChallengeRating
     {
+        public static ChallengeRating Create(int offensiveChallengeRating, int defensiveChallengeRating)
+        {
+            return new ChallengeRating() { OffensiveChallengeRating = offensiveChallengeRating, DefensiveChallengeRating = defensiveChallengeRating };
+        }
+
+        public static ChallengeRating Create(int challengeRating)
+        {
+            return new ChallengeRating() { OffensiveChallengeRating = challengeRating, DefensiveChallengeRating = challengeRating };
+        }
+
         public int OffensiveChallengeRating
         {
             get;
@@ -21,8 +31,10 @@ namespace CreatureScaler.Models
 
         public int ListedChallengeRating
         {
-            get;
-            set;
+            get
+            {
+                return (int)Math.Ceiling((this.OffensiveChallengeRating + this.DefensiveChallengeRating) / 2f);
+            }
         }
     }
 }

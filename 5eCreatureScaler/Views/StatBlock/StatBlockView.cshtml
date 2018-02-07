@@ -1,17 +1,18 @@
-﻿
+﻿@model CreatureScaler.Models.Creature
+
 @{
-    ViewData["Title"] = "StatblockView";
+    ViewData["Title"] = "Creature Statblock";
 }
 <head>
-    <link rel="stylesheet" type="text/css" href="Styles/Statblock.css">
+    <link rel="stylesheet" href="~/css/Statblock.css">
 </head>
 <body>
     <div id="content-wrap">
         <h1>
-            Thomas the Tank Engine
+            @Model.Name
         </h1>
         <h2>
-            Medium Construct, unaligned
+            @Model.Size.ToString() Construct, unaligned
         </h2>
         <svg height="5" width="400">
             <polyline points="0,0 400,2.5 0,5" width="400"></polyline>
