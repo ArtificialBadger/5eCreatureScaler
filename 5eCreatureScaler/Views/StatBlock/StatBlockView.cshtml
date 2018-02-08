@@ -1,4 +1,6 @@
-﻿@model CreatureScaler.Models.Creature
+﻿@using CreatureScaler.Models
+
+@model CreatureScaler.Models.Creature
 
 @{
     ViewData["Title"] = "Creature Statblock";
@@ -12,7 +14,7 @@
             @Model.Name
         </h1>
         <h2>
-            @Model.Size.ToString() Construct, unaligned
+            @Model.Size.ToString() @Model.Type, @Model.Alignment.ToString()
         </h2>
         <svg height="5" width="400">
             <polyline points="0,0 400,2.5 0,5" width="400"></polyline>
@@ -24,7 +26,7 @@
                 <h4>
                     Armor Class
                 </h4>
-                <p>18 (Natural Armor)</p>
+                <p>@Model.ArmorClass</p>
             </property-block>
             <div>
             </div>
@@ -32,7 +34,7 @@
                 <h4>
                     Hit Points
                 </h4>
-                <p>33 (6d8 + 6)</p>
+                <p>@Model.Health.HitPointMaximum (@Model.Health.HitDieCount@Model.Health.HitDieSize.ToString() + @(@Model.Health.HitDieCount * @Model.Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0))</p>
             </property-block>
             <div>
             </div>
@@ -62,12 +64,12 @@
                     <th>CHA</th>
                 </tr>
                 <tr>
-                    <td id="STR">14 (+2)</td>
-                    <td id="DEX">11 (+0)</td>
-                    <td id="CON">13 (+1)</td>
-                    <td id="INT">1 (-5)</td>
-                    <td id="WIS">3 (-4)</td>
-                    <td id="CHA">20 (+5)</td>
+                    <td id="STR">@(@Model.Statistics.ByAbility(Ability.Strength)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Strength)?.Modifier ?? 0))</td>
+                    <td id="DEX">@(@Model.Statistics.ByAbility(Ability.Dexterity)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Dexterity)?.Modifier ?? 0))</td>
+                    <td id="CON">@(@Model.Statistics.ByAbility(Ability.Constitution)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0))</td>
+                    <td id="INT">@(@Model.Statistics.ByAbility(Ability.Intelligence)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Intelligence)?.Modifier ?? 0))</td>
+                    <td id="WIS">@(@Model.Statistics.ByAbility(Ability.Wisdom)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Wisdom)?.Modifier ?? 0))</td>
+                    <td id="CHA">@(@Model.Statistics.ByAbility(Ability.Charisma)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Charisma)?.Modifier ?? 0))</td>
                 </tr>
             </tbody>
         </table>
@@ -76,21 +78,32 @@
         </svg>
         <div>
         </div>
-        <property-block>
-            <h4>
-                Damage Immunities
-            </h4><p>Fire, Cold</p>
-        </property-block>
+        
+        @if (@Model.DamageImmunities.Any())
+        {
+            <property-block>
+                <h4>
+                    Damage Immunities
+                </h4>
+                <p>@(String.Join(", ", @Model.DamageImmunities.OrderBy(di => di.ToString())))</p>
+            </property-block>
+        }
+
         <div class="special">
         </div>
-        <property-block>
-            <h4>
-                Condition Immunities
-            </h4>
-            <p>
-                Blinded, Prone
-            </p>
-        </property-block>
+
+        @if (@Model.ConditionImmunities.Any())
+        {
+            <property-block>
+                <h4>
+                    Condition Immunities
+                </h4>
+                <p>
+                    @(String.Join(", ", @Model.ConditionImmunities.OrderBy(di => di.ToString())))
+                </p>
+            </property-block>
+        }
+
         <div class="special">
         </div>
         <property-block>

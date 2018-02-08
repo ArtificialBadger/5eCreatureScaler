@@ -16,7 +16,10 @@ namespace CreatureScaler.Controllers
 
         public IActionResult Statblock()
         {
-            var creature = Creature.Create("Crazy Train", Size.Medium, ChallengeRating.Create(5), 15, AbilityScore.CreateStandard(14, 9, 13, 1, 3, 25), 10);
+            var creature = Creature.Create("Crazy Train", Size.Medium, ChallengeRating.Create(5), 15, AbilityScore.CreateStandard(16, 9, 13, 1, 3, 25), 10);
+
+            creature.DamageImmunities = new List<DamageType>() {DamageType.Fire, DamageType.Lightning, DamageType.Acid};
+            creature.ConditionImmunities = new List<Condition>() {Condition.Blinded, Condition.Deafened, Condition.Prone};
 
             return View("StatBlockView", creature);
         }
