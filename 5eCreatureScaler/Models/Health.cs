@@ -8,7 +8,7 @@ namespace CreatureScaler.Models
         private static int CalculateMaximumHitPoints(Size size, List<AbilityScore> statistics, int hitDieCount)
         {
             return (int)(
-                Math.Floor(hitDieCount * size.ToHitDie().ToHitPointPerLevel())
+                Math.Floor(hitDieCount * size.ToHitDie().ToAverageValue())
                 +
                 hitDieCount * statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0
                 );

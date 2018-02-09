@@ -4,7 +4,7 @@ namespace CreatureScaler.Models
 {
     public static class DieExtensions
     {
-        private static Dictionary<Die, double> DieToHitPointPerLevelMap = new Dictionary<Die, double>
+        private static Dictionary<Die, double> averageValueMap = new Dictionary<Die, double>
         {
             { Die.D4, 2.5 },
             { Die.D6, 3.5 },
@@ -14,9 +14,9 @@ namespace CreatureScaler.Models
             { Die.D20, 10.5 },
         };
 
-        public static double ToHitPointPerLevel(this Die die)
+        public static double ToAverageValue(this Die die)
         {
-            return DieToHitPointPerLevelMap[die];
+            return averageValueMap[die];
         }
     }
 

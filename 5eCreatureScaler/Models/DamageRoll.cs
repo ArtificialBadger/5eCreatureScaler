@@ -5,5 +5,10 @@
         public Die DamageDie { get; set; }
         public int DamageDieCount { get; set; }
         public Ability AbilityModifier { get; set; }
+
+        public int ToAverageDamage()
+        {
+            return (int)(DamageDieCount * DamageDie.ToAverageValue());
+        }
     }
 }

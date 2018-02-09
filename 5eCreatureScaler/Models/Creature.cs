@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CreatureScaler.Models
 {
@@ -63,5 +64,29 @@ namespace CreatureScaler.Models
         public List<Action> BonusActions { get; set; } = new List<Action>();
         public List<Reaction> Reactions { get; set; } = new List<Reaction>();
         #endregion
+
+
+        public int MaxDpr
+        {
+            get
+            {
+                return this.MultiAction
+                    .Select(mal => mal
+                        .Select(ma => this.Attacks.Single(a => a.Name == ma))
+                        .SelectMany(a => a.DamageRolls.Select(dr => dr.ToAverageDamage()))
+                        .Sum())
+                    .Max();
+            }
+        }
+
+        public int MaxAttack
+        {
+            get
+            {
+                return this.Attacks
+                    .Select(a => this.ProficiencyBonus + this.Statistics.ByAbility(a.AttackRollAbility).Modifier)
+                    .Max();
+            }
+        }
     }
 }
