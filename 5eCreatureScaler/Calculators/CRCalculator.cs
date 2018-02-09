@@ -83,7 +83,7 @@ namespace CreatureScaler
 
             var finalCalculatedCR = Math.Round((calculatedOffensiveCR + calculatedDefensiveCR) / 2, MidpointRounding.AwayFromZero);
 
-            return finalCalculatedCR;
+            return (int)finalCalculatedCR;
         }
     }
 }
