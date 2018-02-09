@@ -26,7 +26,14 @@
                 <h4>
                     Armor Class
                 </h4>
-                <p>@Model.ArmorClass</p>
+                @if (String.IsNullOrWhiteSpace(@Model.ArmorClass.Description))
+                {
+                    <p>@Model.ArmorClass.Value</p>
+                }
+                else
+                {
+                    <p>@(@Model.ArmorClass.Value) (@Model.ArmorClass.Description)</p>
+                }
             </property-block>
             <div>
             </div>
@@ -34,7 +41,7 @@
                 <h4>
                     Hit Points
                 </h4>
-                <p>@Model.Health.HitPointMaximum (@Model.Health.HitDieCount@Model.Health.HitDieSize.ToString() + @(@Model.Health.HitDieCount * @Model.Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0))</p>
+                <p>@Model.Health.HitPointMaximum (@(@Model.Health.HitDieCount)@(@Model.Health.HitDieSize.GetNiceName()) + @(@Model.Health.HitDieCount * @Model.Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0))</p>
             </property-block>
             <div>
             </div>
@@ -64,12 +71,12 @@
                     <th>CHA</th>
                 </tr>
                 <tr>
-                    <td id="STR">@(@Model.Statistics.ByAbility(Ability.Strength)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Strength)?.Modifier ?? 0))</td>
-                    <td id="DEX">@(@Model.Statistics.ByAbility(Ability.Dexterity)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Dexterity)?.Modifier ?? 0))</td>
-                    <td id="CON">@(@Model.Statistics.ByAbility(Ability.Constitution)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0))</td>
-                    <td id="INT">@(@Model.Statistics.ByAbility(Ability.Intelligence)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Intelligence)?.Modifier ?? 0))</td>
-                    <td id="WIS">@(@Model.Statistics.ByAbility(Ability.Wisdom)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Wisdom)?.Modifier ?? 0))</td>
-                    <td id="CHA">@(@Model.Statistics.ByAbility(Ability.Charisma)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Charisma)?.Modifier ?? 0))</td>
+                    <td id="STR">@(@Model.Statistics.ByAbility(Ability.Strength)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Strength)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
+                    <td id="DEX">@(@Model.Statistics.ByAbility(Ability.Dexterity)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Dexterity)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
+                    <td id="CON">@(@Model.Statistics.ByAbility(Ability.Constitution)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Constitution)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
+                    <td id="INT">@(@Model.Statistics.ByAbility(Ability.Intelligence)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Intelligence)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
+                    <td id="WIS">@(@Model.Statistics.ByAbility(Ability.Wisdom)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Wisdom)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
+                    <td id="CHA">@(@Model.Statistics.ByAbility(Ability.Charisma)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Charisma)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
                 </tr>
             </tbody>
         </table>

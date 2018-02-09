@@ -6,13 +6,13 @@ namespace CreatureScaler.Models
 {
     public sealed class Creature
     {
-        public static Creature Create(String name, Size size, ChallengeRating challengeRating, int armorClass, List<AbilityScore> abilityScores, int hitDieCount)
+        public static Creature Create(String name, Size size, ChallengeRating challengeRating, List<AbilityScore> abilityScores, int hitDieCount)
         {
             return new Creature()
             {
                 Name = name,
                 ProficiencyBonus = challengeRating.ToProficiencyBonus(),
-                ArmorClass = armorClass,
+                ArmorClass = new ArmorClass(10, "Natural Armor"),
                 Size = size,
                 
                 ChallengeRating = challengeRating,
@@ -33,7 +33,7 @@ namespace CreatureScaler.Models
         #endregion
 
         #region general stats
-        public int ArmorClass { get; set; }
+        public ArmorClass ArmorClass { get; set; }
         public Health Health { get; set; }
         public List<Speed> Speeds { get; set; } = new List<Speed>();
         #endregion

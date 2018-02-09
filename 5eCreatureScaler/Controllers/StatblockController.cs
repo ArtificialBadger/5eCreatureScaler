@@ -16,7 +16,9 @@ namespace CreatureScaler.Controllers
 
         public IActionResult Statblock()
         {
-            var creature = Creature.Create("Thomas the Tank Engine", Size.Medium, ChallengeRating.Create(5), 15, AbilityScore.CreateStandard(16, 9, 13, 1, 3, 25), 10);
+            var creature = Creature.Create("Thomas the Tank Engine", Size.Medium, ChallengeRating.Create(5), AbilityScore.CreateStandard(16, 9, 13, 1, 3, 25), 10);
+
+            creature.ArmorClass = new ArmorClass(18, "Natural Armor");
 
             creature.DamageImmunities = new List<DamageType>() {DamageType.Fire, DamageType.Lightning, DamageType.Acid};
             creature.ConditionImmunities = new List<Condition>() {Condition.Blinded, Condition.Deafened, Condition.Prone};

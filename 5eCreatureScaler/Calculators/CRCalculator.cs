@@ -64,7 +64,7 @@ namespace CreatureScaler
             var defensiveApparentCR = expectedValueTable.Where(r => r.HPMin <= hp).Single(r => r.HPMax >= hp).CR;
             var expectedArmorClass = expectedRow.AC;
 
-            var differenceBetweenAC = ac - expectedArmorClass;
+            var differenceBetweenAC = ac.Value - expectedArmorClass;
             var defensiveCRAdjustment = differenceBetweenAC / 2;
 
             var calculatedDefensiveCR = defensiveApparentCR + defensiveCRAdjustment;
