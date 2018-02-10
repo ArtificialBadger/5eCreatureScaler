@@ -41,7 +41,7 @@
                 <h4>
                     Hit Points
                 </h4>
-                <p>@Model.Health.HitPointMaximum (@(@Model.Health.HitDieCount)@(@Model.Health.HitDieSize.GetNiceName()) + @(@Model.Health.HitDieCount * @Model.Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0))</p>
+                <p>@Model.Health.HitPointMaximum (@(@Model.Health.HitDieCount)@(@Model.Health.HitDieSize.GetDisplayNameForDie()) + @(@Model.Health.HitDieCount * @Model.Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0))</p>
             </property-block>
             <div>
             </div>
@@ -117,7 +117,16 @@
             <h4>
                 Senses
             </h4>
-            <p>Truesight 10ft. (blind beyond this distance), passive Perception 6</p>
+            <p>
+                @if (Model.Senses.Any())
+                {
+                    @(String.Join(", ", Model.Senses.Select(s => $"{s.SenseType} {s.Range}ft.")))
+                }
+                else
+                {
+                    @("-")
+                }
+            </p>
         </property-block>
         <div class="special">
         </div>
@@ -125,7 +134,17 @@
             <h4>
                 Languages
             </h4>
-            <p>Abyssal, White Wolf</p>
+            <p>
+                @if (@Model.Languages.Any())
+                {
+
+                    @(String.Join(", ", Model.Languages.Select(l => l.GetDisplayNameForLanguage())));
+                }
+                else
+                {
+                    @("-");
+                }
+            </p>
         </property-block>
         <div class="special">
         </div>

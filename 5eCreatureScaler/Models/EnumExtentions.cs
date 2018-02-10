@@ -4,7 +4,7 @@ namespace CreatureScaler.Models
 {
     public static class EnumExtentions
     {
-        private static IDictionary<Die, string> dieNiceNameMap = new Dictionary<Die, string>()
+        private static IDictionary<Die, string> dieDisplayNameMap = new Dictionary<Die, string>()
         {
             {Die.D2, "d2"},
             {Die.D4, "d4"},
@@ -16,9 +16,15 @@ namespace CreatureScaler.Models
             {Die.D100, "d100"},
         };
 
-        public static string GetNiceName(this Die die)
+        private static IDictionary<Language, string> languageDisplayNameMap = new Dictionary<Language, string>()
         {
-            return dieNiceNameMap[die];
+            {Language.DeepSpeech, "Deep Speech" },
+            {Language.WhiteWolf, "White Wolf" },
+        };
+
+        public static string GetDisplayNameForDie(this Die die)
+        {
+            return dieDisplayNameMap[die];
         }
 
         public static string GetDisplayForAbility(this int number)
@@ -29,6 +35,18 @@ namespace CreatureScaler.Models
             }
 
             return number + "";
+        }
+
+        public static string GetDisplayNameForLanguage(this Language language)
+        {
+            if (languageDisplayNameMap.ContainsKey(language))
+            {
+                return languageDisplayNameMap[language];
+            }
+            else
+            {
+                return language.ToString(); 
+            }
         }
 
     }

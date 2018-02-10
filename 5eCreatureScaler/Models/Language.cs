@@ -14,7 +14,7 @@ namespace CreatureScaler.Models
         Gnomish,
         Goblin,
         Halfling,
-        Abussal,
+        Abyssal,
         Celestial,
         Draconic,
         DeepSpeech,
@@ -26,5 +26,6 @@ namespace CreatureScaler.Models
         Auran,
         Ignan,
         Terran,
+        WhiteWolf,
     }
 }
