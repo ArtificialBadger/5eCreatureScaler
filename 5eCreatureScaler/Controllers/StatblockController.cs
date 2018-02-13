@@ -36,7 +36,14 @@ namespace CreatureScaler.Controllers
             creature.Languages.Add(Language.Celestial);
             creature.Languages.Add(Language.DeepSpeech);
 
-            return View("StatBlockView", creature);
+            var creature2 = Creature.Create("Siggle", Size.Tiny, ChallengeRating.Create(1), AbilityScore.CreateStandard(8, 16, 10, 14, 11, 19), 4);
+
+            creature2.Actions.Add(new Models.Action() {Name="Scratch", Description="Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit:3 (1d4+1) slashing damage" });
+
+            var creatures = new CreatureList();
+            creatures.Creatures = new List<Creature>() { creature, creature2 };
+
+            return View("StatBlockView", creatures);
         }
 
         public IActionResult AnemicStatblock()
