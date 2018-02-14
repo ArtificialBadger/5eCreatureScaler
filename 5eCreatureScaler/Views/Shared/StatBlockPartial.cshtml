@@ -188,7 +188,30 @@
                     </h4>
                     @* needs attack type (Melee Weapon Attack, Ranged Attack, etc.) as well as Target (one target, one creature). Also Rider (and the target must make a DC 15 Constitution saving throw, taking 24 (7d6) poison damage on a failed save, or half as much damage on a successful one.) *@
                     @{
-                        var damage = String.Join(", plus ", @attack.DamageRolls.Select(dr => $"{dr.ToAverageDamage() + @Model.Statistics.ByAbility(@attack.AttackRollAbility).Modifier} ({dr.DamageDieCount}{dr.DamageDie.GetDisplayName()} + {@Model.Statistics.ByAbility(@attack.AttackRollAbility).Modifier}) {dr.DamageType} damage"));
+                        var damageStrings = new List<string>();
+
+                        foreach(var damageRoll in @attack.DamageRolls)
+                        {
+                            var averageDamage = damageRoll.ToAverageDamage() + (@Model.Statistics.ByAbility(@damageRoll.AbilityModifier)?.Modifier ?? 0);
+                            
+                            var rolledDamage = String.Empty;
+                            
+                            if ((@Model.Statistics.ByAbility(@damageRoll.AbilityModifier)?.Modifier ?? 0) == 0)
+                            {
+                                rolledDamage = damageRoll.DamageDieCount + damageRoll.DamageDie.GetDisplayName();
+                            }
+                            else
+                            {
+                                rolledDamage = damageRoll.DamageDieCount + damageRoll.DamageDie.GetDisplayName() + " + " + (@Model.Statistics.ByAbility(@damageRoll.AbilityModifier)?.Modifier ?? 0);
+                            }
+
+                            var damageType = damageRoll.DamageType.ToString().ToLowerInvariant() + " damage";
+                            
+                            var damageString = $"{averageDamage} ({rolledDamage}) {damageType}";
+                            damageStrings.Add(damageString);
+                        }
+
+                        var damage = String.Join(", plus ", damageStrings);
 
                         var damageText = $"+{@Model.ProficiencyBonus + @Model.Statistics.ByAbility(attack.AttackRollAbility).Modifier} to hit, reach {@attack.Reach}ft., one target. Hit: {damage}.";
                     }

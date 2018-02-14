@@ -23,8 +23,13 @@ namespace CreatureScaler.Controllers
             creature.DamageImmunities = new List<DamageType>() {DamageType.Fire, DamageType.Lightning, DamageType.Acid};
             creature.ConditionImmunities = new List<Condition>() {Condition.Blinded, Condition.Deafened, Condition.Prone};
 
-            var chooChooAttack = new Attack() { Name = "Choo Choo", AttackRollAbility = Ability.Strength, Reach = 5 };
+            var ramAttack = new Attack() { Name = "Ram", AttackRollAbility = Ability.Strength, Reach = 5 };
+            ramAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Bludgeoning, DamageDie = Die.D8, DamageDieCount = 2 });
+            creature.Attacks.Add(ramAttack);
+
+            var chooChooAttack = new Attack() { Name = "Choo Choo", AttackRollAbility = Ability.Strength, Reach = 30 };
             chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Bludgeoning, DamageDie = Die.D8, DamageDieCount = 2 });
+            chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.None, DamageType = DamageType.Fire, DamageDie = Die.D8, DamageDieCount = 1 });
             creature.Attacks.Add(chooChooAttack);
 
             // creature.Actions.Add(new CreatureScaler.Models.Action() {Name="Choo Choo", Description="Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit:5 (1d6+2) bludgeoning damage"} );
