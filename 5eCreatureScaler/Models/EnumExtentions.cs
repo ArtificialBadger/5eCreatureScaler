@@ -22,7 +22,7 @@ namespace CreatureScaler.Models
             {Language.WhiteWolf, "White Wolf" },
         };
 
-        public static string GetDisplayNameForDie(this Die die)
+        public static string GetDisplayName(this Die die)
         {
             return dieDisplayNameMap[die];
         }
