@@ -21,4 +21,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Data\monsterexpectedstatisticsbycr.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
