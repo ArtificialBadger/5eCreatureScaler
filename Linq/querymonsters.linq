@@ -11,9 +11,8 @@ void Main()
 
 	monsters
 
-		.Where(f => f.Type.Contains("humanoid"))
 		.Where(f => !f.IsFromTomeOfBeasts())
-		.Where(f => f.IsNpc())
+		.Where(f => f.Speed.Contains("fly"))
 		.OrderBy(f => f.ToChallengeRating())
 		.ThenBy(f => f.Name)
 

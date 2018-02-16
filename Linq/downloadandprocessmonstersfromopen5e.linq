@@ -113,7 +113,7 @@ var monsters = new HtmlWeb()
 		return new
 		{
 			Name = Clean(article.Descendants("h1").First().FirstChild.InnerText),
-			Type = Clean(article.Descendants("p").First().InnerText),
+			Type = Clean(article.Descendants("p").First(f => !f.ParentNode.HasClass("figure")).InnerText),
 			ArmorClass = Clean(GetPart("Armor Class", article)),
 			HitPoints = Clean(GetPart("Hit Points", article)),
 			Speed = Clean(GetPart("Speed", article)),
