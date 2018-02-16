@@ -5,7 +5,7 @@
   <Namespace>Newtonsoft.Json</Namespace>
 </Query>
 
-var targetFilePath = @"";
+var targetFilePath = Util.ReadLine();
 
 var GetPart = new Func<string, HtmlNode, string>((name, article) => string.Join("", article
 	.Descendants("p")
@@ -89,36 +89,40 @@ var monsters = new HtmlWeb()
 		.Select(at => new Uri(new Uri(@"https://open5e.com/monsters/tome-of-beasts/"), at).AbsoluteUri))
 	.Where(at => !at.EndsWith("index.html"))
 	.Where(at => !at.Contains("#"))
-	
-	.Select(monsterUri => new HtmlWeb().Load(monsterUri.Dump()).DocumentNode)
-	.Select(monsterHtml => monsterHtml.Descendants("div").Where(d => d.Attributes["itemprop"]?.Value == "articleBody").First())
-	.Select(article => new
+	.Select(monsterUri => 
 	{
-		Name = article.Descendants("h1").First().FirstChild.InnerText,
-		Type = article.Descendants("p").Skip(1).First().InnerText,
-		ArmorClass = GetPart("Armor Class", article),
-		HitPoints = GetPart("Hit Points", article),
-		Speed = GetPart("Speed", article),
+		var article = new HtmlWeb().Load(monsterUri.Dump()).DocumentNode.Descendants("div").Where(d => d.Attributes["itemprop"]?.Value == "articleBody").First();
+		
+		return new
+		{
+			Name = article.Descendants("h1").First().FirstChild.InnerText,
+			Type = article.Descendants("p").First().InnerText,
+			ArmorClass = GetPart("Armor Class", article),
+			HitPoints = GetPart("Hit Points", article),
+			Speed = GetPart("Speed", article),
 
 
-		SavingThrows = GetPart("Saving Throws", article),
-		Skills = GetPart("Skills", article),
-		DamageResistance = GetPart("Damage Resistance", article),
-		DamageImmunity = GetPart("Damage Immunities", article),
-		Senses = GetPart("Senses", article),
-		Languages = GetPart("Languages", article),
-		Challenge = GetPart("Challenge", article),
+			SavingThrows = GetPart("Saving Throws", article),
+			Skills = GetPart("Skills", article),
+			DamageResistance = GetPart("Damage Resistance", article),
+			DamageImmunity = GetPart("Damage Immunities", article),
+			Senses = GetPart("Senses", article),
+			Languages = GetPart("Languages", article),
+			Challenge = GetPart("Challenge", article),
 
-		Traits = GetElementsAfterChallenge(article).Select(t => t.InnerText).ToArray(),
+			Traits = GetElementsAfterChallenge(article).Select(t => t.InnerText).ToArray(),
 
-		InnateSpellcasting = string.Join(Environment.NewLine, GetInnateSpellcastingNodes(article).Select(f => f.InnerText)),
+			InnateSpellcasting = string.Join(Environment.NewLine, GetInnateSpellcastingNodes(article).Select(f => f.InnerText)),
 
-		Spellcasting = string.Join(Environment.NewLine, new[] { GetSpellcastingElement(article)?.InnerText ?? string.Empty }.Concat(GetSpellcastingDetailsElement(article).Select(f => f.InnerText))),
+			Spellcasting = string.Join(Environment.NewLine, new[] { GetSpellcastingElement(article)?.InnerText ?? string.Empty }.Concat(GetSpellcastingDetailsElement(article).Select(f => f.InnerText))),
 
-		Actions = GetActionElements(article).Select(t => t.InnerText).ToArray(),
+			Actions = GetActionElements(article).Select(t => t.InnerText).ToArray(),
 
-		LegendaryActions = GetLegendaryActionElements(article).Select(t => t.InnerText).ToArray(),
+			LegendaryActions = GetLegendaryActionElements(article).Select(t => t.InnerText).ToArray(),
+			
+			Uri = new Uri(monsterUri),
+		};
 	})
-	.Dump();
+	.Where(f => !f.Name.Contains("Template"));
 
 File.WriteAllText(targetFilePath, JsonConvert.SerializeObject(monsters));
