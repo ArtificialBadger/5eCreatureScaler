@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace CreatureScaler.ViewModels
 {
-    public sealed class Action
+    public sealed class Attack
     {
-        public Action(Models.Action action)
+        public Attack(Models.Attack attack)
         {
-            this.Title = action.Name;
+            this.Title = attack.Name;
 
-            this.Details = action.Description;
+            this.Details = attack.AttackRollAbility.ToString();
         }
 
         public string Title
