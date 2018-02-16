@@ -59,7 +59,6 @@ namespace CreatureScaler.Models
 
         #region actions
         public List<List<string>> MultiAction { get; set; } = new List<List<string>>();
-        public List<Attack> Attacks { get; set; } = new List<Attack>();
         public List<Action> Actions { get; set; } = new List<Action>();
         public List<Action> BonusActions { get; set; } = new List<Action>();
         public List<Reaction> Reactions { get; set; } = new List<Reaction>();
@@ -70,12 +69,7 @@ namespace CreatureScaler.Models
         {
             get
             {
-                return this.MultiAction
-                    .Select(mal => mal
-                        .Select(ma => this.Attacks.Single(a => a.Name == ma))
-                        .SelectMany(a => a.DamageRolls.Select(dr => dr.ToAverageDamage()))
-                        .Sum())
-                    .Max();
+                return this.Actions.Select(a => a.CalculateDamagePerRound()).Max();
             }
         }
 
@@ -83,9 +77,7 @@ namespace CreatureScaler.Models
         {
             get
             {
-                return this.Attacks
-                    .Select(a => this.ProficiencyBonus + this.Statistics.ByAbility(a.AttackRollAbility).Modifier)
-                    .Max();
+                return this.Actions.Select(a => a.CalculateDamagePerRound()).Max();
             }
         }
     }

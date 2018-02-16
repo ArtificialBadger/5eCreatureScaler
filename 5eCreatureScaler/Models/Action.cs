@@ -2,10 +2,12 @@
 
 namespace CreatureScaler.Models
 {
-    public class Action
+    public abstract class Action
     {
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string Recharge { get; set; }
+
+        public IDictionary<int, int> MultiGroups { get; set; }
+
+        public abstract int CalculateDamagePerRound();
     }
 }
