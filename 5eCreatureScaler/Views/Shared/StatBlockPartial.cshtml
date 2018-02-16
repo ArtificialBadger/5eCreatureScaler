@@ -173,12 +173,12 @@
                 </div>
             }
         }
-        @if (@Model.Actions.Any() || @Model.Attacks.Any())
+        @if (@Model.Actions.Any())
         {
             <h3>
                 Actions
             </h3>
-            @foreach (var attack in @Model.Attacks)
+            @foreach (var attack in @Model.Actions.Where(a => a is Attack).Cast<Attack>())
             {
                 <div class="special">
                 </div>
@@ -219,8 +219,9 @@
                         @damageText
                     </p>
                 </property-block>
+                
             }
-            @foreach (var action in @Model.Actions)
+            @*@foreach (var action in @Model.ActionSets.SelectMany(as => as.Actions))
             {
                 <div class="special">
                 </div>
@@ -239,6 +240,6 @@
                         @action.Description
                     </p>
                 </property-block>
-            }
+            } *@
         }
     </div>

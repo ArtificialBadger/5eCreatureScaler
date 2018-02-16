@@ -15,11 +15,11 @@ namespace CreatureScaler.Platform
 
                 var biteAttack = new Attack() { Name = "Bite", Reach = 5, AttackRollAbility = Ability.Strength };
                 biteAttack.DamageRolls.Add(new DamageRoll() { DamageDie = Die.D8, DamageDieCount = 1, AbilityModifier = Ability.Strength });
-                bear.Attacks.Add(biteAttack);
+                bear.Actions.Add(biteAttack);
 
                 var clawsAttack = new Attack() { Name = "Claws", Reach = 5, AttackRollAbility = Ability.Strength };
                 clawsAttack.DamageRolls.Add(new DamageRoll() { DamageDie = Die.D6, DamageDieCount = 2, AbilityModifier = Ability.Strength });
-                bear.Attacks.Add(clawsAttack);
+                bear.Actions.Add(clawsAttack);
 
                 return bear;
             }
