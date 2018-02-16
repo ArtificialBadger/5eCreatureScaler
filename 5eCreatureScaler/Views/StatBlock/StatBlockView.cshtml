@@ -1,12 +1,13 @@
 ﻿@using CreatureScaler.Models
+@using System.Collections
 
-@model CreatureScaler.Models.CreatureList
+@model IEnumerable<CreatureScaler.ViewModels.Creature>
 
 <head>
     <link rel="stylesheet" href="~/css/Statblock.css">
 </head>
 <body>
-    @foreach (var creature in @Model.Creatures)
+    @foreach (var creature in @Model)
     {
         @Html.Partial("StatBlockPartial", creature);
     }

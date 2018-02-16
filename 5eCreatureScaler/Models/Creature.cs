@@ -58,9 +58,8 @@ namespace CreatureScaler.Models
         #endregion
 
         #region actions
-        public List<List<string>> MultiAction { get; set; } = new List<List<string>>();
+        public List<Attack> Attacks { get; set; } = new List<Attack>();
         public List<Action> Actions { get; set; } = new List<Action>();
-        public List<Action> BonusActions { get; set; } = new List<Action>();
         public List<Reaction> Reactions { get; set; } = new List<Reaction>();
         #endregion
 

@@ -2,8 +2,20 @@
 
 namespace CreatureScaler.Models
 {
-    public class Attack : Action
+    public sealed class Attack
     {
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        public IDictionary<string, int> MultiGroups 
+        { 
+            get; 
+            set; 
+        }
+
         public List<DamageRoll> DamageRolls 
         { 
             get; 
@@ -22,7 +34,7 @@ namespace CreatureScaler.Models
             set; 
         }
 
-        public override int CalculateDamagePerRound()
+        public int CalculateDamagePerRound()
         {
             return 0;
         }
