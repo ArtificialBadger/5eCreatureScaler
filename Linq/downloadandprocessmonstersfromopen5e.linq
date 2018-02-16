@@ -7,6 +7,7 @@
 
 var targetFilePath = Util.ReadLine();
 
+var Clean = new Func<string, string>(f => f.Replace(Environment.NewLine, string.Empty).Trim());
 var GetPart = new Func<string, HtmlNode, string>((name, article) => string.Join("", article
 	.Descendants("p")
 	.FirstOrDefault(p => p.InnerText.StartsWith(name))
@@ -62,12 +63,22 @@ var GetActionElements = new Func<HtmlNode, IEnumerable<HtmlNode>>(article => art
 	?.Descendants("p")
 	.Where(f => f.InnerHtml.Trim().StartsWith("<"))
 	?? Enumerable.Empty<HtmlNode>());
+var GetReactionElements = new Func<HtmlNode, IEnumerable<HtmlNode>>(article => article
+	.Descendants("div")
+	.FirstOrDefault(d => d.Id == "reactions")
+	?.Descendants("p")
+	.Where(f => f.InnerHtml.Trim().StartsWith("<"))
+	?? Enumerable.Empty<HtmlNode>());
 var GetLegendaryActionElements = new Func<HtmlNode, IEnumerable<HtmlNode>>(article => article
 	.Descendants("div")
 	.FirstOrDefault(d => d.Id == "legendary-actions")
 	?.Descendants("p")
 	?.Skip(1) 
 	?? Enumerable.Empty<HtmlNode>());
+var GetStatRaw = new Func<HtmlNode, IEnumerable<HtmlNode>>(article => article.Descendants("table").FirstOrDefault(f => f.Descendants("th").Any(t => t.InnerText == "STR"))?.Descendants("td") ?? Enumerable.Empty<HtmlNode>());
+var GetStatRows = new Func<HtmlNode, IEnumerable<string>>(article => GetStatRaw(article).Count() == 6 ? GetStatRaw(article).Select(f => f.InnerText) : GetStatRaw(article).First().InnerText.Split('|').Concat(GetStatRaw(article).Skip(1).Select(f => f.InnerText)));
+
+var DocumentIsMonster = new Func<HtmlNode, bool>(article => GetStatRaw(article).Any());
 
 var monsters = new HtmlWeb()
 	.Load(@"https://open5e.com/monsters/monsters_a-z/index.html")
@@ -89,40 +100,51 @@ var monsters = new HtmlWeb()
 		.Select(at => new Uri(new Uri(@"https://open5e.com/monsters/tome-of-beasts/"), at).AbsoluteUri))
 	.Where(at => !at.EndsWith("index.html"))
 	.Where(at => !at.Contains("#"))
-	.Select(monsterUri => 
+	.Where(f => f.IndexOf("template", StringComparison.OrdinalIgnoreCase) < 0)
+	
+	
+	
+	.Select(monsterUri => new { Article = new HtmlWeb().Load(monsterUri.Dump()).DocumentNode.Descendants("div").Where(d => d.Attributes["itemprop"]?.Value == "articleBody").First(), Uri = monsterUri })
+	.Where(f => DocumentIsMonster(f.Article))
+	.Select(ao => 
 	{
-		var article = new HtmlWeb().Load(monsterUri.Dump()).DocumentNode.Descendants("div").Where(d => d.Attributes["itemprop"]?.Value == "articleBody").First();
+		var article = ao.Article;
 		
 		return new
 		{
-			Name = article.Descendants("h1").First().FirstChild.InnerText,
-			Type = article.Descendants("p").First().InnerText,
-			ArmorClass = GetPart("Armor Class", article),
-			HitPoints = GetPart("Hit Points", article),
-			Speed = GetPart("Speed", article),
+			Name = Clean(article.Descendants("h1").First().FirstChild.InnerText),
+			Type = Clean(article.Descendants("p").First().InnerText),
+			ArmorClass = Clean(GetPart("Armor Class", article)),
+			HitPoints = Clean(GetPart("Hit Points", article)),
+			Speed = Clean(GetPart("Speed", article)),
 
+			Strength = Clean(GetStatRows(article).First()),
+			Dexterity = Clean(GetStatRows(article).Skip(1).First()),
+			Constitution = Clean(GetStatRows(article).Skip(2).First()),
+			Intelligence = Clean(GetStatRows(article).Skip(3).First()),
+			Wisdom = Clean(GetStatRows(article).Skip(4).First()),
+			Charisma = Clean(GetStatRows(article).Skip(5).First()),
 
-			SavingThrows = GetPart("Saving Throws", article),
-			Skills = GetPart("Skills", article),
-			DamageResistance = GetPart("Damage Resistance", article),
-			DamageImmunity = GetPart("Damage Immunities", article),
-			Senses = GetPart("Senses", article),
-			Languages = GetPart("Languages", article),
-			Challenge = GetPart("Challenge", article),
+			SavingThrows = Clean(GetPart("Saving Throws", article)),
+			Skills = Clean(GetPart("Skills", article)),
+			DamageResistance = Clean(GetPart("Damage Resistance", article)),
+			DamageImmunity = Clean(GetPart("Damage Immunities", article)),
+			Senses = Clean(GetPart("Senses", article)),
+			Languages = Clean(GetPart("Languages", article)),
+			Challenge = Clean(GetPart("Challenge", article)),
 
-			Traits = GetElementsAfterChallenge(article).Select(t => t.InnerText).ToArray(),
+			InnateSpellcasting = string.Join(Environment.NewLine, GetInnateSpellcastingNodes(article).Select(f => f.InnerText).Select(Clean)),
+			Spellcasting = string.Join(Environment.NewLine, new[] { GetSpellcastingElement(article)?.InnerText ?? string.Empty }.Concat(GetSpellcastingDetailsElement(article).Select(f => f.InnerText).Select(Clean))),
 
-			InnateSpellcasting = string.Join(Environment.NewLine, GetInnateSpellcastingNodes(article).Select(f => f.InnerText)),
+			Traits = GetElementsAfterChallenge(article).Select(t => t.InnerText).ToArray().Select(Clean),
+			Actions = GetActionElements(article).Select(t => t.InnerText).ToArray().Select(Clean),
+			Reactions = GetReactionElements(article).Select(t => t.InnerText).ToArray().Select(Clean),
+			LegendaryActions = GetLegendaryActionElements(article).Select(t => t.InnerText).ToArray().Select(Clean),
 
-			Spellcasting = string.Join(Environment.NewLine, new[] { GetSpellcastingElement(article)?.InnerText ?? string.Empty }.Concat(GetSpellcastingDetailsElement(article).Select(f => f.InnerText))),
-
-			Actions = GetActionElements(article).Select(t => t.InnerText).ToArray(),
-
-			LegendaryActions = GetLegendaryActionElements(article).Select(t => t.InnerText).ToArray(),
-			
-			Uri = new Uri(monsterUri),
+			Uri = Clean(ao.Uri),
 		};
 	})
-	.Where(f => !f.Name.Contains("Template"));
+	//.Dump()
+	;
 
 File.WriteAllText(targetFilePath, JsonConvert.SerializeObject(monsters));

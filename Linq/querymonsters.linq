@@ -8,27 +8,56 @@ void Main()
 	var targetFilePath = Util.ReadLine();
 
 	var monsters = JsonConvert.DeserializeObject<Monster[]>(File.ReadAllText(targetFilePath));
-	
+
 	monsters
-	
-		.Where(f => f.Name.Contains("emplate"))
+
+		.Where(f => f.Type.Contains("humanoid"))
 		.Where(f => !f.IsFromTomeOfBeasts())
-		//.OrderBy(f => f.ToChallengeRating())
-	
+		.Where(f => f.IsNpc())
+		.OrderBy(f => f.ToChallengeRating())
+		.ThenBy(f => f.Name)
+
+		//.Select(f => f.ToMetadata())
+		
 		.Dump();
 }
 
 public static class MonsterExtensions
 {
-	public static bool IsFromTomeOfBeasts(this Monster monster) => monster.Uri.AbsolutePath.Contains("tome-of-beasts");
-	public static double ToChallengeRating(this Monster monster) => Convert.ToDouble(FractionToDouble(monster.Challenge.Dump().Split(' ').First()));
-	private static double FractionToDouble(string fraction) => fraction.Dump().Contains('/') ? 1f / Convert.ToInt32(fraction.Split('/').First().Dump()) : Convert.ToDouble(fraction);
+	public static bool IsFromTomeOfBeasts(this MonsterMetadata monster) => monster.Uri.Contains("tome-of-beasts");
+	public static double ToChallengeRating(this MonsterMetadata monster) => Convert.ToDouble(FractionToDouble(monster.Challenge.Split(' ').First()));
+	private static double FractionToDouble(string fraction) => fraction.Contains('/') ? (1f / Convert.ToDouble(fraction.Split('/')[1])) : Convert.ToDouble(fraction);
+	public static bool IsNpc(this MonsterMetadata monster) => monster.Uri.Contains("nonplayer-characters");
+	public static MonsterMetadata ToMetadata(this Monster monster) => MonsterMetadata.Create(monster);
 }
 
-public class Monster
+public class MonsterMetadata
 {
+	public static MonsterMetadata Create(Monster monster)
+	{
+		return new MonsterMetadata()
+		{
+			Name = monster.Name,
+			Type = monster.Type,
+			Challenge = monster.Challenge,
+			Uri = monster.Uri,
+		};
+	}
+
 	public string Name { get; set; }
 	public string Type { get; set; }
+	public string Challenge { get; set; }
+	public string Uri { get; set; }
+}
+
+public class Monster : MonsterMetadata
+{
+	public string Strength { get; set; }
+	public string Dexterity { get; set; }
+	public string Constitution { get; set; }
+	public string Intelligence { get; set; }
+	public string Wisdom { get; set; }
+	public string Charisma { get; set; }
 	public string ArmorClass { get; set; }
 	public string HitPoints { get; set; }
 	public string Speed { get; set; }
@@ -38,11 +67,10 @@ public class Monster
 	public string DamageImmunity { get; set; }
 	public string Senses { get; set; }
 	public string Languages { get; set; }
-	public string Challenge { get; set; }
 	public string[] Traits { get; set; }
 	public string InnateSpellcasting { get; set; }
 	public string Spellcasting { get; set; }
 	public string[] Actions { get; set; }
+	public string[] Reactions { get; set; }
 	public string[] LegendaryActions { get; set; }
-	public Uri Uri { get; set; }
 }
