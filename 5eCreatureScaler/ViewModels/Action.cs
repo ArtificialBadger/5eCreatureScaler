@@ -9,8 +9,13 @@ namespace CreatureScaler.ViewModels
         public Action(Models.Action action)
         {
             this.Title = action.Name;
-
             this.Details = action.Description;
+        }
+
+        public Action(Models.Attack attack)
+        {
+            this.Title = attack.Name;
+            this.Details = attack.AttackRollAbility.ToString();
         }
 
         public string Title

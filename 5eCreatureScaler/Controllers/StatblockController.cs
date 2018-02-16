@@ -47,10 +47,7 @@ namespace CreatureScaler.Controllers
             creature.Languages.Add(Language.Celestial);
             creature.Languages.Add(Language.DeepSpeech);
 
-            var creatures = new CreatureList();
-            creatures.Creatures = new List<Creature>() { creature };
-
-            return View("StatBlockView", creatures);
+            return View("StatBlockView", new List<ViewModels.Creature>() { new ViewModels.Creature(creature) });
         }
 
         public IActionResult MultipleStatblocks()

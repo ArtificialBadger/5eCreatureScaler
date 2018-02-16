@@ -1,272 +1,175 @@
-@using CreatureScaler.Models
+@using CreatureScaler.ViewModels
 
-@model CreatureScaler.Models.Creature
+@model CreatureScaler.ViewModels.Creature
 
 @{
     ViewData["Title"] = "Creature Statblock";
 }
-    <div id="content-wrap">
-        <h1>
-            @Model.Name
-        </h1>
-        <h2>
-            @Model.Size.ToString() @Model.Type, @Model.Alignment.ToString()
-        </h2>
-        <svg height="5" width="400">
-            <polyline points="0,0 400,2.5 0,5" width="400"></polyline>
-        </svg>
-        <div>
-        </div>
-        <top-stat-block>
-            <property-block>
-                <h4>
-                    Armor Class
-                </h4>
-                @if (String.IsNullOrWhiteSpace(@Model.ArmorClass.Description))
-                {
-                    <p>@Model.ArmorClass.Value</p>
-                }
-                else
-                {
-                    <p>@(@Model.ArmorClass.Value) (@Model.ArmorClass.Description)</p>
-                }
-            </property-block>
-            <div>
-            </div>
-            <property-block>
-                <h4>
-                    Hit Points
-                </h4>
-                <p>@Model.Health.HitPointMaximum (@(@Model.Health.HitDieCount)@(@Model.Health.HitDieSize.GetDisplayName()) + @(@Model.Health.HitDieCount * @Model.Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0))</p>
-            </property-block>
-            <div>
-            </div>
-            <property-block>
-                <h4>
-                    Speed
-                </h4>
-                <p>25ft.</p>
-            </property-block>
-        </top-stat-block>
-        <div>
-        </div>
-        <svg height="5" width="400">
-            <polyline points="0,0 400,2.5 0,5" width="400">
-            </polyline>
-        </svg>
-        <div>
-        </div>
-        <table>
-            <tbody>
-                <tr>
-                    <th>STR</th>
-                    <th>DEX</th>
-                    <th>CON</th>
-                    <th>INT</th>
-                    <th>WIS</th>
-                    <th>CHA</th>
-                </tr>
-                <tr>
-                    <td id="STR">@(@Model.Statistics.ByAbility(Ability.Strength)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Strength)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
-                    <td id="DEX">@(@Model.Statistics.ByAbility(Ability.Dexterity)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Dexterity)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
-                    <td id="CON">@(@Model.Statistics.ByAbility(Ability.Constitution)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Constitution)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
-                    <td id="INT">@(@Model.Statistics.ByAbility(Ability.Intelligence)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Intelligence)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
-                    <td id="WIS">@(@Model.Statistics.ByAbility(Ability.Wisdom)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Wisdom)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
-                    <td id="CHA">@(@Model.Statistics.ByAbility(Ability.Charisma)?.Value ?? 10) (@(@Model.Statistics.ByAbility(Ability.Charisma)?.Modifier.GetDisplayForAbility() ?? "0"))</td>
-                </tr>
-            </tbody>
-        </table>
-        <svg height="5" width="400">
-            <polyline points="0,0 400,2.5 0,5" width="400"></polyline>
-        </svg>
-        <div>
-        </div>
-
-        @if (@Model.DamageImmunities.Any())
-        {
-            <property-block>
-                <h4>
-                    Damage Immunities
-                </h4>
-                <p>@(String.Join(", ", @Model.DamageImmunities.OrderBy(di => di.ToString())))</p>
-            </property-block>
-        }
-
-        <div class="special">
-        </div>
-
-        @if (@Model.ConditionImmunities.Any())
-        {
-            <property-block>
-                <h4>
-                    Condition Immunities
-                </h4>
-                <p>
-                    @(String.Join(", ", @Model.ConditionImmunities.OrderBy(di => di.ToString())))
-                </p>
-            </property-block>
-        }
-
-        <div class="special">
-        </div>
-        <property-block>
-            <h4>
-                Senses
-            </h4>
-            <p>
-                @if (Model.Senses.Any())
-                {
-                    @(String.Join(", ", Model.Senses.Select(s => $"{s.SenseType} {s.Range}ft.")))
-                }
-                else
-                {
-                    @("-")
-                }
-            </p>
-        </property-block>
-        <div class="special">
-        </div>
-        <property-block>
-            <h4>
-                Languages
-            </h4>
-            <p>
-                @if (@Model.Languages.Any())
-                {
-
-                    @(String.Join(", ", Model.Languages.Select(l => l.GetDisplayNameForLanguage())));
-                }
-                else
-                {
-                    @("-");
-                }
-            </p>
-        </property-block>
-        <div class="special">
-        </div>
-        <property-block>
-            <h4>
-                Challenge
-            </h4>
-            <p>@Model.ChallengeRating.ListedChallengeRating (@Model.ChallengeRating.ExperiencePoints XP)</p>
-        </property-block><div class="special">
-        </div>
-        <svg height="5" width="400">
-            <polyline points="0,0 400,2.5 0,5" width="400">
-            </polyline>
-        </svg>
-        @if (@Model.Features.Any())
-        {
-            <div>
-            </div>
-            @foreach (var feature in @Model.Features)
-            {
-                <property-block>
-                    <h4>
-                        @(feature.Name).
-                    </h4>
-                    <p>
-                        @feature.Description
-                    </p>
-                </property-block>
-                <div class="special">
-                </div>
-            }
-        }
-        @if (@Model.Actions.Any())
-        {
-            <h3>
-                Actions
-            </h3>
-            @foreach( var attack in @Model.Attacks.Select(a => new CreatureScaler.ViewModels.Attack(a)))
-            {
-                <div class="special">
-                </div>
-                <property-block>
-                    <h4>
-                        @attack.Title
-                    </h4>
-                    <p>
-                        @attack.Details
-                    </p>
-                </property-block>
-            }
-            @foreach( var action in @Model.Actions.Select(a => new CreatureScaler.ViewModels.Action(a)))
-            {
-                <div class="special">
-                </div>
-                <property-block>
-                    <h4>
-                        @action.Title
-                    </h4>
-                    <p>
-                        @action.Details
-                    </p>
-                </property-block>
-            }
-
-            @* @foreach (var attack in @Model.Actions.Where(a => a is Attack).Cast<Attack>())
-            {
-                <div class="special">
-                </div>
-                <property-block>
-                    <h4>
-                        @($"{@attack.Name}.")
-                    </h4>
-                    @* needs attack type (Melee Weapon Attack, Ranged Attack, etc.) as well as Target (one target, one creature). Also Rider (and the target must make a DC 15 Constitution saving throw, taking 24 (7d6) poison damage on a failed save, or half as much damage on a successful one.)
-                    @{
-                        var damageStrings = new List<string>();
-
-                        foreach(var damageRoll in @attack.DamageRolls)
-                        {
-                            var averageDamage = damageRoll.ToAverageDamage() + (@Model.Statistics.ByAbility(@damageRoll.AbilityModifier)?.Modifier ?? 0);
-                            
-                            var rolledDamage = String.Empty;
-                            
-                            if ((@Model.Statistics.ByAbility(@damageRoll.AbilityModifier)?.Modifier ?? 0) == 0)
-                            {
-                                rolledDamage = damageRoll.DamageDieCount + damageRoll.DamageDie.GetDisplayName();
-                            }
-                            else
-                            {
-                                rolledDamage = damageRoll.DamageDieCount + damageRoll.DamageDie.GetDisplayName() + " + " + (@Model.Statistics.ByAbility(@damageRoll.AbilityModifier)?.Modifier ?? 0);
-                            }
-
-                            var damageType = damageRoll.DamageType.ToString().ToLowerInvariant() + " damage";
-                            
-                            var damageString = $"{averageDamage} ({rolledDamage}) {damageType}";
-                            damageStrings.Add(damageString);
-                        }
-
-                        var damage = String.Join(", plus ", damageStrings);
-
-                        var damageText = $"+{@Model.ProficiencyBonus + @Model.Statistics.ByAbility(attack.AttackRollAbility).Modifier} to hit, reach {@attack.Reach}ft., one target. Hit: {damage}.";
-                    }
-                    <p>
-                        @damageText
-                    </p>
-                </property-block>
-                
-            } *@
-            @*@foreach (var action in @Model.ActionSets.SelectMany(as => as.Actions))
-            {
-                <div class="special">
-                </div>
-                <property-block>
-                    <h4>
-                        @if (String.IsNullOrWhiteSpace(action.Recharge))
-                        {
-                            @($"{action.Name}.")
-                        }
-                        else
-                        {
-                            @($"{action.Name} ({action.Recharge}).")
-                        }
-                    </h4>
-                    <p>
-                        @action.Description
-                    </p>
-                </property-block>
-            } *@
-        }
+<div id="content-wrap">
+    <h1>
+        @Model.Title
+    </h1>
+    <h2>
+        @Model.Subtitle
+    </h2>
+    <svg height="5" width="400">
+        <polyline points="0,0 400,2.5 0,5" width="400"></polyline>
+    </svg>
+    <div>
     </div>
+    <top-stat-block>
+        <property-block>
+            <h4>
+                Armor Class
+            </h4>
+            <p>
+                @Model.ArmorClass
+            </p>
+        </property-block>
+        <div>
+        </div>
+        <property-block>
+            <h4>
+                Hit Points
+            </h4>
+            <p>
+                @Model.HitPoints
+            </p>
+        </property-block>
+        <div>
+        </div>
+        <property-block>
+            <h4>
+                Speed
+            </h4>
+            <p>
+                @Model.Speed
+            </p>
+        </property-block>
+    </top-stat-block>
+    <div>
+    </div>
+    <svg height="5" width="400">
+        <polyline points="0,0 400,2.5 0,5" width="400">
+        </polyline>
+    </svg>
+    <div>
+    </div>
+    <table>
+        <tbody>
+            <tr>
+                <th>STR</th>
+                <th>DEX</th>
+                <th>CON</th>
+                <th>INT</th>
+                <th>WIS</th>
+                <th>CHA</th>
+            </tr>
+            <tr>
+                <td id="STR">@Model.Statistics["STR"]</td>
+                <td id="DEX">@Model.Statistics["DEX"]</td>
+                <td id="CON">@Model.Statistics["CON"]</td>
+                <td id="INT">@Model.Statistics["INT"]</td>
+                <td id="WIS">@Model.Statistics["WIS"]</td>
+                <td id="CHA">@Model.Statistics["CHA"]</td>
+            </tr>
+        </tbody>
+    </table>
+    <svg height="5" width="400">
+        <polyline points="0,0 400,2.5 0,5" width="400"></polyline>
+    </svg>
+    <div>
+    </div>
+
+    @if (String.IsNullOrWhiteSpace(@Model.DamageImmunities))
+    {
+        <property-block>
+            <h4>
+                Damage Immunities
+            </h4>
+            <p>
+                @Model.DamageImmunities
+            </p>
+        </property-block>
+    }
+    <div class="special">
+    </div>
+    @if (String.IsNullOrWhiteSpace(@Model.ConditionImmunities))
+    {
+        <property-block>
+            <h4>
+                Condition Immunities
+            </h4>
+            <p>
+                @Model.ConditionImmunities
+            </p>
+        </property-block>
+    }
+
+    <div class="special">
+    </div>
+    <property-block>
+        <h4>
+            Senses
+        </h4>
+        <p>
+            @Model.Senses
+        </p>
+    </property-block>
+    <div class="special">
+    </div>
+    <property-block>
+        <h4>
+            Languages
+        </h4>
+        <p>
+            @Model.Languages
+        </p>
+    </property-block>
+    <div class="special">
+    </div>
+    <property-block>
+        <h4>
+            Challenge
+        </h4>
+        <p>
+            @Model.Challenge
+        </p>
+    </property-block><div class="special">
+    </div>
+    <svg height="5" width="400">
+        <polyline points="0,0 400,2.5 0,5" width="400">
+        </polyline>
+    </svg>
+    <div>
+    </div>
+    @foreach (var feature in @Model.Features)
+    {
+        <property-block>
+            <h4>
+                @(feature.Title).
+            </h4>
+            <p>
+                @feature.Details
+            </p>
+        </property-block>
+        <div class="special">
+        </div>
+    }
+    <h3>
+        Actions
+    </h3>
+    @foreach(var action in @Model.Actions)
+    {
+        <div class="special">
+        </div>
+        <property-block>
+            <h4>
+                @action.Title
+            </h4>
+            <p>
+                @action.Details
+            </p>
+        </property-block>
+    }
+</div>
