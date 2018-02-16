@@ -178,7 +178,21 @@
             <h3>
                 Actions
             </h3>
-            @foreach (var attack in @Model.Actions.Where(a => a is Attack).Cast<Attack>())
+            @foreach( var action in @Model.Actions.Select(a => CreatureScaler.ViewModels.Action.Create(a)) )
+            {
+                <div class="special">
+                </div>
+                <property-block>
+                    <h4>
+                        @action.Title
+                    </h4>
+                    <p>
+                        @action.Details
+                    </p>
+                </property-block>
+            }
+
+            @* @foreach (var attack in @Model.Actions.Where(a => a is Attack).Cast<Attack>())
             {
                 <div class="special">
                 </div>
@@ -186,7 +200,7 @@
                     <h4>
                         @($"{@attack.Name}.")
                     </h4>
-                    @* needs attack type (Melee Weapon Attack, Ranged Attack, etc.) as well as Target (one target, one creature). Also Rider (and the target must make a DC 15 Constitution saving throw, taking 24 (7d6) poison damage on a failed save, or half as much damage on a successful one.) *@
+                    @* needs attack type (Melee Weapon Attack, Ranged Attack, etc.) as well as Target (one target, one creature). Also Rider (and the target must make a DC 15 Constitution saving throw, taking 24 (7d6) poison damage on a failed save, or half as much damage on a successful one.)
                     @{
                         var damageStrings = new List<string>();
 
@@ -220,7 +234,7 @@
                     </p>
                 </property-block>
                 
-            }
+            } *@
             @*@foreach (var action in @Model.ActionSets.SelectMany(as => as.Actions))
             {
                 <div class="special">
