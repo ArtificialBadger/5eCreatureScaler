@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Open5ECreatureDownloader\Open5ECreatureDownloader.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="Data\monsterexpectedstatisticsbycr.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>

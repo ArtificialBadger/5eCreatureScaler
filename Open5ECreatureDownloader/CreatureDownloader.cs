@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Open5ECreatureDownloader
 {
-    public sealed class CreatureDownloader
+    public sealed class CreatureDownloader : ICreatureDownloader
     {
         internal static string Clean(string stringObject) => stringObject.Replace(Environment.NewLine, string.Empty).Replace("\n", " ").Replace("  ", " ").Trim();
         internal static string GetPart(string name, HtmlNode article) => string.Join("", article
@@ -137,26 +136,27 @@ namespace Open5ECreatureDownloader
 
                 Uri = Clean(uri),
             };
-
-        public IEnumerable<Tuple<string, string>> GetMonsterNames() =>
-            GetMonsterUris()
-            .Select(uri => Tuple.Create(
-                uri,
-                Clean(GetMonsterArticle(uri).Descendants("h1")
-                .First()
-                .FirstChild.InnerText)));
-
-        public IEnumerable<string> GetMonsterUris() =>
+        internal static IEnumerable<string> GetMonsterUris() =>
             GetRootUris(@"https://open5e.com/monsters/monsters_a-z/index.html", "e-core-monsters")
             .Concat(GetRootUris(@"https://open5e.com/monsters/tome-of-beasts/index.html", "tome-of-beasts-kobold-press"))
             .Where(at => !at.EndsWith("index.html"))
             .Where(at => !at.Contains("#"))
             .Where(f => f.IndexOf("template", StringComparison.OrdinalIgnoreCase) < 0);
 
-        public IEnumerable<Creature> DownloadCreatures() =>
+        public IDictionary<string,string> ListMonsters() =>
             GetMonsterUris()
+            .ToDictionary(uri => uri,
+                uri =>
+                Clean(GetMonsterArticle(uri).Descendants("h1")
+                .First()
+                .FirstChild.InnerText));
+
+        public IEnumerable<Creature> DownloadCreatures(params string[] monsterUris) =>
+            monsterUris
             .Select(monsterUri => new { Article = GetMonsterArticle(monsterUri), Uri = monsterUri })
             .Where(f => DocumentIsMonster(f.Article))
             .Select(ao => CreateCreatureFromArticle(ao.Article, ao.Uri));
+
+        public IEnumerable<Creature> DownloadCreatures() => DownloadCreatures(GetMonsterUris().ToArray());
     }
 }
