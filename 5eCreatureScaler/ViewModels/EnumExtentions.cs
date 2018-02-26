@@ -16,6 +16,14 @@ namespace CreatureScaler.ViewModels
             {Models.Die.D100, "d100"},
         };
 
+        private static IDictionary<Models.AttackType, string> attackTypeDisplayName  = new Dictionary<Models.AttackType, string>()
+        {
+            {Models.AttackType.MeleeWeapon, "Melee Weapon"},
+            {Models.AttackType.RangedWeapon, "Ranged Weapon"},
+            {Models.AttackType.MeleeSpell, "Melee Spell"},
+            {Models.AttackType.RangedSpell, "Ranged Spell"},
+        };
+
         private static IDictionary<Models.Language, string> languageDisplayNameMap = new Dictionary<Models.Language, string>()
         {
             {Models.Language.DeepSpeech, "Deep Speech" },
@@ -37,7 +45,12 @@ namespace CreatureScaler.ViewModels
             return number + "";
         }
 
-        public static string GetDisplayNameForLanguage(this Models.Language language)
+        public static string GetDisplayName(this Models.AttackType attackType)
+        {
+            return attackTypeDisplayName[attackType] + " Attack: ";
+        }
+
+        public static string GetDisplayName(this Models.Language language)
         {
             if (languageDisplayNameMap.ContainsKey(language))
             {

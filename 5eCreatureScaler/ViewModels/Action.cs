@@ -1,24 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CreatureScaler.ViewModels
 {
     public sealed class Action
     {
-        public Action(Models.Action action)
+        public Action(string title, string details)
         {
-            this.Title = action.Name;
-            this.Details = action.Description;
+            this.Title = title;
+            this.Details = details;
         }
 
-        public Action(Models.Attack attack)
+        public Action(string title, string attackDetails, string details)
         {
-            this.Title = attack.Name;
-            this.Details = attack.AttackRollAbility.ToString();
+            this.Title = title;
+            this.AttackDetails = attackDetails;
+            this.Details = details;
         }
 
         public string Title
+        {
+            get;
+        }
+
+        public string AttackDetails
         {
             get;
         }

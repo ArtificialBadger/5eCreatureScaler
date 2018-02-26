@@ -168,6 +168,10 @@
                 @action.Title
             </h4>
             <p>
+                @if (!String.IsNullOrWhiteSpace(@action.AttackDetails))
+                {
+                    <i>@action.AttackDetails</i>
+                }
                 @action.Details
             </p>
         </property-block>

@@ -10,6 +10,12 @@ namespace CreatureScaler.Models
             set;
         }
 
+        public AttackType AttackType 
+        {
+            get;
+            set;
+        }
+
         public IDictionary<string, int> MultiGroups 
         { 
             get; 

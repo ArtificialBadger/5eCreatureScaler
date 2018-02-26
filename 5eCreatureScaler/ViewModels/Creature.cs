@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CreatureScaler.ViewModels
 {
@@ -35,11 +36,21 @@ namespace CreatureScaler.ViewModels
             this.DamageResistances = String.Join(", ", creature.DamageResistances.Select(dr => dr.ToString()));
             this.ConditionImmunities = String.Join(", ", creature.ConditionImmunities.Select(ci => ci.ToString()));
             this.Senses = String.Join(", ", creature.Senses.Select(s => $"{s.SenseType} {s.Range}ft."));
-            this.Languages = String.Join(", ", creature.Languages.Select(l => l.ToString()));
+            this.Languages = String.Join(", ", creature.Languages.Select(l => l.GetDisplayName()));
             this.Challenge = $"{creature.ChallengeRating.ListedChallengeRating} ({100}XP)" ;
             
             this.Features = creature.Features.Select(f => new Feature(f)).ToList();
-            this.Actions = creature.Actions.Select(f => new Action(f)).Union(creature.Attacks.Select(a => new Action(a))).ToList();
+
+            foreach (var action in creature.Actions)
+            {
+                this.AddAction(action, creature);
+            }
+
+            foreach (var attack in creature.Attacks)
+            {
+                this.AddAction(attack, creature);
+            }
+
         }
 
         public string Title { get; }
@@ -69,6 +80,30 @@ namespace CreatureScaler.ViewModels
         public IList<Feature> Features { get; } = new List<Feature>();
 
         public IList<Action> Actions { get; } = new List<Action>();
+    
+        private void AddAction(Models.Action action, Models.Creature creature)
+        {
+            var creatureAction = new Action(action.Name, action.Description);
+            this.Actions.Add(creatureAction);
+        }
+
+        private void AddAction(Models.Attack attack, Models.Creature creature)
+        {
+            var detailsBuilder = new StringBuilder();
+
+            var attackModifier = creature.Statistics.First(s => s.Ability == attack.AttackRollAbility).Modifier + creature.ProficiencyBonus;
+
+            detailsBuilder.Append($"{attackModifier.GetDisplayForAbility()} to hit, ");
+            detailsBuilder.Append($"reach {attack.Reach}ft., ");
+            detailsBuilder.Append($"one target. ");
+            
+            detailsBuilder.Append("Hit: ");
+
+            detailsBuilder.Append(String.Join(", plus ", attack.DamageRolls.Select(damageRoll => $"{damageRoll.ToAverageDamage()} ({damageRoll.DamageDieCount}{damageRoll.DamageDie.GetDisplayName()} + {creature.Statistics.FirstOrDefault(s => s.Ability == damageRoll.AbilityModifier)?.Modifier ?? 0}) {damageRoll.DamageType} damage")));
+
+            var creatureAttack = new Action(attack.Name, attack.AttackType.GetDisplayName(), detailsBuilder.ToString());
+            this.Actions.Add(creatureAttack);
+        }
     }
         
 }
