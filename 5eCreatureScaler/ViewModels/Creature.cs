@@ -37,7 +37,7 @@ namespace CreatureScaler.ViewModels
             this.ConditionImmunities = String.Join(", ", creature.ConditionImmunities.Select(ci => ci.ToString()));
             this.Senses = String.Join(", ", creature.Senses.Select(s => $"{s.SenseType} {s.Range}ft."));
             this.Languages = String.Join(", ", creature.Languages.Select(l => l.GetDisplayName()));
-            this.Challenge = $"{creature.ChallengeRating.ListedChallengeRating} ({creature.ChallengeRating.ExperiencePoints}XP)" ;
+            this.Challenge = $"{creature.ChallengeRating.ListedChallengeRating} ({creature.ChallengeRating.ExperiencePoints} XP)" ;
             
             this.Features = creature.Features.Select(f => new Feature(f)).ToList();
 

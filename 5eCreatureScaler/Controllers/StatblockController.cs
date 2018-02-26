@@ -18,6 +18,8 @@ namespace CreatureScaler.Controllers
         {
             var creature = Creature.Create("Thomas the Tank Engine", Size.Medium, ChallengeRating.Create(5), AbilityScore.CreateStandard(16, 9, 13, 1, 3, 25), 10);
 
+            creature.Type = CreatureType.Construct;
+
             creature.ArmorClass = new ArmorClass(18, "Natural Armor");
 
             creature.Speeds = new List<Speed>() { new Speed() { Mode = MovementMode.Walk, Distance = 60 }, new Speed() { Mode = MovementMode.Swim, Distance = 120 }, new Speed() { Mode = MovementMode.Burrow, Distance = 75} };
