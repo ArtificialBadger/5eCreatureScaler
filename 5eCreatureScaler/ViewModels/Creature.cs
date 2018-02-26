@@ -23,7 +23,7 @@ namespace CreatureScaler.ViewModels
 
             this.HitPoints = $"{creature.Health.HitPointMaximum} ({creature.Health.HitDieCount}{creature.Health.HitDieSize.GetDisplayName()} + {creature.Health.HitDieCount * creature.Statistics.FirstOrDefault(score => score.Ability == Models.Ability.Constitution)?.Modifier ?? 0}) ";
 
-            this.Speed = String.Join(", ", creature.Speeds.Select(s => $"{s.Mode}{s.Distance}ft."));
+            this.Speed = String.Join(", ", creature.Speeds.Select(s => $"{s.Mode.GetDisplayName()}{s.Distance}ft."));
 
             this.Statistics.Add("STR", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Strength).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Strength).Modifier.GetDisplayForAbility()})");
             this.Statistics.Add("DEX", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Dexterity).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Dexterity).Modifier.GetDisplayForAbility()})");
@@ -37,7 +37,7 @@ namespace CreatureScaler.ViewModels
             this.ConditionImmunities = String.Join(", ", creature.ConditionImmunities.Select(ci => ci.ToString()));
             this.Senses = String.Join(", ", creature.Senses.Select(s => $"{s.SenseType} {s.Range}ft."));
             this.Languages = String.Join(", ", creature.Languages.Select(l => l.GetDisplayName()));
-            this.Challenge = $"{creature.ChallengeRating.ListedChallengeRating} ({100}XP)" ;
+            this.Challenge = $"{creature.ChallengeRating.ListedChallengeRating} ({creature.ChallengeRating.ExperiencePoints}XP)" ;
             
             this.Features = creature.Features.Select(f => new Feature(f)).ToList();
 

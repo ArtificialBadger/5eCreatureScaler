@@ -62,5 +62,17 @@ namespace CreatureScaler.ViewModels
             }
         }
 
+        public static string GetDisplayName(this Models.MovementMode mode)
+        {
+            if (mode == Models.MovementMode.Walk)
+            {
+                return "";
+            }
+            else
+            {
+                return mode.ToString() + " ";
+            }
+        }
+
     }
 }

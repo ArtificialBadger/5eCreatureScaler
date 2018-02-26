@@ -29,8 +29,6 @@ namespace CreatureScaler.Controllers
             ramAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Bludgeoning, DamageDie = Die.D8, DamageDieCount = 2 });
             creature.Attacks.Add(ramAttack);
 
-
-
             var chooChooAttack = new Attack() { Name = "Choo Choo", AttackRollAbility = Ability.Strength, Reach = 30 };
             chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Bludgeoning, DamageDie = Die.D8, DamageDieCount = 2 });
             chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.None, DamageType = DamageType.Fire, DamageDie = Die.D8, DamageDieCount = 1 });
