@@ -22,15 +22,15 @@ namespace CreatureScaler.ViewModels
             }
 
             this.HitPoints = $"{creature.Health.HitPointMaximum} ({creature.Health.HitDieCount}{creature.Health.HitDieSize.GetDisplayName()} + {creature.Health.HitDieCount * creature.Statistics.FirstOrDefault(score => score.Ability == Models.Ability.Constitution)?.Modifier ?? 0}) ";
-            
-            this.Speed = String.Join(", ", creature.Speeds.Select(s => $"{s.Type}{s.Feet}ft."));
 
-            this.Statistics.Add("STR", creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Strength).Value.ToString());
-            this.Statistics.Add("DEX", creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Dexterity).Value.ToString());
-            this.Statistics.Add("CON", creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Constitution).Value.ToString());
-            this.Statistics.Add("INT", creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Intelligence).Value.ToString());
-            this.Statistics.Add("WIS", creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Wisdom).Value.ToString());
-            this.Statistics.Add("CHA", creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Charisma).Value.ToString());
+            this.Speed = String.Join(", ", creature.Speeds.Select(s => $"{s.Mode}{s.Distance}ft."));
+
+            this.Statistics.Add("STR", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Strength).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Strength).Modifier.GetDisplayForAbility()})");
+            this.Statistics.Add("DEX", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Dexterity).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Dexterity).Modifier.GetDisplayForAbility()})");
+            this.Statistics.Add("CON", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Constitution).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Constitution).Modifier.GetDisplayForAbility()})");
+            this.Statistics.Add("INT", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Intelligence).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Intelligence).Modifier.GetDisplayForAbility()})");
+            this.Statistics.Add("WIS", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Wisdom).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Wisdom).Modifier.GetDisplayForAbility()})");
+            this.Statistics.Add("CHA", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Charisma).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Charisma).Modifier.GetDisplayForAbility()})");
 
             this.DamageImmunities = String.Join(", ", creature.DamageImmunities.Select(di => di.ToString()));
             this.DamageResistances = String.Join(", ", creature.DamageResistances.Select(dr => dr.ToString()));

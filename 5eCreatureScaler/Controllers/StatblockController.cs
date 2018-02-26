@@ -20,6 +20,8 @@ namespace CreatureScaler.Controllers
 
             creature.ArmorClass = new ArmorClass(18, "Natural Armor");
 
+            creature.Speeds = new List<Speed>() { new Speed() { Mode = MovementMode.Walk, Distance = 60 }, new Speed() { Mode = MovementMode.Swim, Distance = 120 }, new Speed() { Mode = MovementMode.Burrow, Distance = 75} };
+
             creature.DamageImmunities = new List<DamageType>() {DamageType.Fire, DamageType.Lightning, DamageType.Acid};
             creature.ConditionImmunities = new List<Condition>() {Condition.Blinded, Condition.Deafened, Condition.Prone};
 

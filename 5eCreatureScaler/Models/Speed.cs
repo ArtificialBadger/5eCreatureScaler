@@ -2,7 +2,7 @@
 {
     public class Speed
     {
-        public MovementMode Type { get; set; }
-        public int Feet { get; set; }
+        public MovementMode Mode { get; set; }
+        public int Distance { get; set; }
     }
 }
