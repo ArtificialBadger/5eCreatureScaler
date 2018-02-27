@@ -2,6 +2,7 @@
 {
     public enum Alignment
     {
+        Unknown,
         Unaligned,
         LawfulGood,
         NeutralGood,
@@ -12,6 +13,5 @@
         LawfulEvil,
         NeutralEvil,
         ChaoticEvil,
-
     }
 }

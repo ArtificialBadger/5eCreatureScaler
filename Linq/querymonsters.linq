@@ -11,13 +11,9 @@ void Main()
 
 	monsters
 
-		.Where(f => !f.IsFromTomeOfBeasts())
-		.Where(f => f.Name == "Harpy")
-		.OrderBy(f => f.ToChallengeRating())
-		.ThenBy(f => f.Name)
-
+		.Select(f => f.Actions.FirstOrDefault(r => r.Contains("Multiattack")))
 		//.Select(f => f.ToMetadata())
-		.Select(f => f.Actions)
+		.Where(f => f != null)
 		
 		.Dump();
 }

@@ -7,7 +7,8 @@ namespace Open5ECreatureDownloader
 {
     public sealed class CreatureDownloader : ICreatureDownloader
     {
-        internal static string Clean(string stringObject) => stringObject.Replace(Environment.NewLine, string.Empty).Replace("\n", " ").Replace("  ", " ").Trim();
+        internal static string Clean(string stringObject) => 
+            stringObject.Replace(Environment.NewLine, string.Empty).Replace("\n", " ").Replace("  ", " ").Trim();
         internal static string GetPart(string name, HtmlNode article) => string.Join("", article
             .Descendants("p")
             .FirstOrDefault(p => p.InnerText.StartsWith(name))
