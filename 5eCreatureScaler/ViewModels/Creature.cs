@@ -167,11 +167,11 @@ namespace CreatureScaler.ViewModels
                 var damageModifier = creature.Statistics.FirstOrDefault(s => s.Ability == damageRoll.AbilityModifier)?.Modifier ?? 0;
                 if (damageModifier != 0)
                 {
-                    damageRollDisplays.Add($"{damageRoll.ToAverageDamage() + damageModifier} ({damageRoll.DamageDieCount}{damageRoll.DamageDie.GetDisplayName()} + {damageModifier}) {damageRoll.DamageType} damage");
+                    damageRollDisplays.Add($"{damageRoll.ToAverageDamage() + damageModifier} ({damageRoll.DamageDieCount}{damageRoll.DamageDie.GetDisplayName()} + {damageModifier}) {damageRoll.DamageType.ToString().ToLowerInvariant()} damage");
                 }
                 else
                 {
-                    damageRollDisplays.Add($"{damageRoll.ToAverageDamage()} ({damageRoll.DamageDieCount}{damageRoll.DamageDie.GetDisplayName()}) {damageRoll.DamageType} damage");
+                    damageRollDisplays.Add($"{damageRoll.ToAverageDamage()} ({damageRoll.DamageDieCount}{damageRoll.DamageDie.GetDisplayName()}) {damageRoll.DamageType.ToString().ToLowerInvariant()} damage");
                 }
             }
 
