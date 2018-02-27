@@ -12,11 +12,12 @@ void Main()
 	monsters
 
 		.Where(f => !f.IsFromTomeOfBeasts())
-		.Where(f => f.Speed.Contains("fly"))
+		.Where(f => f.Name == "Harpy")
 		.OrderBy(f => f.ToChallengeRating())
 		.ThenBy(f => f.Name)
 
 		//.Select(f => f.ToMetadata())
+		.Select(f => f.Actions)
 		
 		.Dump();
 }

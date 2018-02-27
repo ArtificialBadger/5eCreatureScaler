@@ -17,7 +17,7 @@ namespace CreatureScaler.Platform
 
         public Models.Creature Map(string uri)
         {
-            var creature = downloader.DownloadCreatures(uri).FirstOrDefault();
+            var creature = downloader.DownloadCreature(uri);
 
             if (creature == default(Open5ECreatureDownloader.Creature))
             {

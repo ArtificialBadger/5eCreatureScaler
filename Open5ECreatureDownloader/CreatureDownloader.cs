@@ -156,7 +156,5 @@ namespace Open5ECreatureDownloader
             .Select(monsterUri => new { Article = GetMonsterArticle(monsterUri), Uri = monsterUri })
             .Where(f => DocumentIsMonster(f.Article))
             .Select(ao => CreateCreatureFromArticle(ao.Article, ao.Uri));
-
-        public IEnumerable<Creature> DownloadCreatures() => DownloadCreatures(GetMonsterUris().ToArray());
     }
 }
