@@ -1,4 +1,5 @@
 ﻿using CreatureScaler.Models;
+using CreatureScaler.Platform;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,38 +10,15 @@ namespace CreatureScaler.Controllers
 {
     public class StatblockController : Controller
     {
-        public IActionResult Monodrone()
+        public IActionResult Modrons()
         {
-            var creature = Creature.Create("Monodrone", Size.Medium, ChallengeRating.Create(2), AbilityScore.CreateStandard(12, 15, 13, 8, 11, 7), 10);
+            var monodrone = new ViewModels.Creature(StaticCreatureList.Monodrone);
+            var duodrone = new ViewModels.Creature(StaticCreatureList.Duodrone);
+            var tridrone = new ViewModels.Creature(StaticCreatureList.Tridrone);
+            var quadrone = new ViewModels.Creature(StaticCreatureList.Quadrone);
+            var pentadrone = new ViewModels.Creature(StaticCreatureList.Pentadrone);
 
-            creature.Type = CreatureType.Construct;
-
-            creature.Alignment = Alignment.LawfulNeutral;
-
-            creature.ArmorClass = new ArmorClass(15, "Natural Armor");
-
-            creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
-            creature.Speeds.Add(new Speed() { Mode = MovementMode.Fly, Distance = 30 });
-
-            creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
-
-            creature.Languages.Add(Language.Modron);
-
-            var clawAttack = new Attack() { Name = "Claw", AttackRollAbility = Ability.Dexterity, Reach = 5 };
-            clawAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D8, DamageDieCount = 2 });
-            clawAttack.MultiGroups.Add("melee", 2);
-            clawAttack.MultiGroups.Add("melee2", 1);
-            creature.Attacks.Add(clawAttack);
-
-            var spikeAttack = new Attack() { Name = "Shoot Spike", AttackRollAbility = Ability.Dexterity, AttackType = AttackType.RangedWeapon, Reach = 30 };
-            spikeAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D8, DamageDieCount = 1 });
-            spikeAttack.MultiGroups.Add("melee2", 1);
-            creature.Attacks.Add(spikeAttack);
-
-            creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-            creature.Features.Add(new Feature() { Name="Disintegration", Description="If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
-
-            return View("StatBlockView", new List<ViewModels.Creature>() { new ViewModels.Creature(creature) });
+            return View("StatBlockView", new List<ViewModels.Creature>() { monodrone, duodrone, tridrone, quadrone, pentadrone });
         }
 
         public IActionResult Statblock()
