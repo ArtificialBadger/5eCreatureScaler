@@ -1,4 +1,5 @@
 ﻿using CreatureScaler.Models;
+using CreatureScaler.Platform;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,15 @@ namespace CreatureScaler.Controllers
 {
     public class StatblockController : Controller
     {
-        public IActionResult Test()
+        public IActionResult Modrons()
         {
-            return Ok("You did Great!");
+            var monodrone = new ViewModels.Creature(StaticCreatureList.Monodrone);
+            var duodrone = new ViewModels.Creature(StaticCreatureList.Duodrone);
+            var tridrone = new ViewModels.Creature(StaticCreatureList.Tridrone);
+            var quadrone = new ViewModels.Creature(StaticCreatureList.Quadrone);
+            var pentadrone = new ViewModels.Creature(StaticCreatureList.Pentadrone);
+
+            return View("StatBlockView", new List<ViewModels.Creature>() { monodrone, duodrone, tridrone, quadrone, pentadrone });
         }
 
         public IActionResult Statblock()

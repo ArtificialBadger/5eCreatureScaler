@@ -20,7 +20,7 @@ namespace CreatureScaler.Models
         { 
             get; 
             set; 
-        }
+        } = new Dictionary<string, int>();
 
         public List<DamageRoll> DamageRolls 
         { 
