@@ -81,7 +81,7 @@
     <div>
     </div>
 
-    @if (String.IsNullOrWhiteSpace(@Model.DamageImmunities))
+    @if (!String.IsNullOrWhiteSpace(@Model.DamageImmunities))
     {
         <property-block>
             <h4>
@@ -94,7 +94,7 @@
     }
     <div class="special">
     </div>
-    @if (String.IsNullOrWhiteSpace(@Model.ConditionImmunities))
+    @if (!String.IsNullOrWhiteSpace(@Model.ConditionImmunities))
     {
         <property-block>
             <h4>
@@ -147,7 +147,9 @@
     {
         <property-block>
             <h4>
-                @(feature.Title).
+                <i>
+                    @(feature.Title).
+                </i>
             </h4>
             <p>
                 @feature.Details
@@ -165,7 +167,9 @@
         </div>
         <property-block>
             <h4>
-                @action.Title
+                <i>
+                    @(action.Title).
+                </i>
             </h4>
             <p>
                 @if (!String.IsNullOrWhiteSpace(@action.AttackDetails))

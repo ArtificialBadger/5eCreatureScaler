@@ -27,5 +27,6 @@ namespace CreatureScaler.Models
         Ignan,
         Terran,
         WhiteWolf,
+        Modron,
     }
 }

@@ -30,6 +30,19 @@ namespace CreatureScaler.ViewModels
             {Models.Language.WhiteWolf, "White Wolf" },
         };
 
+        private static IDictionary<Models.Alignment, string> alignmentDisplayNameMap = new Dictionary<Models.Alignment, string>()
+        {
+            {Models.Alignment.ChaoticEvil, "Chaotic Evil"},
+            {Models.Alignment.ChaoticGood, "Chaotic Good"},
+            {Models.Alignment.ChaoticNeutral, "Chaotic Neutral"},
+            {Models.Alignment.Neutral, "True Neutral"},
+            {Models.Alignment.NeutralEvil, "Neurtal Evil"},
+            {Models.Alignment.NeutralGood, "Neutral Good"},
+            {Models.Alignment.LawfulEvil, "Lawful Evil"},
+            {Models.Alignment.LawfulGood, "Lawful Good"},
+            {Models.Alignment.LawfulNeutral, "Lawful Good"},
+        };
+
         public static string GetDisplayName(this Models.Die die)
         {
             return dieDisplayNameMap[die];
@@ -71,6 +84,18 @@ namespace CreatureScaler.ViewModels
             else
             {
                 return mode.ToString() + " ";
+            }
+        }
+
+        public static string GetDisplayName(this Models.Alignment alignment)
+        {
+            if (alignmentDisplayNameMap.ContainsKey(alignment))
+            {
+                return alignmentDisplayNameMap[alignment];
+            }
+            else
+            {
+                return alignment.ToString();
             }
         }
 

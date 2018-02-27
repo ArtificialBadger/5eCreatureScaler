@@ -9,9 +9,38 @@ namespace CreatureScaler.Controllers
 {
     public class StatblockController : Controller
     {
-        public IActionResult Test()
+        public IActionResult Monodrone()
         {
-            return Ok("You did Great!");
+            var creature = Creature.Create("Monodrone", Size.Medium, ChallengeRating.Create(2), AbilityScore.CreateStandard(12, 15, 13, 8, 11, 7), 10);
+
+            creature.Type = CreatureType.Construct;
+
+            creature.Alignment = Alignment.LawfulNeutral;
+
+            creature.ArmorClass = new ArmorClass(15, "Natural Armor");
+
+            creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
+            creature.Speeds.Add(new Speed() { Mode = MovementMode.Fly, Distance = 30 });
+
+            creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
+
+            creature.Languages.Add(Language.Modron);
+
+            var clawAttack = new Attack() { Name = "Claw", AttackRollAbility = Ability.Dexterity, Reach = 5 };
+            clawAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D8, DamageDieCount = 2 });
+            clawAttack.MultiGroups.Add("melee", 2);
+            clawAttack.MultiGroups.Add("melee2", 1);
+            creature.Attacks.Add(clawAttack);
+
+            var spikeAttack = new Attack() { Name = "Shoot Spike", AttackRollAbility = Ability.Dexterity, AttackType = AttackType.RangedWeapon, Reach = 30 };
+            spikeAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D8, DamageDieCount = 1 });
+            spikeAttack.MultiGroups.Add("melee2", 1);
+            creature.Attacks.Add(spikeAttack);
+
+            creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+            creature.Features.Add(new Feature() { Name="Disintegration", Description="If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+
+            return View("StatBlockView", new List<ViewModels.Creature>() { new ViewModels.Creature(creature) });
         }
 
         public IActionResult Statblock()

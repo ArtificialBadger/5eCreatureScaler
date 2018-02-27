@@ -14,7 +14,7 @@ namespace CreatureScaler.Models
         { 
             get; 
             set; 
-        }
+        } = new Dictionary<string, int>();
 
         public string Description
         {

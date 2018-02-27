@@ -10,7 +10,7 @@ namespace CreatureScaler.ViewModels
         public Creature(Models.Creature creature)
         {
             this.Title = creature.Name;
-            this.Subtitle = $"{creature.Size} {creature.Type}, {creature.Alignment}";
+            this.Subtitle = $"{creature.Size} {creature.Type}, {creature.Alignment.GetDisplayName()}";
 
             if (String.IsNullOrWhiteSpace(creature.ArmorClass.Description))
             {
@@ -40,6 +40,8 @@ namespace CreatureScaler.ViewModels
             this.Challenge = $"{creature.ChallengeRating.ListedChallengeRating} ({creature.ChallengeRating.ExperiencePoints} XP)" ;
             
             this.Features = creature.Features.Select(f => new Feature(f)).ToList();
+
+            this.AddMultiattack(creature);
 
             foreach (var action in creature.Actions)
             {
@@ -87,6 +89,65 @@ namespace CreatureScaler.ViewModels
             this.Actions.Add(creatureAction);
         }
 
+        private void AddMultiattack(Models.Creature creature)
+        {
+            var multiAttackGroups = new Dictionary<string, List<(string, int)>>();
+            if (creature.Actions.Any(a => a.MultiGroups.Any()) || creature.Attacks.Any(a => a.MultiGroups.Any()))
+            {
+                foreach (var action in creature.Actions)
+                {
+                    foreach (var multiAttack in action.MultiGroups)
+                    {
+                        if (!multiAttackGroups.ContainsKey(multiAttack.Key))
+                        {
+                            multiAttackGroups.Add(multiAttack.Key, new List<(string, int)>());
+                        }
+
+                        multiAttackGroups[multiAttack.Key].Add((action.Name, multiAttack.Value));
+                    }
+                    
+                }
+
+                foreach (var attack in creature.Attacks)
+                {
+                    foreach (var multiAttack in attack.MultiGroups)
+                    {
+                        if (!multiAttackGroups.ContainsKey(multiAttack.Key))
+                        {
+                            multiAttackGroups.Add(multiAttack.Key, new List<(string, int)>());
+                        }
+
+                        multiAttackGroups[multiAttack.Key].Add((attack.Name, multiAttack.Value));
+                    }
+                    
+                }
+
+                var multiGroupDescriptions = new List<string>();
+
+                foreach (var multiAttackGroup in multiAttackGroups)
+                {
+                    var multiAttackDescriptions = new List<string>();
+
+                    var orderedMultiAttackGroups = multiAttackGroup.Value.OrderBy(f => f.Item2);
+                    foreach (var group in orderedMultiAttackGroups)
+                    {
+                        if (group.Item2 > 1)
+                        {
+                            multiAttackDescriptions.Add($"{group.Item2} {group.Item1.ToLowerInvariant()} attacks");
+                        }
+                        else
+                        {
+                            multiAttackDescriptions.Add($"{group.Item2} {group.Item1.ToLowerInvariant()} attack");
+                        }
+                    }
+
+                    multiGroupDescriptions.Add(String.Join(" and ", multiAttackDescriptions));
+                }
+
+                Actions.Add(new Action("Multiattack", $"The {creature.Name.ToLowerInvariant()} makes {String.Join(" or ", multiGroupDescriptions)}"));
+            }
+        }
+
         private void AddAction(Models.Attack attack, Models.Creature creature)
         {
             var detailsBuilder = new StringBuilder();
@@ -99,7 +160,22 @@ namespace CreatureScaler.ViewModels
             
             detailsBuilder.Append("Hit: ");
 
-            detailsBuilder.Append(String.Join(", plus ", attack.DamageRolls.Select(damageRoll => $"{damageRoll.ToAverageDamage()} ({damageRoll.DamageDieCount}{damageRoll.DamageDie.GetDisplayName()} + {creature.Statistics.FirstOrDefault(s => s.Ability == damageRoll.AbilityModifier)?.Modifier ?? 0}) {damageRoll.DamageType} damage")));
+            var damageRollDisplays = new List<string>();
+
+            foreach (var damageRoll in attack.DamageRolls)
+            {
+                var damageModifier = creature.Statistics.FirstOrDefault(s => s.Ability == damageRoll.AbilityModifier)?.Modifier ?? 0;
+                if (damageModifier != 0)
+                {
+                    damageRollDisplays.Add($"{damageRoll.ToAverageDamage() + damageModifier} ({damageRoll.DamageDieCount}{damageRoll.DamageDie.GetDisplayName()} + {damageModifier}) {damageRoll.DamageType} damage");
+                }
+                else
+                {
+                    damageRollDisplays.Add($"{damageRoll.ToAverageDamage()} ({damageRoll.DamageDieCount}{damageRoll.DamageDie.GetDisplayName()}) {damageRoll.DamageType} damage");
+                }
+            }
+
+            detailsBuilder.Append(String.Join(", plus ", damageRollDisplays));
 
             var creatureAttack = new Action(attack.Name, attack.AttackType.GetDisplayName(), detailsBuilder.ToString());
             this.Actions.Add(creatureAttack);
