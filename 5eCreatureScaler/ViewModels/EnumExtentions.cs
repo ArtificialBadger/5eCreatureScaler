@@ -40,7 +40,22 @@ namespace CreatureScaler.ViewModels
             {Models.Alignment.NeutralGood, "Neutral Good"},
             {Models.Alignment.LawfulEvil, "Lawful Evil"},
             {Models.Alignment.LawfulGood, "Lawful Good"},
-            {Models.Alignment.LawfulNeutral, "Lawful Good"},
+            {Models.Alignment.LawfulNeutral, "Lawful Neutral"},
+        };
+
+        private static IDictionary<int, string> naturalNameMap = new Dictionary<int, string>()
+        {
+            {0, "zero"},
+            {1, "one"},
+            {2, "two"},
+            {3, "three"},
+            {4, "four"},
+            {5, "five"},
+            {6, "six"},
+            {7, "seven"},
+            {8, "eight"},
+            {9, "nine"},
+            {10, "ten"},
         };
 
         public static string GetDisplayName(this Models.Die die)
@@ -96,6 +111,18 @@ namespace CreatureScaler.ViewModels
             else
             {
                 return alignment.ToString();
+            }
+        }
+
+        public static string GetNaturalName(this int number)
+        {
+            if (naturalNameMap.ContainsKey(number))
+            {
+                return naturalNameMap[number];
+            }
+            else
+            {
+                return number.ToString();
             }
         }
 

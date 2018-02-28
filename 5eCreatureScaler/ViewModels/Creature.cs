@@ -43,16 +43,15 @@ namespace CreatureScaler.ViewModels
 
             this.AddMultiattack(creature);
 
-            foreach (var action in creature.Actions)
-            {
-                this.AddAction(action, creature);
-            }
-
             foreach (var attack in creature.Attacks)
             {
                 this.AddAction(attack, creature);
             }
 
+            foreach (var action in creature.Actions)
+            {
+                this.AddAction(action);
+            }
         }
 
         public string Title { get; }
@@ -83,10 +82,16 @@ namespace CreatureScaler.ViewModels
 
         public IList<Action> Actions { get; } = new List<Action>();
     
-        private void AddAction(Models.Action action, Models.Creature creature)
+        private void AddAction(Models.Action action)
         {
-            var creatureAction = new Action(action.Name, action.Description);
-            this.Actions.Add(creatureAction);
+            if (!String.IsNullOrWhiteSpace(action.Recharge))
+            {
+                this.Actions.Add(new Action($"{action.Name} (Recharge {action.Recharge})" , action.Description));
+            }
+            else
+            {
+                this.Actions.Add(new Action(action.Name, action.Description));
+            }
         }
 
         private void AddMultiattack(Models.Creature creature)
@@ -133,11 +138,11 @@ namespace CreatureScaler.ViewModels
                     {
                         if (group.Item2 > 1)
                         {
-                            multiAttackDescriptions.Add($"{group.Item2} {group.Item1.ToLowerInvariant()} attacks");
+                            multiAttackDescriptions.Add($"{group.Item2.GetNaturalName()} {group.Item1.ToLowerInvariant()} attacks");
                         }
                         else
                         {
-                            multiAttackDescriptions.Add($"{group.Item2} {group.Item1.ToLowerInvariant()} attack");
+                            multiAttackDescriptions.Add($"{group.Item2.GetNaturalName()} {group.Item1.ToLowerInvariant()} attack");
                         }
                     }
 
