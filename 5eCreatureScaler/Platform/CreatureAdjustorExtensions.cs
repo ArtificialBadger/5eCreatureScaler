@@ -33,16 +33,9 @@ namespace CreatureScaler.Platform
                         return false;
                     }
 
-                    if (total + adjustor.EstimatedAdjustmentDistance.Abs() <= distanceLimit)
-                    {
-                        total += adjustor.EstimatedAdjustmentDistance.Abs();
+                    total += adjustor.EstimatedAdjustmentDistance.Abs();
 
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return true;
                 })
                 .ToList();
 
@@ -65,11 +58,7 @@ namespace CreatureScaler.Platform
                 return default(T);
             }
 
-            var array = adjustors.ToArray();
-
-            var pick = Rng.Next(0, array.Length);
-
-            return array[pick];
+            return adjustors.PickRandom();
         }
 
         internal static T PickRandom<T>(this IEnumerable<T> adjustors)
