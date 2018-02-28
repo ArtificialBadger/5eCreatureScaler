@@ -142,18 +142,19 @@ namespace CreatureScaler.Platform
 
                 creature.Languages.Add(Language.Modron);
 
-                var clawAttack = new Attack() { Name = "Claw", AttackRollAbility = Ability.Dexterity, Reach = 5 };
-                clawAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D12, DamageDieCount = 2 });
+                var clawAttack = new Attack() { Name = "Claw", AttackRollAbility = Ability.Strength, Reach = 5 };
+                clawAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Slashing, DamageDie = Die.D12, DamageDieCount = 2 });
                 clawAttack.MultiGroups.Add("melee", 2);
                 creature.Attacks.Add(clawAttack);
 
-                var spikeAttack = new Attack() { Name = "Shoot Spike", AttackRollAbility = Ability.Dexterity, AttackType = AttackType.RangedWeapon, Reach = 30 };
-                spikeAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Piercing, DamageDie = Die.D10, DamageDieCount = 1 });
-                spikeAttack.MultiGroups.Add("ranged", 2);
-                creature.Attacks.Add(spikeAttack);
+                var oilSpray = new Action() { Name = "Oil Spray", Description = "The quadrone spews slick, boiling oil in a 20 foot cone. When the oil appears, each creature standing in its area must succeed on a DC 15 dexterity saving throw or take 18 (4d8) fire damage and fall prone. On a successful save, the creature takes half damage and does not fall prone. When the oil is ignited, it erupts into flames and everyone inside the oil takes 18 (4d8) fire damage."};
+                creature.Actions.Add(oilSpray);
 
                 creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The quadrone can't be compelled to act in a manner contrary to its nature or its instructions." });
                 creature.Features.Add(new Feature() { Name="Disintegration", Description="If the quadrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+
+                var overheat = new Feature() { Name = "Overheat", Description = "When the quadron drops to 0 hitpoints and it has not taken cold damage on this turn, it becomes wreathed in flames and hot steam in a 20 foot sphere centered around itself. Each creature other than the quadrone in that area must make a DC 15 Constitution saving throw or take 27 (6d8) fire damage or half as much on a successful save. All flammable items not being worn or carried are ignited."};
+                creature.Features.Add(overheat);
 
                 return creature;
             }
@@ -163,7 +164,7 @@ namespace CreatureScaler.Platform
         {
             get
             {
-                var creature = Creature.Create("Pentadrone", Size.Large, ChallengeRating.Create(7), AbilityScore.CreateStandard(17, 22, 18, 11, 12, 13), 15);
+                var creature = Creature.Create("Pentadrone", Size.Large, ChallengeRating.Create(7), AbilityScore.CreateStandard(17, 22, 16, 11, 12, 13), 15);
 
                 creature.Type = CreatureType.Construct;
 
@@ -171,22 +172,26 @@ namespace CreatureScaler.Platform
 
                 creature.ArmorClass = new ArmorClass(20, "Natural Armor");
 
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Fly, Distance = 30 });
+                creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 50 });
 
                 creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
 
                 creature.Languages.Add(Language.Modron);
 
-                var clawAttack = new Attack() { Name = "Claw", AttackRollAbility = Ability.Dexterity, Reach = 5 };
-                clawAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D6, DamageDieCount = 2 });
-                clawAttack.MultiGroups.Add("melee", 2);
-                creature.Attacks.Add(clawAttack);
+                var spearAttack = new Attack() { Name = "Spear", AttackRollAbility = Ability.Dexterity, Reach = 10 };
+                spearAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D8, DamageDieCount = 2 });
+                spearAttack.MultiGroups.Add("melee", 1);
+                creature.Attacks.Add(spearAttack);
 
-                var spikeAttack = new Attack() { Name = "Shoot Spike", AttackRollAbility = Ability.Dexterity, AttackType = AttackType.RangedWeapon, Reach = 30 };
-                spikeAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Piercing, DamageDie = Die.D10, DamageDieCount = 1 });
-                spikeAttack.MultiGroups.Add("ranged", 2);
-                creature.Attacks.Add(spikeAttack);
+                var swordAttack = new Attack() { Name = "Longsword", AttackRollAbility = Ability.Dexterity, Reach = 10 };
+                swordAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D8, DamageDieCount = 2 });
+                swordAttack.MultiGroups.Add("melee", 1);
+                creature.Attacks.Add(swordAttack);
+
+                var punchAttack = new Attack() { Name = "Punch", AttackRollAbility = Ability.Dexterity, Reach = 5 };
+                punchAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D4, DamageDieCount = 2 });
+                punchAttack.MultiGroups.Add("melee", 1);
+                creature.Attacks.Add(punchAttack);
 
                 creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The pentadrone can't be compelled to act in a manner contrary to its nature or its instructions." });
                 creature.Features.Add(new Feature() { Name="Disintegration", Description="If the pentadrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
