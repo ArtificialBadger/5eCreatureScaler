@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace CreatureScaler.Platform
 {
@@ -9,9 +10,9 @@ namespace CreatureScaler.Platform
             return containerString.IndexOf(containedString, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
-        public static Models.Creature ToCreatureModel(this Open5ECreatureDownloader.Creature creature)
+        public static Models.Creature Clone(this Models.Creature creature)
         {
-            throw new NotImplementedException();
+            return JsonConvert.DeserializeObject<Models.Creature>(JsonConvert.SerializeObject(creature));
         }
     }
 }
