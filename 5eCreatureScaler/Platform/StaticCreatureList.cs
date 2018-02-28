@@ -35,7 +35,7 @@ namespace CreatureScaler.Platform
 
                 creature.Alignment = Alignment.LawfulNeutral;
 
-                creature.ArmorClass = new ArmorClass(15, "Natural Armor");
+                creature.ArmorClass = new ArmorClass(16, "Natural Armor");
 
                 creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
                 creature.Speeds.Add(new Speed() { Mode = MovementMode.Fly, Distance = 30 });
@@ -49,7 +49,7 @@ namespace CreatureScaler.Platform
                 clawAttack.MultiGroups.Add("melee", 2);
                 creature.Attacks.Add(clawAttack);
 
-                var spikeAttack = new Attack() { Name = "Shoot Spike", AttackRollAbility = Ability.Dexterity, AttackType = AttackType.RangedWeapon, Reach = 30 };
+                var spikeAttack = new Attack() { Name = "Spike Cannon", AttackRollAbility = Ability.Dexterity, AttackType = AttackType.RangedWeapon, Reach = 30 };
                 spikeAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Piercing, DamageDie = Die.D10, DamageDieCount = 1 });
                 spikeAttack.MultiGroups.Add("ranged", 2);
                 creature.Attacks.Add(spikeAttack);
@@ -65,7 +65,7 @@ namespace CreatureScaler.Platform
         {
             get
             {
-                var creature = Creature.Create("Duodrone", Size.Medium, ChallengeRating.Create(3), AbilityScore.CreateStandard(12, 15, 13, 8, 11, 7), 15);
+                var creature = Creature.Create("Duodrone", Size.Medium, ChallengeRating.Create(3), AbilityScore.CreateStandard(16, 12, 14, 8, 11, 8), 15);
 
                 creature.Type = CreatureType.Construct;
 
@@ -74,24 +74,18 @@ namespace CreatureScaler.Platform
                 creature.ArmorClass = new ArmorClass(15, "Natural Armor");
 
                 creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Fly, Distance = 30 });
 
                 creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
 
                 creature.Languages.Add(Language.Modron);
 
-                var clawAttack = new Attack() { Name = "Claw", AttackRollAbility = Ability.Dexterity, Reach = 5 };
-                clawAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D6, DamageDieCount = 2 });
-                clawAttack.MultiGroups.Add("melee", 2);
-                creature.Attacks.Add(clawAttack);
+                var slamAttack = new Attack() { Name = "Slam", AttackRollAbility = Ability.Strength, Reach = 5 };
+                slamAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Slashing, DamageDie = Die.D8, DamageDieCount = 2 });
+                slamAttack.MultiGroups.Add("melee", 2);
+                creature.Attacks.Add(slamAttack);
 
-                var spikeAttack = new Attack() { Name = "Shoot Spike", AttackRollAbility = Ability.Dexterity, AttackType = AttackType.RangedWeapon, Reach = 30 };
-                spikeAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Piercing, DamageDie = Die.D10, DamageDieCount = 1 });
-                spikeAttack.MultiGroups.Add("ranged", 2);
-                creature.Attacks.Add(spikeAttack);
-
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The duodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the duodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
                 return creature;
             }
@@ -101,7 +95,7 @@ namespace CreatureScaler.Platform
         {
             get
             {
-                var creature = Creature.Create("Tridrone", Size.Medium, ChallengeRating.Create(4), AbilityScore.CreateStandard(12, 15, 13, 8, 11, 7), 15);
+                var creature = Creature.Create("Tridrone", Size.Medium, ChallengeRating.Create(4), AbilityScore.CreateStandard(11, 13, 18, 9, 11, 10), 15);
 
                 creature.Type = CreatureType.Construct;
 
@@ -126,8 +120,8 @@ namespace CreatureScaler.Platform
                 spikeAttack.MultiGroups.Add("ranged", 2);
                 creature.Attacks.Add(spikeAttack);
 
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The tridrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the tridrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
                 return creature;
             }
@@ -137,13 +131,13 @@ namespace CreatureScaler.Platform
         {
             get
             {
-                var creature = Creature.Create("Quadrone", Size.Medium, ChallengeRating.Create(5), AbilityScore.CreateStandard(12, 15, 13, 8, 11, 7), 15);
+                var creature = Creature.Create("Quadrone", Size.Medium, ChallengeRating.Create(5), AbilityScore.CreateStandard(18, 17, 18, 10, 11, 12), 15);
 
                 creature.Type = CreatureType.Construct;
 
                 creature.Alignment = Alignment.LawfulNeutral;
 
-                creature.ArmorClass = new ArmorClass(15, "Natural Armor");
+                creature.ArmorClass = new ArmorClass(16, "Natural Armor");
 
                 creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
                 creature.Speeds.Add(new Speed() { Mode = MovementMode.Fly, Distance = 30 });
@@ -162,8 +156,8 @@ namespace CreatureScaler.Platform
                 spikeAttack.MultiGroups.Add("ranged", 2);
                 creature.Attacks.Add(spikeAttack);
 
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The quadrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the quadrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
                 return creature;
             }
@@ -173,13 +167,13 @@ namespace CreatureScaler.Platform
         {
             get
             {
-                var creature = Creature.Create("Pentadrone", Size.Large, ChallengeRating.Create(7), AbilityScore.CreateStandard(12, 15, 13, 8, 11, 7), 15);
+                var creature = Creature.Create("Pentadrone", Size.Large, ChallengeRating.Create(7), AbilityScore.CreateStandard(17, 22, 18, 11, 12, 13), 15);
 
                 creature.Type = CreatureType.Construct;
 
                 creature.Alignment = Alignment.LawfulNeutral;
 
-                creature.ArmorClass = new ArmorClass(15, "Natural Armor");
+                creature.ArmorClass = new ArmorClass(20, "Natural Armor");
 
                 creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
                 creature.Speeds.Add(new Speed() { Mode = MovementMode.Fly, Distance = 30 });
@@ -198,8 +192,8 @@ namespace CreatureScaler.Platform
                 spikeAttack.MultiGroups.Add("ranged", 2);
                 creature.Attacks.Add(spikeAttack);
 
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The pentadrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the pentadrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
                 return creature;
             }

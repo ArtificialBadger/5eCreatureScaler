@@ -133,11 +133,11 @@ namespace CreatureScaler.ViewModels
                     {
                         if (group.Item2 > 1)
                         {
-                            multiAttackDescriptions.Add($"{group.Item2} {group.Item1.ToLowerInvariant()} attacks");
+                            multiAttackDescriptions.Add($"{group.Item2.GetNaturalName()} {group.Item1.ToLowerInvariant()} attacks");
                         }
                         else
                         {
-                            multiAttackDescriptions.Add($"{group.Item2} {group.Item1.ToLowerInvariant()} attack");
+                            multiAttackDescriptions.Add($"{group.Item2.GetNaturalName()} {group.Item1.ToLowerInvariant()} attack");
                         }
                     }
 
