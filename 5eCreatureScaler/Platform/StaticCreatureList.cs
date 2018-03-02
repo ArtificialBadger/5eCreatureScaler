@@ -179,7 +179,7 @@ namespace CreatureScaler.Platform
                 creature.Languages.Add(Language.Modron);
 
                 var spearAttack = new Attack() { Name = "Spear", AttackRollAbility = Ability.Dexterity, Reach = 10 };
-                spearAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D8, DamageDieCount = 2 });
+                spearAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Piercing, DamageDie = Die.D8, DamageDieCount = 2 });
                 spearAttack.MultiGroups.Add("melee", 1);
                 creature.Attacks.Add(spearAttack);
 
@@ -189,7 +189,7 @@ namespace CreatureScaler.Platform
                 creature.Attacks.Add(swordAttack);
 
                 var punchAttack = new Attack() { Name = "Punch", AttackRollAbility = Ability.Dexterity, Reach = 5 };
-                punchAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Slashing, DamageDie = Die.D6, DamageDieCount = 2 });
+                punchAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Dexterity, DamageType = DamageType.Bludgeoning, DamageDie = Die.D6, DamageDieCount = 2 });
                 punchAttack.MultiGroups.Add("melee", 1);
                 creature.Attacks.Add(punchAttack);
 
