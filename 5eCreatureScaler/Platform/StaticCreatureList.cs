@@ -11,6 +11,13 @@ namespace CreatureScaler.Platform
             {
                 var bear = Creature.Create("BrownBear", Size.Large, ChallengeRating.Create(1), AbilityScore.CreateStandard(19, 10, 16, 2, 13, 7), 4);
 
+                bear.ArmorClass = new ArmorClass() { Value = 11, Description = "Natural Armor" };
+
+                bear.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 40 });
+                bear.Speeds.Add(new Speed() { Mode = MovementMode.Climb, Distance = 30 });
+
+                bear.SkillProficiencies.Add(Skill.Perception);
+
                 bear.Features.Add(new Feature() { Name = "Keen Smell", Description = "The bear has advantage on Wisdom (Perception) checks that rely on smell"});
 
                 var biteAttack = new Attack() { Name = "Bite", Reach = 5, AttackRollAbility = Ability.Strength };

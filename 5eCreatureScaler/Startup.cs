@@ -41,7 +41,7 @@ namespace CreatureScaler
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
-                routes.MapRoute("default", "{controller}/{action}/{id?}");
+                routes.MapRoute("default", "{controller=Statblock}/{action=Statblock}/{id?}");
             });
         }
     }
