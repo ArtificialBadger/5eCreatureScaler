@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Platform
 {
-    public class CreatureScaler
+    public class BasicCreatureScaler
     {
         private readonly CRCalculator crCalculator;
         private readonly ICreatureAdjustor[] adjustors;
