@@ -3,7 +3,7 @@ using CreatureScaler.Models;
 using System;
 using System.Linq;
 
-namespace CreatureScaler
+namespace CreatureScaler.Platform
 {
     public class CRCalculator
     {
@@ -20,7 +20,7 @@ namespace CreatureScaler
 
             // monster stats
 
-            var hp = creature.Health.HitPointMaximum;
+            var hp = creature.Health;
             var cr = creature.ChallengeRating.ListedChallengeRating;
             var ac = creature.ArmorClass;
             var dpr = creature.MaxDpr;

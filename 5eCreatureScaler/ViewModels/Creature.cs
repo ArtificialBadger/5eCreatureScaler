@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CreatureScaler.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,14 @@ namespace CreatureScaler.ViewModels
 
             if (String.IsNullOrWhiteSpace(creature.ArmorClass.Description))
             {
-                this.ArmorClass = $"{creature.ArmorClass.Value}";
+                this.ArmorClass = $"{creature.ArmorClass.Value + creature.Statistics.ByAbility(Ability.Dexterity)?.Modifier ?? 0}";
             }
             else
             {
-                this.ArmorClass = $"{creature.ArmorClass.Value} ({creature.ArmorClass.Description})";
+                this.ArmorClass = $"{creature.ArmorClass.Value + creature.Statistics.ByAbility(Ability.Dexterity)?.Modifier ?? 0} ({creature.ArmorClass.Description})";
             }
 
-            this.HitPoints = $"{creature.Health.HitPointMaximum} ({creature.Health.HitDieCount}{creature.Health.HitDieSize.GetDisplayName()} + {creature.Health.HitDieCount * creature.Statistics.FirstOrDefault(score => score.Ability == Models.Ability.Constitution)?.Modifier ?? 0}) ";
+            this.HitPoints = $"{creature.Health} ({creature.HitDieCount}{creature.Size.ToHitDie().GetDisplayName()} + {creature.HitDieCount * creature.Statistics.FirstOrDefault(score => score.Ability == Models.Ability.Constitution)?.Modifier ?? 0}) ";
 
             this.Speed = String.Join(", ", creature.Speeds.Select(s => $"{s.Mode.GetDisplayName()}{s.Distance}ft."));
 

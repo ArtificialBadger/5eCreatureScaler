@@ -10,7 +10,7 @@ namespace _5eCreatureScaler.Test
     {
         internal class CreatureAdjustorMock : ICreatureAdjustor
         {
-            public static ICreatureAdjustor Create(int i)
+            public static ICreatureAdjustor Create(uint i)
             {
                 return new CreatureAdjustorMock()
                 {
@@ -18,35 +18,28 @@ namespace _5eCreatureScaler.Test
                 };
             }
 
-            public AdjustorType Type { get; set; }
+            public uint EstimatedAdjustmentDistance { get; set; }
 
-            public int EstimatedAdjustmentDistance { get; set; }
-
-            public void Adjust(Creature creature)
+            public void AdjustUp(Creature creature)
             {
+            }
+
+            public void AdjustDown(Creature creature)
+            {
+            }
+
+            public bool Qualified(Creature creature)
+            {
+                return true;
             }
         }
 
         [TestMethod]
         public void PositiveSeriesSucceeds()
         {
-            var delta = 50;
+            uint delta = 50;
 
-            var randomized = Enumerable.Range(-20, 40).Where(f => f != 0).Select(CreatureAdjustorMock.Create).Randomize(delta);
-
-            var actual = randomized.Sum(f => f.EstimatedAdjustmentDistance);
-
-            var expected = delta;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void NegativeSeriesSucceeds()
-        {
-            var delta = -50;
-
-            var randomized = Enumerable.Range(-20, 40).Where(f => f != 0).Select(CreatureAdjustorMock.Create).Randomize(delta);
+            var randomized = Enumerable.Range(1, 40).Select(f => (uint)f).Select(CreatureAdjustorMock.Create).Randomize(delta);
 
             var actual = randomized.Sum(f => f.EstimatedAdjustmentDistance);
 

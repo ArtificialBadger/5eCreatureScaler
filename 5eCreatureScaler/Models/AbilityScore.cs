@@ -12,7 +12,7 @@ namespace CreatureScaler.Models
         }
     }
 
-    public class AbilityScore
+    public sealed class AbilityScore
     {
         #region creators
         public static List<AbilityScore> CreateStandard(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma)

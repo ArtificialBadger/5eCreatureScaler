@@ -1,6 +1,6 @@
 namespace CreatureScaler.Models
 {
-    public struct ArmorClass
+    public sealed class ArmorClass
     {
         public ArmorClass(int value, string description = "")
         {

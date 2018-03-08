@@ -1,6 +1,6 @@
 ﻿namespace CreatureScaler.Models
 {
-    public class DamageRoll
+    public sealed class DamageRoll
     {
         public Die DamageDie 
         { 

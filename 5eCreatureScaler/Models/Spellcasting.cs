@@ -5,18 +5,24 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Models
 {
-    public sealed class AdvancedStats
+    public sealed class Spellcasting
     {
-        public int Honor
+        public Ability SpellcastingAbility
         {
             get;
             set;
         }
 
-        public int Sanity
+        public int SpellcasterLevel
         {
             get;
             set;
         }
+
+        public List<Spell> PreparedSpells
+        {
+            get;
+            set;
+        } = new List<Spell>();
     }
 }

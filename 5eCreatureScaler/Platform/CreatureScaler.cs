@@ -6,22 +6,35 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Platform
 {
-    public class CreatureScaler
+    internal class CreatureScaler : ICreatureScaler
     {
         private readonly CRCalculator crCalculator;
         private readonly ICreatureAdjustor[] adjustors;
+
+        public CreatureScaler(CRCalculator crCalculator, ICreatureAdjustor[] adjustors)
+        {
+            this.crCalculator = crCalculator;
+            this.adjustors = adjustors;
+        }
 
         public Creature ScaleCreature(Creature baseCreature, int targetCR)
         {
             var calculatedCR = crCalculator.Calculate(baseCreature);
 
-            var delta = calculatedCR;
+            var delta = targetCR - calculatedCR;
+
+            var positive = delta > 0;
 
             var newCreature = baseCreature.Clone();
 
-            var selectedAdjustors = adjustors.Randomize(delta);
+            var selectedAdjustors = adjustors.Randomize((uint)Math.Abs(delta));
 
-            throw new NotImplementedException();
+            foreach (var adjustor in adjustors)
+            {
+                adjustor.Adjust(newCreature, positive);
+            }
+
+            return newCreature;
         }
     }
 }

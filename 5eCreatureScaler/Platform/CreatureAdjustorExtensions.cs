@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CreatureScaler.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,18 +14,25 @@ namespace CreatureScaler.Platform
             return Math.Abs(i);
         }
 
-        internal static IEnumerable<ICreatureAdjustor> Randomize(this IEnumerable<ICreatureAdjustor> adjustors, int delta)
+        internal static void Adjust(this ICreatureAdjustor adjustor, Creature creature, bool up)
         {
-            var total = 0;
+            var action = up ? new Action<Creature>(adjustor.AdjustUp) : new Action<Creature>(adjustor.AdjustDown);
 
-            var distanceLimit = delta.Abs();
+            action(creature);
+        }
+
+        internal static IEnumerable<ICreatureAdjustor> Randomize(this IEnumerable<ICreatureAdjustor> adjustors, uint delta)
+        {
+            uint total = 0;
+
+            uint distanceLimit = delta;
 
             var choices = adjustors
                 .Where(adjustor => delta > 0 ? (adjustor.EstimatedAdjustmentDistance > 0) : (adjustor.EstimatedAdjustmentDistance < 0))
-                .Where(adjustor => adjustor.EstimatedAdjustmentDistance.Abs() <= (distanceLimit - total));
+                .Where(adjustor => adjustor.EstimatedAdjustmentDistance <= (distanceLimit - total));
 
             var result = Enumerable
-                .Range(1, distanceLimit)
+                .Range(1, (int)distanceLimit)
                 .Select(i => choices.PickRandomOrDefault())
                 .TakeWhile(adjustor =>
                 {
@@ -33,7 +41,7 @@ namespace CreatureScaler.Platform
                         return false;
                     }
 
-                    total += adjustor.EstimatedAdjustmentDistance.Abs();
+                    total += adjustor.EstimatedAdjustmentDistance;
 
                     return true;
                 })

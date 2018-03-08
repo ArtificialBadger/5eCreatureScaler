@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace CreatureScaler.Models
 {
+    [Serializable]
     public sealed class Creature
     {
         public static Creature Create(String name, Size size, ChallengeRating challengeRating, List<AbilityScore> abilityScores, int hitDieCount)
@@ -12,14 +14,27 @@ namespace CreatureScaler.Models
             {
                 Name = name,
                 ProficiencyBonus = challengeRating.ToProficiencyBonus(),
-                ArmorClass = new ArmorClass(10, "Natural Armor"),
+                ArmorClass = new ArmorClass(10),
                 Size = size,
-                
+
                 ChallengeRating = challengeRating,
                 Statistics = abilityScores,
 
-                Health = Health.Create(size, hitDieCount, abilityScores),
+                HitDieCount = hitDieCount,
             };
+        }
+
+        [IgnoreDataMember]
+        public int Health
+        {
+            get
+            {
+                return (int)(
+                    Math.Floor(HitDieCount * Size.ToHitDie().ToAverageValue())
+                    +
+                    HitDieCount * Statistics.ByAbility(Ability.Constitution)?.Modifier ?? 0
+                    );
+            }
         }
 
         public int ProficiencyBonus { get; set; }
@@ -34,7 +49,7 @@ namespace CreatureScaler.Models
 
         #region general stats
         public ArmorClass ArmorClass { get; set; }
-        public Health Health { get; set; }
+        public int HitDieCount { get; set; }
         public List<Speed> Speeds { get; set; } = new List<Speed>();
         #endregion
 
@@ -55,6 +70,8 @@ namespace CreatureScaler.Models
 
         #region monster features
         public List<Feature> Features { get; set; } = new List<Feature>();
+        public Spellcasting Spellcasting { get; set; }
+        public InnateSpellcasting InnateSpellcasting { get; set; }
         #endregion
 
         #region actions
@@ -62,7 +79,6 @@ namespace CreatureScaler.Models
         public List<Action> Actions { get; set; } = new List<Action>();
         public List<Reaction> Reactions { get; set; } = new List<Reaction>();
         #endregion
-
 
         public int MaxDpr
         {
@@ -76,7 +92,34 @@ namespace CreatureScaler.Models
         {
             get
             {
-                return this.Actions.Select(a => a.CalculateDamagePerRound()).Max();
+                throw new NotImplementedException();
+            }
+        }
+
+        public List<string> Tags
+        {
+            get;
+            set; 
+        } = new List<string>();
+
+        [IgnoreDataMember]
+        public IReadOnlyList<string> AutomaticTags
+        {
+            get
+            {
+                return
+                    SubTypes
+                        .Select(subType => subType.ToString())
+                    .Concat(
+                        Speeds.Select(speed => speed.Mode.ToString()))
+                    .Concat(
+                        new[]
+                        {
+                            Size.ToString(),
+                            Type.ToString(),
+                            Alignment.ToString(),
+                        })
+                    .ToList();
             }
         }
     }

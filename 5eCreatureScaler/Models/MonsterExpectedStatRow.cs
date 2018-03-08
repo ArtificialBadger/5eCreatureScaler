@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Models
 {
-    public class MonsterExpectedStatRow
+    public sealed class MonsterExpectedStatRow
     {
         public double CR { get; set; }
         public int Prof { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace CreatureScaler.Models
 {
-    public class Feature
+    public sealed class Feature
     {
         public string Name
         {
