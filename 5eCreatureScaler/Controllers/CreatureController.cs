@@ -1,4 +1,5 @@
 ﻿using CreatureScaler.Models;
+using CreatureScaler.Platform;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,13 +8,52 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Controllers
 {
+    [Route("[controller]/[action]")]
     public class CreatureController : Controller
     {
-        [HttpGet]
-        public IActionResult ScaleCreature(int creatureId, int newChallengeRating )
+        private ICreatureResolver creatureResolver;
+        private ICreatureScaler creatureScaler;
+
+        public CreatureController(ICreatureResolver creatureResolver, ICreatureScaler creatureScaler)
         {
-            return Ok($"Statblock for creature with id: {creatureId} scaled to: {newChallengeRating}");
+            this.creatureResolver = creatureResolver;
+            this.creatureScaler = creatureScaler;
         }
+
+        [HttpGet("{creatureName}/{newChallengeRating:int}")]
+        public IActionResult Scale(string creatureName, int newChallengeRating)
+        {
+            Creature scaledCreature;
+
+            if (Guid.TryParse(creatureName, out Guid creatureGuid))
+            {
+                scaledCreature = creatureScaler.ScaleCreature(creatureResolver.ResolveCreature(creatureGuid), newChallengeRating);
+            }
+            else
+            {
+                scaledCreature = creatureScaler.ScaleCreature(creatureResolver.ResolveCreature(creatureName), newChallengeRating);
+            }
+
+            return View("StatBlockView", new List<ViewModels.Creature>() { new ViewModels.Creature(scaledCreature) });
+        }
+
+        //[HttpGet("{creatureName}")]
+        //public IActionResult Scale(string creatureName)
+        //{
+        //    var newChallengeRating = 11;
+        //    Creature scaledCreature;
+
+        //    if (Guid.TryParse(creatureName, out Guid creatureGuid))
+        //    {
+        //        scaledCreature = creatureScaler.ScaleCreature(creatureResolver.ResolveCreature(creatureGuid), newChallengeRating);
+        //    }
+        //    else
+        //    {
+        //        scaledCreature = creatureScaler.ScaleCreature(creatureResolver.ResolveCreature(creatureName), newChallengeRating);
+        //    }
+
+        //    return View("StatBlockView", new List<ViewModels.Creature>() { new ViewModels.Creature(scaledCreature) });
+        //}
     }
 
 }
