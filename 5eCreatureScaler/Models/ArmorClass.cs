@@ -2,6 +2,11 @@ namespace CreatureScaler.Models
 {
     public sealed class ArmorClass
     {
+        public ArmorClass()
+        {
+
+        }
+
         public ArmorClass(int value, string description = "")
         {
             this.Value = value;

@@ -8,6 +8,10 @@
     <SignAssembly>true</SignAssembly>
 
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+
+    <AssemblyName>CreatureScaler.Test</AssemblyName>
+
+    <RootNamespace>CreatureScaler.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -14,7 +14,7 @@ namespace CreatureScaler.Platform
             this.repository = repository;
         }
 
-        public int Calculate(Creature creature)
+        public uint Calculate(Creature creature)
         {
             var expectedValueTable = repository.GetExpectedStats();
 
@@ -54,7 +54,7 @@ namespace CreatureScaler.Platform
 
             var finalCalculatedCR = Math.Round((calculatedOffensiveCR + calculatedDefensiveCR) / 2, MidpointRounding.AwayFromZero);
 
-            return (int)finalCalculatedCR;
+            return (uint)finalCalculatedCR;
         }
     }
 }

@@ -49,11 +49,11 @@ namespace CreatureScaler.Prototype.Tokenizer
 
         private static IEnumerable<(string pattern, Func<string, ICandidateToken> tokenFactory)> rulePatterns = new(string pattern, Func<string, ICandidateToken> tokenFactory)[]
         {
-            (AttackBonusCandidateToken.Pattern, t=> new CandidateToken<AttackBonusCandidateToken>(t)),
+            (AttackBonusSuggestion.Pattern, t=> new CandidateToken<AttackBonusSuggestion>(t)),
             (ReachCandidateToken.Pattern, t=> new CandidateToken<ReachCandidateToken>(t)),
             (DamageRollCandidateToken.Pattern, t=> new CandidateToken<DamageRollCandidateToken>(t)),
             (DCCandidateToken.Pattern, t=> new CandidateToken<DCCandidateToken>(t)),
-            (AreaOrDistanceCandidateToken.Pattern, t=> new CandidateToken<AreaOrDistanceCandidateToken>(t)),
+            (AreaOrDistanceSuggestion.Pattern, t=> new CandidateToken<AreaOrDistanceSuggestion>(t)),
             (AreaCandidateToken.Pattern, t=> new CandidateToken<AreaCandidateToken>(t)),
             (DamageTypeCandidateToken.Pattern, t=> new CandidateToken<DamageTypeCandidateToken>(t)),
         };

@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace CreatureScaler.Prototype.Tokenizer
 {
-    public class AreaOrDistanceCandidateToken : IToken
+    public class AreaOrDistanceSuggestion : IToken
     {
         // ask if area or distance
 

@@ -2,7 +2,7 @@
 
 namespace CreatureScaler.Prototype.Tokenizer
 {
-    public class AttackBonusCandidateToken : IToken
+    public class AttackBonusSuggestion : IToken
     {
         public static string Pattern => @"\+[0-9]+ to hit";
 

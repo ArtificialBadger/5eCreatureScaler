@@ -11,7 +11,7 @@ namespace CreatureScaler.Platform
         private readonly CRCalculator crCalculator;
         private readonly ICreatureAdjustor[] adjustors;
 
-        public Creature ScaleCreature(Creature baseCreature, int targetCR)
+        public Creature ScaleCreature(Creature baseCreature, uint targetCR)
         {
             var calculatedCR = crCalculator.Calculate(baseCreature);
 
