@@ -6,7 +6,6 @@
     <AssemblyName>CreatureScaler</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DevelopmentKey.snk</AssemblyOriginatorKeyFile>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>

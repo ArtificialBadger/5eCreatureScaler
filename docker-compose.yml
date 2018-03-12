@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  5ecreaturescaler:
-    image: 5ecreaturescaler
-    build:
-      context: .
-      dockerfile: 5eCreatureScaler\Dockerfile

@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5eCreatureScaler", "5eCreatureScaler\5eCreatureScaler.csproj", "{B4745B0B-DE27-4AA4-87F0-64AD3875744D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5eCreatureScaler.Test", "5eCreatureScaler.Test\5eCreatureScaler.Test.csproj", "{3A7C5A40-FFBA-497B-882B-99A72945268B}"
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C35C6370-C123-4819-9370-E99D9EBC202F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{3A7C5A40-FFBA-497B-882B-99A72945268B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A7C5A40-FFBA-497B-882B-99A72945268B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A7C5A40-FFBA-497B-882B-99A72945268B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C35C6370-C123-4819-9370-E99D9EBC202F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C35C6370-C123-4819-9370-E99D9EBC202F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C35C6370-C123-4819-9370-E99D9EBC202F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C35C6370-C123-4819-9370-E99D9EBC202F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
