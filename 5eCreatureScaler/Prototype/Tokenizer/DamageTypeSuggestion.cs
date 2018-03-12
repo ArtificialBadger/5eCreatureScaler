@@ -5,20 +5,16 @@ using System.Text.RegularExpressions;
 
 namespace CreatureScaler.Prototype.Tokenizer
 {
-    public class AreaOrDistanceSuggestion : SuggestionProvider
+    public class DamageTypeSuggestion : SuggestionProvider
     {
-        // ask if area or distance
-
-        public override string Pattern => @"[0-9]+ feet";
-
+        public override string Pattern => @"(acid|bludgeoning|cold|fire|force|lightning|necrotic|piercing|poison|psychic|radiant|slashing|thunder) damage";
+        
         protected override IEnumerable<Suggestion> SuggestReplacements(Match match, Creature creature)
         {
             var tokenText = match.Value;
-            var area = Regex.Match(tokenText, @"[0-9]+").Value;
+            var type = tokenText.Split(' ')[0];
 
-            var replacement = $"{{area:{area}}} feet";
-
-            return new Suggestion(match.Index, match.Value, Pattern, replacement)
+            return new Suggestion(match.Index, match.Value, Pattern, $"{{type:{type}}} damage")
                 .ToEnumerable();
         }
     }

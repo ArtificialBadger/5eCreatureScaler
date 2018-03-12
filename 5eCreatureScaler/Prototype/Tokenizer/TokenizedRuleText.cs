@@ -1,8 +1,7 @@
 ﻿using CreatureScaler.Models;
-using System;
+using CreatureScaler.Platform;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace CreatureScaler.Prototype.Tokenizer
 {
@@ -18,63 +17,46 @@ namespace CreatureScaler.Prototype.Tokenizer
             this.name = name;
             this.ruleText = ruleText;
 
-            CandidateTokens = ExtractTokens(ruleText).ToList();
+            Choices = ExtractTokens(ruleText).ToList();
         }
 
-        private static IEnumerable<ICandidateToken> ExtractTokens(string ruleText)
+        private IEnumerable<Choice<Suggestion>.Set> ExtractTokens(string ruleText)
         {
-            foreach (var rulePattern in rulePatterns)
-            {
-                var matches = Regex.Matches(ruleText, rulePattern.pattern);
+            var choices = rulePatterns
+                .SelectMany(r => r.ProposeSuggestions(ruleText, creature))
+                .ToList();
 
-                foreach (var match in matches.Cast<Match>().Distinct(new MatchComparer()))
-                {
-                    yield return rulePattern.tokenFactory(match.Value);
-                }
-            }
+            return choices;
         }
 
-        private class MatchComparer : IEqualityComparer<Match>
+        private static IEnumerable<ISuggestionProvider> rulePatterns = new ISuggestionProvider[]
         {
-            public bool Equals(Match x, Match y)
-            {
-                return object.Equals(x.Value, y.Value);
-            }
-
-            public int GetHashCode(Match obj)
-            {
-                return obj.Value.GetHashCode();
-            }
-        }
-
-        private static IEnumerable<(string pattern, Func<string, ICandidateToken> tokenFactory)> rulePatterns = new(string pattern, Func<string, ICandidateToken> tokenFactory)[]
-        {
-            (AttackBonusSuggestion.Pattern, t=> new CandidateToken<AttackBonusSuggestion>(t)),
-            (ReachCandidateToken.Pattern, t=> new CandidateToken<ReachCandidateToken>(t)),
-            (DamageRollCandidateToken.Pattern, t=> new CandidateToken<DamageRollCandidateToken>(t)),
-            (DCCandidateToken.Pattern, t=> new CandidateToken<DCCandidateToken>(t)),
-            (AreaOrDistanceSuggestion.Pattern, t=> new CandidateToken<AreaOrDistanceSuggestion>(t)),
-            (AreaCandidateToken.Pattern, t=> new CandidateToken<AreaCandidateToken>(t)),
-            (DamageTypeCandidateToken.Pattern, t=> new CandidateToken<DamageTypeCandidateToken>(t)),
+            new AttackBonusSuggestion(),
+            new ReachSuggestion(),
+            new DamageRollSuggestion(),
+            new DCSuggestion(),
+            new AreaOrDistanceSuggestion(),
+            new AreaSuggestion(),
+            new DamageTypeSuggestion(),
         };
 
-        public IEnumerable<ICandidateToken> CandidateTokens { get; }
+        public IEnumerable<Choice<Suggestion>.Set> Choices { get; }
 
-        public string Format()
-        {
-            var newText = this.ruleText;
+        //public string Format()
+        //{
+        //    var newText = this.ruleText;
 
-            foreach (var token in CandidateTokens.Where(token => token.Accepted))
-            {
-                var tokenized = token.Format(creature);
+        //    foreach (var token in Choices.Where(token => token.Accepted))
+        //    {
+        //        var tokenized = token.Format(creature);
 
-                if (token.TokenText != tokenized)
-                {
-                    newText = newText.Replace(token.TokenText, token.Format(creature));
-                }
-            }
+        //        if (token.TokenText != tokenized)
+        //        {
+        //            newText = newText.Replace(token.TokenText, token.Format(creature));
+        //        }
+        //    }
 
-            return newText;
-        }
+        //    return newText;
+        //}
     }
 }

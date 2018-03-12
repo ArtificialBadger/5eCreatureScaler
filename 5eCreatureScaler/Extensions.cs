@@ -1,71 +1,38 @@
-﻿using System;
+﻿using CreatureScaler.Platform;
+using CreatureScaler.Prototype.Tokenizer;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CreatureScaler
 {
-    internal static class Extensions
+    public static class Extensions
     {
-        public static IEnumerable<T> ToSelection<T>(this IEnumerable<SingleSelector<T>.Set> sets)
+        public static Suggestion ToSuggestion(this Match match, string pattern, string replacement)
+        {
+            return new Suggestion(match.Index, match.Value, pattern, replacement);
+        }
+
+        public static IEnumerable<T> ToChosen<T>(this IEnumerable<Choice<T>.Set> sets)
         {
             return sets.Where(set => set.Accepted && !set.Rejected).Select(set => set.SelectedItem);
         }
 
-        public static SingleSelector<T>.Set ToSingleSelector<T>(this IEnumerable<T> enumerable)
+        public static Choice<T>.Set ChooseFirstIfSingle<T>(this Choice<T>.Set selector)
         {
-            var set = new SingleSelector<T>.Set(enumerable);
-            
-            return set;
+            if (selector.PossibleSelections.Count() == 1)
+            {
+                selector.PossibleSelections.Single().Choose();
+            }
+
+            return selector;
         }
 
-        public sealed class SingleSelector<T>
+        public static Choice<T>.Set ToChoiceSet<T>(this IEnumerable<T> enumerable)
         {
-            Action<SingleSelector<T>> selectFunc;
+            var set = new Choice<T>.Set(enumerable);
             
-            private SingleSelector(T item, Action<SingleSelector<T>> selectFunc)
-            {
-                Item = item;
-                this.selectFunc = selectFunc;
-            }
-
-            public T Item { get; }
-
-            public void Select()
-            {
-                selectFunc(this);
-            }
-
-            public sealed class Set
-            {
-                private List<SingleSelector<T>> selections;
-                private SingleSelector<T> selected;
-
-                public Set(IEnumerable<T> items)
-                {
-                    this.selections = items.Select(item => new SingleSelector<T>(item, Select)).ToList();
-                }
-
-                public bool Accepted { get; private set; } = false;
-                public bool Rejected { get; private set; } = false;
-
-                public IReadOnlyList<SingleSelector<T>> PossibleSelections => selections;
-                public T SelectedItem => selected.Item;
-
-                public void Reject()
-                {
-                    selected = null;
-                    Accepted = false;
-                    Rejected = true;
-                }
-
-                private void Select(SingleSelector<T> selected)
-                {
-                    this.selected = selected;
-                    Accepted = true;
-                    Rejected = false;
-                }
-            }
+            return set;
         }
 
         internal static IEnumerable<(string pattern, string before, string token, string after)> SplitIncludingValuesBetween(this string text, string[] patterns)

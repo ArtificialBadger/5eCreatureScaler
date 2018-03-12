@@ -1,24 +1,22 @@
 ﻿using CreatureScaler.Models;
+using CreatureScaler.Platform;
 using CreatureScaler.Prototype.Model;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace CreatureScaler.Prototype.Tokenizer
 {
-    public class AreaOrDistanceSuggestion : SuggestionProvider
+    public class ReachSuggestion : SuggestionProvider
     {
-        // ask if area or distance
-
-        public override string Pattern => @"[0-9]+ feet";
-
+        public override string Pattern => @"reach [0-9]+ ft";
+        
         protected override IEnumerable<Suggestion> SuggestReplacements(Match match, Creature creature)
         {
             var tokenText = match.Value;
-            var area = Regex.Match(tokenText, @"[0-9]+").Value;
+            var value = Regex.Match(tokenText, @"[0-9]+").Value;
 
-            var replacement = $"{{area:{area}}} feet";
-
-            return new Suggestion(match.Index, match.Value, Pattern, replacement)
+            return match
+                .ToSuggestion(Pattern, $"reach {{reach:{value}}} ft")
                 .ToEnumerable();
         }
     }

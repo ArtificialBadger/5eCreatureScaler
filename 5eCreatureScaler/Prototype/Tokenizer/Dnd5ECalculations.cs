@@ -1,61 +1,42 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Platform;
-using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace CreatureScaler.Prototype.Tokenizer
 {
     public static class Dnd5ECalculations
     {
-        public static string FindModString(this Creature creature, string tokenText)
+        public static string ToModString(this (string abilityScoreName, bool proficient) suggestion)
         {
-            var output = creature.FindMod(tokenText);
+            (var abilityScoreName, var proficient) = suggestion;
+            
+            var proficiencyString = proficient ? "+p" : string.Empty;
 
-            var proficiencyString = output.proficient ? "+p" : string.Empty;
-
-            return string.IsNullOrWhiteSpace(output.abilityScoreName.ToString()) ? default(string) : $"{output.abilityScoreName.ToString()}{proficiencyString}";
+            return string.IsNullOrWhiteSpace(abilityScoreName.ToString()) ? default(string) : $"{abilityScoreName.ToString()}{proficiencyString}";
         }
 
-        public static (string abilityScoreName, bool proficient) FindMod(this Creature creature, string tokenText)
+        public static IEnumerable<string> FindMatchingStatistics(this Creature creature, int bonus)
         {
-            var bonus = Convert.ToInt32(Regex.Match(tokenText, @"[0-9]+").Value);
-            var abilityScore = default(string);
-            var proficient = false;
+            return creature
+                .Statistics
+                .Where(s => s.Modifier == bonus)
+                .Select(s => s.Ability.ToShorthand());
+        }
 
-            if (bonus >= creature.ProficiencyBonus + creature.Statistics.Select(a => a.Modifier).Min())
+        public static IEnumerable<(string abilityScoreName, bool proficient)> FindMatchingStatisticsWithProficiency(this Creature creature, int bonus)
+        {
+            foreach (var statistic in creature.Statistics)
             {
-                var bonusWithoutProficiency = bonus - creature.ProficiencyBonus;
-
-                abilityScore =
-                creature.Strength().Modifier >= creature.Dexterity().Modifier && creature.Strength().Modifier == bonusWithoutProficiency
-                ?
-                "str"
-                :
-                creature.Dexterity().Modifier == bonusWithoutProficiency
-                ? "dex"
-                :
-                string.Empty;
+                if (statistic.Modifier == bonus)
+                {
+                    yield return (statistic.Ability.ToShorthand(), false);
+                }
+                
+                if (statistic.Modifier + creature.ProficiencyBonus == bonus)
+                {
+                    yield return (statistic.Ability.ToShorthand(), true);
+                }
             }
-
-            if (abilityScore == default(string))
-            {
-                abilityScore =
-                creature.Strength().Modifier >= creature.Dexterity().Modifier && creature.Strength().Modifier == bonus
-                ?
-                "str"
-                :
-                creature.Dexterity().Modifier == bonus
-                ? "dex"
-                :
-                string.Empty;
-            }
-            else
-            {
-                proficient = true;
-            }
-
-            return (abilityScore, proficient);
         }
     }
 }
