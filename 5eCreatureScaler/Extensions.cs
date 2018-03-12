@@ -8,11 +8,6 @@ namespace CreatureScaler
 {
     public static class Extensions
     {
-        public static Suggestion ToSuggestion(this Match match, string pattern, string replacement)
-        {
-            return new Suggestion(match.Index, match.Value, pattern, replacement);
-        }
-
         public static IEnumerable<T> ToChosen<T>(this IEnumerable<Choice<T>.Set> sets)
         {
             return sets.Where(set => set.Accepted && !set.Rejected).Select(set => set.SelectedItem);
@@ -35,7 +30,7 @@ namespace CreatureScaler
             return set;
         }
 
-        internal static IEnumerable<(string pattern, string before, string token, string after)> SplitIncludingValuesBetween(this string text, string[] patterns)
+        internal static IEnumerable<(string pattern, string before, string token, string after)> SplitIncludingValuesBetween(this string text, IEnumerable<string> patterns)
         {
             var workingString = text;
 

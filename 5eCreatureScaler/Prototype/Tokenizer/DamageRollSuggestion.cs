@@ -1,5 +1,4 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Platform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +10,9 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         public override string Pattern => @"[0-9]+ ?\([0-9]+d[0-9]+( ?\+ ?[0-9]+)?\)";
 
-        protected override IEnumerable<Suggestion> SuggestReplacements(Match match, Creature creature)
+        protected override IEnumerable<Suggestion> SuggestReplacements((string before, string token, string after) record, Creature creature)
         {
-            var tokenText = match.Value;
+            var tokenText = record.token;
 
             var matches = Regex.Matches(tokenText, @"[0-9]+").Cast<Match>().Select(f => f.Value).Skip(1);
 
@@ -29,26 +28,25 @@ namespace CreatureScaler.Prototype.Tokenizer
                 {
                     if (dieMightBeBasedOnSize)
                     {
-                        yield return new Suggestion(match.Index, match.Value, Pattern, $"{{dmg:{dieCount}dS+{statistic}}}");
-                        yield return new Suggestion(match.Index, match.Value, Pattern, $"{{dmg:{dieCount}dS+{bonusString}}}");
+                        yield return new Suggestion(record.token, $"{{dmg:{dieCount}dS+{statistic}}}");
+                        yield return new Suggestion(record.token, $"{{dmg:{dieCount}dS+{bonusString}}}");
                     }
 
-                    yield return new Suggestion(match.Index, match.Value, Pattern, $"{{dmg:{dieCount}d{dieSize}+{statistic}}}");
-                    yield return new Suggestion(match.Index, match.Value, Pattern, $"{{dmg:{dieCount}d{dieSize}+{bonusString}}}");
+                    yield return new Suggestion(record.token, $"{{dmg:{dieCount}d{dieSize}+{statistic}}}");
+                    yield return new Suggestion(record.token, $"{{dmg:{dieCount}d{dieSize}+{bonusString}}}");
                 }
 
-                yield return new Suggestion(match.Index, match.Value, Pattern, $"{{dmg:{dieCount}d{dieSize}+{bonusString}}}");
+                yield return new Suggestion(record.token, $"{{dmg:{dieCount}d{dieSize}+{bonusString}}}");
             }
             else
             {
                 if (dieMightBeBasedOnSize)
                 {
-                    yield return new Suggestion(match.Index, match.Value, Pattern, $"{{dmg:{dieCount}dS}}");
+                    yield return new Suggestion(record.token, $"{{dmg:{dieCount}dS}}");
                 }
 
-                yield return new Suggestion(match.Index, match.Value, Pattern, $"{{dmg:{dieCount}d{dieSize}}}");
+                yield return new Suggestion(record.token, $"{{dmg:{dieCount}d{dieSize}}}");
             }
         }
-        
     }
 }

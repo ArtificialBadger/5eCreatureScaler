@@ -12,9 +12,9 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         public override string Pattern => @"DC [0-9]+";
         
-        protected override IEnumerable<Suggestion> SuggestReplacements(Match match, Creature creature)
+        protected override IEnumerable<Suggestion> SuggestReplacements((string before, string token, string after) record, Creature creature)
         {
-            var tokenText = match.Value;
+            var tokenText = record.token;
             var bonus = Convert.ToInt32(Regex.Match(tokenText, @"[0-9]+"));
 
             var output = creature.FindMatchingStatisticsWithProficiency(bonus);
@@ -25,7 +25,7 @@ namespace CreatureScaler.Prototype.Tokenizer
                 .Select(o => (combo: o.combo, value: o.modString == default(string) ? tokenText : $"DC {{dc:{o.modString}}}"))
                 .Select(o => o.value)
                 .ConcatenateItem($"DC {{dc:{bonus}}} to hit")
-                .Select(o => new Suggestion(match.Index, tokenText, Pattern, o));
+                .Select(o => new Suggestion(record.token, o));
         }
     }
 }
