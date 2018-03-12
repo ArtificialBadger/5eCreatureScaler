@@ -24,7 +24,7 @@ namespace CreatureScaler.Platform
             var cr = creature.ChallengeRating.ListedChallengeRating;
             var ac = creature.ArmorClass;
             var dpr = creature.MaxDpr;
-            var attack = creature.MaxAttack;
+            var attack = 100; //creature.MaxAttack;
 
             // expected stats
 
