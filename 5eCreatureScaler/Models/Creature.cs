@@ -88,14 +88,6 @@ namespace CreatureScaler.Models
             }
         }
 
-        public int MaxAttack
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public List<string> Tags
         {
             get;
