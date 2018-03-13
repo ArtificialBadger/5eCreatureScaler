@@ -22,8 +22,15 @@ namespace CreatureScaler.Prototype.Model
                 .Matches(ruleText, "{(.*?)}")
                 .Cast<Match>()
                 .Select(f => (rulesText: f.Value, split: f.Value.Trim('{', '}').Split(':')))
-                .Select(f => (rulesText: f.rulesText, head: f.split[0], value: f.split[1]))
-                .Select(f => new TokenContext(f.rulesText, f.head, f.value))
+                .Select(f => (
+                    rulesText: f.rulesText, 
+                    head: f.split[0], 
+                    value: f.split[1], 
+                    groups: 
+                        f.split.Length > 2 
+                        ? f.split[2].Split(',').Select(i => Convert.ToInt32(i)).ToArray() 
+                        : new int[] { 0 }))
+                .Select(f => new TokenContext(f.rulesText, f.head, f.value, f.groups))
                 .Select(context => tokenMakers[context.Head](context))
                 .ToArray();
         }

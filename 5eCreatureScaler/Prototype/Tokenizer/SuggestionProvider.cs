@@ -10,13 +10,13 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         public abstract string Pattern { get; }
 
-        public Choice<Suggestion>.Set ProposeSuggestions((string pattern, string before, string token, string after) record, Creature creature)
+        public Choice<Suggestion>.Set ProposeSuggestions(TokenizationContext context)
         {
-            return SuggestReplacements((record.before, record.token, record.after), creature)
+            return SuggestReplacements(context)
                 .ToChoiceSet()
                 .ChooseFirstIfSingle();
         }
 
-        protected abstract IEnumerable<Suggestion> SuggestReplacements((string before, string token, string after) record, Creature creature);
+        protected abstract IEnumerable<Suggestion> SuggestReplacements(TokenizationContext context);
     }
 }

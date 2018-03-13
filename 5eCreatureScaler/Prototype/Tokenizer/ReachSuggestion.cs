@@ -9,12 +9,12 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         public override string Pattern => @"reach [0-9]+ ft";
         
-        protected override IEnumerable<Suggestion> SuggestReplacements((string before, string token, string after) record, Creature creature)
+        protected override IEnumerable<Suggestion> SuggestReplacements(TokenizationContext context)
         {
-            var tokenText = record.token;
-            var value = Regex.Match(tokenText, @"[0-9]+").Value;
+            (string before, string token, string after, Creature creature) = context;
+            var value = Regex.Match(token, @"[0-9]+").Value;
 
-            return new Suggestion(record.token, $"reach {{reach:{value}}} ft")
+            return new Suggestion(token, $"reach {{reach:{value}}} ft")
                 .ToEnumerable();
         }
     }

@@ -10,7 +10,7 @@ namespace CreatureScaler.Prototype.Tokenizer
         private readonly string name;
         private readonly string ruleText;
         private readonly Creature creature;
-        private readonly IEnumerable<(int index, (string pattern, string before, string token, string after) record, Choice<Suggestion>.Set choices)> choices;
+        private readonly IEnumerable<(TokenizationContext context, Choice<Suggestion>.Set choices)> choices;
 
         public Tokenizer(string name, string ruleText, Creature creature)
         {
@@ -20,11 +20,14 @@ namespace CreatureScaler.Prototype.Tokenizer
             this.choices = ExtractTokens(ruleText).ToList();
         }
 
-        private IEnumerable<(int index, (string pattern, string before, string token, string after) record, Choice<Suggestion>.Set choices)> ExtractTokens(string ruleText)
+        private IEnumerable<(TokenizationContext context, Choice<Suggestion>.Set choices)> ExtractTokens(string ruleText)
         {
+            var grouper = new Grouper();
+
             var matchRecords = ruleText
                 .SplitIncludingValuesBetween(rulePatterns.Select(r => r.Key))
-                .Select((f, i) => (i, f, rulePatterns[f.pattern].ProposeSuggestions(f, creature)));
+                .Select((f, i) => new TokenizationContext(grouper, i, f.pattern, f.before, f.token, f.after, creature))
+                .Select(f => (f, rulePatterns[f.Pattern].ProposeSuggestions(f)));
 
             return matchRecords;
         }
@@ -44,12 +47,12 @@ namespace CreatureScaler.Prototype.Tokenizer
 
         public string Format()
         {
-            var formattedString = choices.First().record.before 
+            var formattedString = choices.First().context.Before 
                 + choices.Select(choice => 
                     choice.choices.Accepted && !choice.choices.Rejected 
                     ? choice.choices.SelectedItem.Replacement 
-                    : choice.record.token 
-                    + choice.record.after);
+                    : choice.context.Token 
+                    + choice.context.After);
 
             return formattedString;
         }

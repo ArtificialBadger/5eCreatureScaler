@@ -10,43 +10,39 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         public override string Pattern => @"[0-9]+ ?\([0-9]+d[0-9]+( ?\+ ?[0-9]+)?\)";
 
-        protected override IEnumerable<Suggestion> SuggestReplacements((string before, string token, string after) record, Creature creature)
+        protected override IEnumerable<Suggestion> SuggestReplacements(TokenizationContext context)
         {
-            var tokenText = record.token;
+            (string before, string token, string after, Creature creature) = context;
 
-            var matches = Regex.Matches(tokenText, @"[0-9]+").Cast<Match>().Select(f => f.Value).Skip(1);
+            var matches = Regex.Matches(token, @"[0-9]+").Cast<Match>().Select(f => f.Value).Skip(1);
 
             var dieCount = matches.First();
             var dieSize = matches.Skip(1).First();
             var bonusString = matches.Skip(2).FirstOrDefault();
-            var dieMightBeBasedOnSize = ((int)creature.Size.ToHitDie()).ToString() == dieSize;
+            var suggestSeparateGroup = context.Before.Contains(" or ");
+
+            var baseString = $"{dieCount}d{dieSize}";
+
+            var modifierStrings = new List<string> ();
 
             var bonus = default(int);
             if (Int32.TryParse(bonusString, out bonus))
             {
+                modifierStrings.Add($"+{bonusString}");
+
                 foreach (var statistic in creature.FindMatchingStatistics(bonus))
                 {
-                    if (dieMightBeBasedOnSize)
-                    {
-                        yield return new Suggestion(record.token, $"{{dmg:{dieCount}dS+{statistic}}}");
-                        yield return new Suggestion(record.token, $"{{dmg:{dieCount}dS+{bonusString}}}");
-                    }
-
-                    yield return new Suggestion(record.token, $"{{dmg:{dieCount}d{dieSize}+{statistic}}}");
-                    yield return new Suggestion(record.token, $"{{dmg:{dieCount}d{dieSize}+{bonusString}}}");
+                    modifierStrings.Add(statistic);
                 }
-
-                yield return new Suggestion(record.token, $"{{dmg:{dieCount}d{dieSize}+{bonusString}}}");
             }
-            else
+
+            if (suggestSeparateGroup)
             {
-                if (dieMightBeBasedOnSize)
-                {
-                    yield return new Suggestion(record.token, $"{{dmg:{dieCount}dS}}");
-                }
-
-                yield return new Suggestion(record.token, $"{{dmg:{dieCount}d{dieSize}}}");
+                context.Grouper.CreateNextGroup();
+                modifierStrings.AddRange(modifierStrings.Select(f => $"{f}:{context.Grouper.Current}").ToList());
             }
+
+            return modifierStrings.Select(f => new Suggestion(token, $"{{dmg:{f}}}"));
         }
     }
 }

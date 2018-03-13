@@ -9,12 +9,12 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         public override string Pattern => @"(acid|bludgeoning|cold|fire|force|lightning|necrotic|piercing|poison|psychic|radiant|slashing|thunder) damage";
         
-        protected override IEnumerable<Suggestion> SuggestReplacements((string before, string token, string after) record, Creature creature)
+        protected override IEnumerable<Suggestion> SuggestReplacements(TokenizationContext context)
         {
-            var tokenText = record.token;
-            var type = tokenText.Split(' ')[0];
+            (string before, string token, string after, Creature creature) = context;
+            var type = token.Split(' ')[0];
 
-            return new Suggestion(record.token, $"{{type:{type}}} damage")
+            return new Suggestion(token, $"{{type:{type}}} damage")
                 .ToEnumerable();
         }
     }

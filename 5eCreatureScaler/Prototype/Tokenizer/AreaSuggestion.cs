@@ -10,16 +10,16 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         public override string Pattern => @"[0-9]+ ?- ?foot";
 
-        protected override IEnumerable<Suggestion> SuggestReplacements((string before, string token, string after) record, Creature creature)
+        protected override IEnumerable<Suggestion> SuggestReplacements(TokenizationContext context)
         {
-            var tokenText = record.token;
-            var area = Regex.Match(tokenText, @"[0-9]+");
+            (string before, string token, string after, Creature creature) = context;
+            var area = Regex.Match(token, @"[0-9]+");
 
-            var remainder = Regex.Split(tokenText, @"[0-9]+").Last();
+            var remainder = Regex.Split(token, @"[0-9]+").Last();
 
             var replacement = $"{{area:{area}}}{remainder}";
 
-            return new Suggestion(record.token, replacement)
+            return new Suggestion(token, replacement)
                 .ToEnumerable();
         }
     }

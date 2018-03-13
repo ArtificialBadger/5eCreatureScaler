@@ -10,19 +10,19 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         public override string Pattern => @"\+[0-9]+ to hit";
 
-        protected override IEnumerable<Suggestion> SuggestReplacements((string before, string token, string after) record, Creature creature)
+        protected override IEnumerable<Suggestion> SuggestReplacements(TokenizationContext context)
         {
-            var tokenText = record.token;
-            var bonus = Convert.ToInt32(Regex.Match(tokenText, @"[0-9]+"));
+            (string before, string token, string after, Creature creature) = context;
+            var bonus = Convert.ToInt32(Regex.Match(token, @"[0-9]+"));
 
             var output = creature.FindMatchingStatisticsWithProficiency(bonus);
 
             return output
                 .Select(o => (combo: o, modString: o.ToModString()))
                 .Where(o => !string.IsNullOrWhiteSpace(o.modString))
-                .Select(o => (combo: o.combo, value: o.modString == default(string) ? tokenText : $"{{attack:{o.modString}}} to hit"))
-                .Select(o => new Suggestion(record.token, o.value))
-                .Concat(new[] { new Suggestion(record.token, $"{{attack:{bonus}}} to hit") });
+                .Select(o => (combo: o.combo, value: o.modString == default(string) ? token : $"{{attack:{o.modString}}} to hit"))
+                .Select(o => new Suggestion(token, o.value))
+                .Concat(new[] { new Suggestion(token, $"{{attack:{bonus}}} to hit") });
         }
     }
 }

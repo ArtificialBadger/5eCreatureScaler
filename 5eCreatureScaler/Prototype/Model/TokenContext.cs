@@ -1,16 +1,18 @@
 ﻿namespace CreatureScaler.Prototype.Model
 {
-    public class TokenContext
+    public sealed class TokenContext
     {
-        public string Head { get; set; }
-        public string TokenValue { get; set; }
-        public string TokenText { get; set; }
+        public string Head { get; }
+        public string TokenValue { get; }
+        public int[] Groups { get; }
+        public string TokenText { get; }
 
-        public TokenContext(string tokenText, string head, string tokenValue)
+        public TokenContext(string token, string head, string tokenValue, int[] groups)
         {
-            this.TokenText = tokenText;
+            this.TokenText = token;
             this.Head = head;
             this.TokenValue = tokenValue;
+            this.Groups = groups;
         }
     }
 }
