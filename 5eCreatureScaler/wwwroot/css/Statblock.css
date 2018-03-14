@@ -99,10 +99,6 @@ statblock-outline {
     box-shadow: 0 0 1.5em #867453;
 }
 
-div {
-    display: block;
-}
-
 .special {
     line-height: 3;
     margin-top: 5pt;

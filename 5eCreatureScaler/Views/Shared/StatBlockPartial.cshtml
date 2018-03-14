@@ -17,7 +17,7 @@
     </svg>
     <div>
     </div>
-    <top-stat-block>
+    <div class="top-stat-block">
         <property-block>
             <h4>
                 Armor Class
@@ -28,25 +28,25 @@
         </property-block>
         <div>
         </div>
-        <property-block>
+        <div class="property-block">
             <h4>
                 Hit Points
             </h4>
             <p>
                 @Model.HitPoints
             </p>
-        </property-block>
+        </div>
         <div>
         </div>
-        <property-block>
+        <div class="property-block">
             <h4>
                 Speed
             </h4>
             <p>
                 @Model.Speed
             </p>
-        </property-block>
-    </top-stat-block>
+        </div>
+    </div>
     <div>
     </div>
     <svg height="5" width="400">
@@ -83,59 +83,60 @@
 
     @if (!String.IsNullOrWhiteSpace(@Model.DamageImmunities))
     {
-        <property-block>
+        <div class="property-block">
             <h4>
                 Damage Immunities
             </h4>
             <p>
                 @Model.DamageImmunities
             </p>
-        </property-block>
+        </div>
     }
     <div class="special">
     </div>
     @if (!String.IsNullOrWhiteSpace(@Model.ConditionImmunities))
     {
-        <property-block>
+        <div class="property-block">
             <h4>
                 Condition Immunities
             </h4>
             <p>
                 @Model.ConditionImmunities
             </p>
-        </property-block>
+        </div>
     }
 
     <div class="special">
     </div>
-    <property-block>
+    <div class="property-block">
         <h4>
             Senses
         </h4>
         <p>
             @Model.Senses
         </p>
-    </property-block>
+    </div>
     <div class="special">
     </div>
-    <property-block>
+    <div class="property-block">
         <h4>
             Languages
         </h4>
         <p>
             @Model.Languages
         </p>
-    </property-block>
+    </div>
     <div class="special">
     </div>
-    <property-block>
+    <div class="property-block">
         <h4>
             Challenge
         </h4>
         <p>
             @Model.Challenge
         </p>
-    </property-block><div class="special">
+    </div>
+    <div class="special">
     </div>
     <svg height="5" width="400">
         <polyline points="0,0 400,2.5 0,5" width="400">
@@ -145,7 +146,7 @@
     </div>
     @foreach (var feature in @Model.Features)
     {
-        <property-block>
+        <div class="property-block">
             <h4>
                 <i>
                     @(feature.Title).
@@ -154,7 +155,7 @@
             <p>
                 @feature.Details
             </p>
-        </property-block>
+        </div>
         <div class="special">
         </div>
     }
@@ -165,7 +166,7 @@
     {
         <div class="special">
         </div>
-        <property-block>
+        <div class="property-block">
             <h4>
                 <i>
                     @(action.Title).
@@ -178,6 +179,6 @@
                 }
                 @action.Details
             </p>
-        </property-block>
+        </div>
     }
 </div>
