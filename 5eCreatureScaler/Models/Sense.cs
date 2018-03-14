@@ -2,7 +2,22 @@
 {
     public sealed class Sense
     {
-        public SenseType SenseType { get; set; }
-        public int Range { get; set; }
+        public Sense(SenseType senseType, int range)
+        {
+            SenseType = senseType;
+            Range = range;
+        }
+
+        public SenseType SenseType
+        {
+            get;
+            set;
+        }
+
+        public int Range
+        {
+            get;
+            set;
+        }
     }
 }

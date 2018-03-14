@@ -6,20 +6,20 @@ using System.Text.RegularExpressions;
 
 namespace CreatureScaler.Prototype.Model
 {
-    public class ActionText
+    public class ActionDescription
     {
-        public string Name { get; }
-        public string RuleText { get; }
+        public string Text { get; }
+
         public IRuleToken[] Tokens { get; }
+
         private readonly Creature parent;
 
-        public ActionText(string ruleName, string ruleText, Creature parent)
+        public ActionDescription(string actionDescription, Creature parent)
         {
             this.parent = parent;
-            this.Name = ruleName;
-            this.RuleText = ruleText;
+            this.Text = actionDescription;
             this.Tokens = Regex
-                .Matches(ruleText, "{(.*?)}")
+                .Matches(actionDescription, "{(.*?)}")
                 .Cast<Match>()
                 .Select(f => (rulesText: f.Value, split: f.Value.Trim('{', '}').Split(':')))
                 .Select(f => (
@@ -52,7 +52,7 @@ namespace CreatureScaler.Prototype.Model
 
         public string Format()
         {
-            var newText = RuleText;
+            var newText = Text;
 
             foreach (var token in Tokens)
             {
@@ -63,7 +63,9 @@ namespace CreatureScaler.Prototype.Model
         }
 
         public double AverageAttack(Creature creature) => Tokens.PositiveSumOrZero(token => token.Attack(creature));
+
         public double AverageDamage(Creature creature) => Tokens.PositiveSumOrZero(token => token.Damage(creature));
+
         public double AverageDifficultyClass(Creature creature) => Tokens.PositiveSumOrZero(token => token.DifficultyClass(creature));
     }
 }

@@ -1,5 +1,4 @@
-﻿using CreatureScaler.Models;
-using CreatureScaler.Prototype.Model;
+﻿using CreatureScaler.Prototype.Model;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 

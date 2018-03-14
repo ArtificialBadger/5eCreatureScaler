@@ -1,4 +1,4 @@
-﻿using CreatureScaler.Models;
+﻿using CreatureScaler.Prototype.Model;
 
 namespace CreatureScaler.Prototype.Tokenizer
 {
@@ -18,9 +18,13 @@ namespace CreatureScaler.Prototype.Tokenizer
         public IGrouper Grouper { get; }
 
         public int Index { get; }
+
         public string Pattern { get; }
+
         public string Before { get; }
+
         public string Token { get; }
+
         public string After { get; }
 
         public Creature Creature { get; }

@@ -13,7 +13,7 @@ namespace CreatureScaler.Prototype.Model
             return GetAttack(creature);
         }
 
-        int GetAttack(Creature creature)
+        int GetAttack(Prototype.Model.Creature creature)
         {
             var values = Context.TokenValue.Split('+');
 

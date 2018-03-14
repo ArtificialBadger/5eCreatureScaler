@@ -9,10 +9,10 @@ namespace CreatureScaler.Prototype.Tokenizer
     {
         private readonly string name;
         private readonly string ruleText;
-        private readonly Creature creature;
+        private readonly Prototype.Model.Creature creature;
         private readonly IEnumerable<(TokenizationContext context, Choice<Suggestion>.Set choices)> choices;
 
-        public Tokenizer(string name, string ruleText, Creature creature)
+        public Tokenizer(string name, string ruleText, Prototype.Model.Creature creature)
         {
             this.creature = creature;
             this.name = name;

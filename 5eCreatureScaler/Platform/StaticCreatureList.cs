@@ -13,12 +13,12 @@ namespace CreatureScaler.Platform
 
                 bear.ArmorClass = new ArmorClass() { Value = 11, Description = "Natural Armor" };
 
-                bear.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 40 });
-                bear.Speeds.Add(new Speed() { Mode = MovementMode.Climb, Distance = 30 });
+                bear.Speeds.Add(new Speed(MovementMode.Walk, 40));
+                bear.Speeds.Add(new Speed(MovementMode.Climb, 30));
 
                 bear.SkillProficiencies.Add(Skill.Perception);
 
-                bear.Features.Add(new Feature() { Name = "Keen Smell", Description = "The bear has advantage on Wisdom (Perception) checks that rely on smell"});
+                bear.Features.Add(new Feature() { Name = "Keen Smell", Description = "The bear has advantage on Wisdom (Perception) checks that rely on smell" });
 
                 var biteAttack = new Attack() { Name = "Bite", Reach = 5, AttackRollAbility = Ability.Strength };
                 biteAttack.DamageRolls.Add(new DamageRoll() { DamageDie = Die.D8, DamageDieCount = 1, AbilityModifier = Ability.Strength });
@@ -44,10 +44,10 @@ namespace CreatureScaler.Platform
 
                 creature.ArmorClass = new ArmorClass(16, "Natural Armor");
 
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Fly, Distance = 30 });
+                creature.Speeds.Add(new Speed(MovementMode.Walk, 30));
+                creature.Speeds.Add(new Speed(MovementMode.Fly, 30));
 
-                creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
+                creature.Senses.Add(new Sense(SenseType.Truesight, 120));
 
                 creature.Languages.Add(Language.Modron);
 
@@ -61,8 +61,8 @@ namespace CreatureScaler.Platform
                 spikeAttack.MultiGroups.Add("ranged", 2);
                 creature.Attacks.Add(spikeAttack);
 
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name = "Axiomatic Mind", Description = "The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name = "Disintegration", Description = "If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
                 return creature;
             }
@@ -80,9 +80,9 @@ namespace CreatureScaler.Platform
 
                 creature.ArmorClass = new ArmorClass(15, "Natural Armor");
 
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 30 });
+                creature.Speeds.Add(new Speed(MovementMode.Walk, 30));
 
-                creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
+                creature.Senses.Add(new Sense(SenseType.Truesight, 120));
 
                 creature.Languages.Add(Language.Modron);
 
@@ -91,8 +91,8 @@ namespace CreatureScaler.Platform
                 slamAttack.MultiGroups.Add("melee", 2);
                 creature.Attacks.Add(slamAttack);
 
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The duodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the duodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name = "Axiomatic Mind", Description = "The duodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name = "Disintegration", Description = "If the duodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
                 return creature;
             }
@@ -110,9 +110,9 @@ namespace CreatureScaler.Platform
 
                 creature.ArmorClass = new ArmorClass(15, "Natural Armor");
 
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 50 });
+                creature.Speeds.Add(new Speed(MovementMode.Walk, 50));
 
-                creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
+                creature.Senses.Add(new Sense(SenseType.Truesight, 120));
 
                 creature.Languages.Add(Language.Modron);
 
@@ -124,8 +124,8 @@ namespace CreatureScaler.Platform
                 var buckShot = new Action() { Name = "Buckshot", Recharge = "5-6", Description = "The tridrone fires all nine cannons in its central cavity simultaniously in a 30 foot cone. Each creature in that area must succeed on a DC 14 Dexterity saving throw or take 19 (3d12) piercing damage or half as much on a successful save." };
                 creature.Actions.Add(buckShot);
 
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The tridrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the tridrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name = "Axiomatic Mind", Description = "The tridrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name = "Disintegration", Description = "If the tridrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
                 return creature;
             }
@@ -143,9 +143,9 @@ namespace CreatureScaler.Platform
 
                 creature.ArmorClass = new ArmorClass(17, "Natural Armor");
 
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 40 });
+                creature.Speeds.Add(new Speed(MovementMode.Walk, 40));
 
-                creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
+                creature.Senses.Add(new Sense(SenseType.Truesight, 120));
 
                 creature.Languages.Add(Language.Modron);
 
@@ -154,13 +154,13 @@ namespace CreatureScaler.Platform
                 clawAttack.MultiGroups.Add("melee", 2);
                 creature.Attacks.Add(clawAttack);
 
-                var oilSpray = new Action() { Name = "Oil Spray", Description = "The quadrone spews slick, boiling oil in a 20 foot cone. When the oil appears, each creature standing in its area must succeed on a DC 15 dexterity saving throw or take 18 (4d8) fire damage and fall prone. On a successful save, the creature takes half damage and does not fall prone. When the oil is ignited, it erupts into flames and everyone inside the oil takes 18 (4d8) fire damage."};
+                var oilSpray = new Action() { Name = "Oil Spray", Description = "The quadrone spews slick, boiling oil in a 20 foot cone. When the oil appears, each creature standing in its area must succeed on a DC 15 dexterity saving throw or take 18 (4d8) fire damage and fall prone. On a successful save, the creature takes half damage and does not fall prone. When the oil is ignited, it erupts into flames and everyone inside the oil takes 18 (4d8) fire damage." };
                 creature.Actions.Add(oilSpray);
 
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The quadrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the quadrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name = "Axiomatic Mind", Description = "The quadrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name = "Disintegration", Description = "If the quadrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
-                var overheat = new Feature() { Name = "Overheat", Description = "When the quadron drops to 0 hitpoints and it has not taken cold damage on this turn, it becomes wreathed in flames and hot steam in a 20 foot sphere centered around itself. Each creature other than the quadrone in that area must make a DC 15 Constitution saving throw or take 27 (6d8) fire damage or half as much on a successful save. All flammable items not being worn or carried are ignited."};
+                var overheat = new Feature() { Name = "Overheat", Description = "When the quadron drops to 0 hitpoints and it has not taken cold damage on this turn, it becomes wreathed in flames and hot steam in a 20 foot sphere centered around itself. Each creature other than the quadrone in that area must make a DC 15 Constitution saving throw or take 27 (6d8) fire damage or half as much on a successful save. All flammable items not being worn or carried are ignited." };
                 creature.Features.Add(overheat);
 
                 return creature;
@@ -179,9 +179,9 @@ namespace CreatureScaler.Platform
 
                 creature.ArmorClass = new ArmorClass(20, "Natural Armor");
 
-                creature.Speeds.Add(new Speed() { Mode = MovementMode.Walk, Distance = 50 });
+                creature.Speeds.Add(new Speed(MovementMode.Walk, 50));
 
-                creature.Senses.Add(new Sense() { SenseType = SenseType.Truesight, Range = 120 });
+                creature.Senses.Add(new Sense(SenseType.Truesight, 120));
 
                 creature.Languages.Add(Language.Modron);
 
@@ -200,13 +200,13 @@ namespace CreatureScaler.Platform
                 punchAttack.MultiGroups.Add("melee", 1);
                 creature.Attacks.Add(punchAttack);
 
-                creature.Features.Add(new Feature() { Name="Axiomatic Mind", Description="The pentadrone can't be compelled to act in a manner contrary to its nature or its instructions." });
-                creature.Features.Add(new Feature() { Name="Disintegration", Description="If the pentadrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
+                creature.Features.Add(new Feature() { Name = "Axiomatic Mind", Description = "The pentadrone can't be compelled to act in a manner contrary to its nature or its instructions." });
+                creature.Features.Add(new Feature() { Name = "Disintegration", Description = "If the pentadrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });
 
                 return creature;
             }
         }
 
-    } 
+    }
 
 }

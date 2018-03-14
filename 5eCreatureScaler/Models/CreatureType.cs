@@ -15,6 +15,7 @@
         Humanoid,
         MagicalBeast,
         MonstrousHumanoid,
+        Monstrosity,
         Ooze,
         Outsider,
         Plant,

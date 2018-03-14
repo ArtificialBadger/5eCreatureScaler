@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CreatureScaler.Models;
 using CreatureScaler.Platform;
 using CreatureScaler.Prototype.Model;
 

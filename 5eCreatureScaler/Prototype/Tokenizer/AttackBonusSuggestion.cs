@@ -12,7 +12,7 @@ namespace CreatureScaler.Prototype.Tokenizer
 
         protected override IEnumerable<Suggestion> SuggestReplacements(TokenizationContext context)
         {
-            (string before, string token, string after, Creature creature) = context;
+            (string before, string token, string after, Prototype.Model.Creature creature) = context;
             var bonus = Convert.ToInt32(Regex.Match(token, @"[0-9]+"));
 
             var output = creature.FindMatchingStatisticsWithProficiency(bonus);

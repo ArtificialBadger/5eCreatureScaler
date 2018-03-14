@@ -8,7 +8,7 @@ namespace CreatureScaler.Prototype.Model
     {
         public DamageToken(TokenContext context) : base(context) { }
 
-        (int total, int count, int size, int modifier) StructureDieRoll(Creature creature)
+        (int total, int count, int size, int modifier) StructureDieRoll(Prototype.Model.Creature creature)
         {
             var split = Context.TokenValue.Split('+');
 

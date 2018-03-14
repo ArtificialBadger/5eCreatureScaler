@@ -1,4 +1,5 @@
 ﻿using CreatureScaler.Models;
+using CreatureScaler.Prototype.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace CreatureScaler.Prototype.Tokenizer
             return string.IsNullOrWhiteSpace(abilityScoreName.ToString()) ? default(string) : $"{abilityScoreName.ToString()}{proficiencyString}";
         }
 
-        public static IEnumerable<string> FindMatchingStatistics(this Creature creature, int bonus)
+        public static IEnumerable<string> FindMatchingStatistics(this Prototype.Model.Creature creature, int bonus)
         {
             return creature
                 .Statistics
@@ -23,7 +24,7 @@ namespace CreatureScaler.Prototype.Tokenizer
                 .Select(s => s.Ability.ToShorthand());
         }
 
-        public static IEnumerable<(string abilityScoreName, bool proficient)> FindMatchingStatisticsWithProficiency(this Creature creature, int bonus)
+        public static IEnumerable<(string abilityScoreName, bool proficient)> FindMatchingStatisticsWithProficiency(this Prototype.Model.Creature creature, int bonus)
         {
             foreach (var statistic in creature.Statistics)
             {
