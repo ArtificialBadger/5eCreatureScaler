@@ -11,5 +11,7 @@
         string Format(Creature creature);
 
         TokenContext Context { get; }
+
+        string TokenText { get; }
     }
 }

@@ -137,15 +137,15 @@ namespace CreatureScaler.ViewModels
             }
         }
 
-        private void AddAction(Prototype.Model.Action action)
+        private void AddAction(Prototype.Model.RulesText action)
         {
             if (!String.IsNullOrWhiteSpace(action.Recharge))
             {
-                this.Actions.Add(new Action($"{action.Name} (Recharge {action.Recharge})", action.Description.Text));
+                this.Actions.Add(new Action($"{action.Name} (Recharge {action.Recharge})", action.Text));
             }
             else
             {
-                this.Actions.Add(new Action(action.Name, action.Description.Text));
+                this.Actions.Add(new Action(action.Name, action.Text));
             }
         }
 

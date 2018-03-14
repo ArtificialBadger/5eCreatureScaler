@@ -1,12 +1,12 @@
-﻿using CreatureScaler.Models;
-
-namespace CreatureScaler.Prototype.Model
+﻿namespace CreatureScaler.Prototype.Model
 {
     public abstract class Token : IRuleToken
     {
         public TokenContext Context { get; set; }
 
         public string Type => Context.Head;
+
+        public virtual string TokenText => Context.TokenValue;
 
         public Token(TokenContext context)
         {
@@ -31,6 +31,11 @@ namespace CreatureScaler.Prototype.Model
         public virtual int Damage(Creature creature)
         {
             return -1;
+        }
+
+        protected string Retokenize(string tokenValue)
+        {
+            return $"{{{Context.Head}:{tokenValue}}}";
         }
     }
 }

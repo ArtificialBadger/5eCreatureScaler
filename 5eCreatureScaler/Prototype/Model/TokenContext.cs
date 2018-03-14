@@ -2,17 +2,12 @@
 {
     public sealed class TokenContext
     {
-        public string Head { get; }
-        public string TokenValue { get; }
-        public int[] Groups { get; }
-        public string TokenText { get; }
-
-        public TokenContext(string token, string head, string tokenValue, int[] groups)
-        {
-            this.TokenText = token;
-            this.Head = head;
-            this.TokenValue = tokenValue;
-            this.Groups = groups;
-        }
+        public string Head { get; set; }
+        public string TokenValue { get; set; }
+        public string TokenText { get; set; }
+        public string Before { get; set; }
+        public string After { get; set; }
+        public int Index { get; set; }
+        public int[] Groups { get; set; }
     }
 }

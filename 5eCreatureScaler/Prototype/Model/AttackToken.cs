@@ -1,13 +1,30 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Platform;
-using System.Linq;
+using System;
 
 namespace CreatureScaler.Prototype.Model
 {
-    public class AttackToken : Token
+    public sealed class AttackToken : Token
     {
-        public AttackToken(TokenContext context) : base(context) { }
+        public Ability Ability { get; }
+        public bool Proficient { get; set; }
 
+        public AttackToken(TokenContext context) : base(context)
+        {
+            var values = context.TokenValue.Split('+');
+
+            this.Ability = values[0].ToAbility();
+
+            this.Proficient = values.Length > 1;
+
+            if (this.Proficient)
+            {
+                if (values[1] != "p")
+                {
+                    throw new InvalidOperationException($"'{values[1]}' is an invalid part of token '{Context.TokenValue}'.");
+                }
+            }
+        }
+        
         public override int Attack(Creature creature)
         {
             return GetAttack(creature);
@@ -15,12 +32,20 @@ namespace CreatureScaler.Prototype.Model
 
         int GetAttack(Prototype.Model.Creature creature)
         {
-            var values = Context.TokenValue.Split('+');
-
-            var total = values.Sum(v => creature.GetModifier(v));
+            var total = creature.GetModifier(Ability) + (Proficient ? creature.ProficiencyBonus : 0);
 
             return total;
         }
+
+        string ProficiencyString
+        {
+            get
+            {
+                return Proficient ? "+p" : string.Empty;
+            }
+        }
+
+        public override string TokenText => Retokenize($"{Ability.ToShorthand()}{ProficiencyString}");
 
         public override string Format(Creature creature)
         {

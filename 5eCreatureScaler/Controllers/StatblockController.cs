@@ -94,15 +94,32 @@ namespace CreatureScaler.Controllers
 
             behir.ChallengeRating = ChallengeRating.Create(11);
 
-            var biteAttack = new Prototype.Model.Action("Bite", new Prototype.Model.ActionDescription("Melee Weapon Attack: +10 to hit, reach 10ft., one target. Hit: 22(3d10 + 6) piercing damage. ", behir));
+            var biteAttack = new Prototype.Model.RulesText()
+            {
+                Name = "Bite",
+                Text = "Melee Weapon Attack: +10 to hit, reach 10ft., one target. Hit: 22(3d10 + 6) piercing damage. "
+            };
             biteAttack.MultiGroups.Add("melee", 1);
 
-            var constrictAttack = new Prototype.Model.Action("Constrict", new Prototype.Model.ActionDescription("Melee Weapon Attack: + 10 to hit, reach 5 ft., one Large or smaller creature.Hit: 17(2d10 + 6) bludgeoning damage plus 17(2d10 + 6) slashing damage. The target is grappled (escape DC 16) if the behir isn't already constricting a creature, and the target is restrained until this grapple ends. ", behir));
+            var constrictAttack = new Prototype.Model.RulesText()
+            {
+                Name = "Constrict",
+                Text = "Melee Weapon Attack: + 10 to hit, reach 5 ft., one Large or smaller creature.Hit: 17(2d10 + 6) bludgeoning damage plus 17(2d10 + 6) slashing damage. The target is grappled (escape DC 16) if the behir isn't already constricting a creature, and the target is restrained until this grapple ends. "
+            };
             constrictAttack.MultiGroups.Add("melee", 1);
 
-            var breathAttack = new Prototype.Model.Action("Lightning Breath", "5-6", new Prototype.Model.ActionDescription("The behir exhales a line of lightning that is 20 feet long and 5 feet wide.Each creature in that line must make a DC 16 Dexterity saving throw, taking 66(12d10) lightning damage on a failed save, or half as much damage on a successful one. ", behir));
+            var breathAttack = new Prototype.Model.RulesText()
+            {
+                Name = "Lightning Breath",
+                Recharge = "5-6",
+                Text = "The behir exhales a line of lightning that is 20 feet long and 5 feet wide.Each creature in that line must make a DC 16 Dexterity saving throw, taking 66(12d10) lightning damage on a failed save, or half as much damage on a successful one. "
+            };
 
-            var swallowAttack = new Prototype.Model.Action("Swallow", new Prototype.Model.ActionDescription("The behir makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is also swallowed, and the grapple ends.While swallowed, the target is blinded and restrained, it has total cover against attacks and other effects outside the behir, and it takes 21(6d6) acid damage at the start of each of the behir's turns. A behir can have only one creature swallowed at a time. If the behir takes 30 damage or more on a single turn from the swallowed creature, the behir must succeed on a DC 14 Constitution saving throw at the end of that turn or regurgitate the creature, which fa lls prone in a space within 10 feet of the behir.If the behir dies, a swallowed creature is no longer restrained by it and can escape from the corpse by using 15 feet of movement, exiting prone. ", behir));
+            var swallowAttack = new Prototype.Model.RulesText()
+            {
+                Name = "Swallow",
+                Text = "The behir makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is also swallowed, and the grapple ends.While swallowed, the target is blinded and restrained, it has total cover against attacks and other effects outside the behir, and it takes 21(6d6) acid damage at the start of each of the behir's turns. A behir can have only one creature swallowed at a time. If the behir takes 30 damage or more on a single turn from the swallowed creature, the behir must succeed on a DC 14 Constitution saving throw at the end of that turn or regurgitate the creature, which fa lls prone in a space within 10 feet of the behir.If the behir dies, a swallowed creature is no longer restrained by it and can escape from the corpse by using 15 feet of movement, exiting prone. "
+            };
 
             behir.Actions.Add(biteAttack);
             behir.Actions.Add(constrictAttack);

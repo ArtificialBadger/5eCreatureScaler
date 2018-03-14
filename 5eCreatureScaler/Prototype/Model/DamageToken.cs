@@ -1,12 +1,18 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Platform;
 using System;
 
 namespace CreatureScaler.Prototype.Model
 {
     public class DamageToken : Token
     {
-        public DamageToken(TokenContext context) : base(context) { }
+        //public int Count { get; set; }
+        //public Die Size { get; set; }
+        //public Ability ModifiedBy { get; set; }
+        //public int FlatBonus { get; set; }
+
+        public DamageToken(TokenContext context) : base(context)
+        {
+        }
 
         (int total, int count, int size, int modifier) StructureDieRoll(Prototype.Model.Creature creature)
         {
@@ -16,12 +22,7 @@ namespace CreatureScaler.Prototype.Model
 
             var dieCount = dieRoll[0];
             var dieSize = dieRoll[1];
-
-            if (dieSize.ToLower() == "s")
-            {
-                dieSize = creature.Size.ToString();
-            }
-
+            
             var modifier = 0;
 
             if (split.Length > 1)

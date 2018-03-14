@@ -1,4 +1,5 @@
 ﻿using CreatureScaler.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -84,13 +85,9 @@ namespace CreatureScaler.Prototype.Model
         #endregion
 
         #region actions
-
-        public List<Action> Actions { get; set; } = new List<Action>();
-
-        //public List<Reaction> Reactions { get; set; } = new List<Reaction>();
-
-        //public List<string> LegendaryActions { get; set; } = new List<string>();
         
+        public List<RulesText> Actions { get; set; } = new List<RulesText>();
+       
         #endregion
 
         [IgnoreDataMember]
@@ -99,7 +96,7 @@ namespace CreatureScaler.Prototype.Model
             get
             {
                 // TODO: Handle Multiattack
-                return this.Actions.Select(a => a.AverageDamagePerRound(this)).Max();
+                return this.Actions.Select(a => a.AverageDamage(this)).Max();
             }
         }
 

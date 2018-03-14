@@ -1,9 +1,6 @@
 ﻿using CreatureScaler.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CreatureScaler.Prototype.Model
 {
@@ -25,6 +22,11 @@ namespace CreatureScaler.Prototype.Model
         public static AbilityScore Intelligence(this Creature creature) => creature.Statistics.ByAbility(Ability.Intelligence);
         public static AbilityScore Wisdom(this Creature creature) => creature.Statistics.ByAbility(Ability.Wisdom);
         public static AbilityScore Charisma(this Creature creature) => creature.Statistics.ByAbility(Ability.Charisma);
+
+        public static int GetModifier(this Creature creature, Ability ability)
+        {
+            return creature.Statistics.ByAbility(ability).Modifier;
+        }
 
         public static int GetModifier(this Creature creature, string property)
         {
