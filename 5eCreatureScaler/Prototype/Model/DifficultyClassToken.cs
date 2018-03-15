@@ -1,32 +1,57 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Platform;
-using System.Linq;
+using System;
 
 namespace CreatureScaler.Prototype.Model
 {
-    public class DifficultyClassToken : Token
+    public sealed class DifficultyClassToken : Token
     {
-        public DifficultyClassToken(TokenContext context) : base(context) { }
+        public Ability Ability { get; }
+        public bool Proficient { get; set; }
 
-        public override string Format(Creature creature)
+        public DifficultyClassToken(TokenContext context) : base(context)
         {
-            var dc = GetDC(creature);
+            var values = context.TokenValue.Split('+');
 
-            return $"DC {dc.ToString()}";
-        }
+            this.Ability = values[0].ToAbility();
 
-        int GetDC(Creature creature)
-        {
-            var values = Context.TokenValue.Split('+');
+            this.Proficient = values.Length > 1;
 
-            var total = 8 + values.Sum(v => creature.GetModifier(v));
-
-            return total;
+            if (this.Proficient)
+            {
+                if (values[1] != "p")
+                {
+                    throw new InvalidOperationException($"'{values[1]}' is an invalid part of token '{Context.TokenValue}'.");
+                }
+            }
         }
 
         public override int DifficultyClass(Creature creature)
         {
-            return GetDC(creature);
+            return GetDifficultyClass(creature);
+        }
+
+        int GetDifficultyClass(Creature creature)
+        {
+            var total = 8 + creature.GetModifierOrZero(Ability) + (Proficient ? creature.ProficiencyBonus : 0);
+
+            return total;
+        }
+
+        string ProficiencyString
+        {
+            get
+            {
+                return Proficient ? "+p" : string.Empty;
+            }
+        }
+
+        public override string TokenText => Retokenize($"{Ability.ToShorthand()}{ProficiencyString}");
+
+        public override string Format(Creature creature)
+        {
+            var total = GetDifficultyClass(creature);
+
+            return $"+{total.ToString()}";
         }
     }
 }

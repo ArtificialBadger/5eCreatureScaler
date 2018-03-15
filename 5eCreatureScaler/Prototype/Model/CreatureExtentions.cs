@@ -23,9 +23,9 @@ namespace CreatureScaler.Prototype.Model
         public static AbilityScore Wisdom(this Creature creature) => creature.Statistics.ByAbility(Ability.Wisdom);
         public static AbilityScore Charisma(this Creature creature) => creature.Statistics.ByAbility(Ability.Charisma);
 
-        public static int GetModifier(this Creature creature, Ability ability)
+        public static int GetModifierOrZero(this Creature creature, Ability ability)
         {
-            return creature.Statistics.ByAbility(ability).Modifier;
+            return creature.Statistics.ByAbility(ability)?.Modifier ?? 0;
         }
 
         public static int GetModifier(this Creature creature, string property)

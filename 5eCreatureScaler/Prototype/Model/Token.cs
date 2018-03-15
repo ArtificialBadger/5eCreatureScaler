@@ -6,24 +6,21 @@
 
         public string Type => Context.Head;
 
-        public virtual string TokenText => Context.TokenValue;
+        public abstract string TokenText { get; }
 
         public Token(TokenContext context)
         {
             this.Context = context;
         }
 
-        public virtual string Format(Creature creature)
-        {
-            return Context.TokenValue;
-        }
+        public abstract string Format(Creature creature);
 
-        public virtual int DifficultyClass(Creature creature)
+        public virtual int Attack(Creature creature)
         {
             return -1;
         }
 
-        public virtual int Attack(Creature creature)
+        public virtual int DifficultyClass(Creature creature)
         {
             return -1;
         }

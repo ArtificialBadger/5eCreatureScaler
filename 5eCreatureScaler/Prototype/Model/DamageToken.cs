@@ -5,16 +5,12 @@ namespace CreatureScaler.Prototype.Model
 {
     public class DamageToken : Token
     {
-        //public int Count { get; set; }
-        //public Die Size { get; set; }
-        //public Ability ModifiedBy { get; set; }
-        //public int FlatBonus { get; set; }
+        public int Count { get; set; }
+        public Die Size { get; set; }
+        public Ability ModifiedBy { get; set; } = Ability.None;
+        public int FlatBonus { get; set; } = 0;
 
         public DamageToken(TokenContext context) : base(context)
-        {
-        }
-
-        (int total, int count, int size, int modifier) StructureDieRoll(Prototype.Model.Creature creature)
         {
             var split = Context.TokenValue.Split('+');
 
@@ -23,26 +19,55 @@ namespace CreatureScaler.Prototype.Model
             var dieCount = dieRoll[0];
             var dieSize = dieRoll[1];
             
-            var modifier = 0;
-
+            Count = Convert.ToInt32(dieCount);
+            Size = (Die)Convert.ToInt32(dieSize);
+            
             if (split.Length > 1)
             {
-                modifier = creature.GetModifier(split[1]);
+                var modifier = split[1];
 
-                if (modifier == 0)
+                var modifierValue = default(int);
+                if (Int32.TryParse(modifier, out modifierValue))
                 {
-                    modifier = Convert.ToInt32(split[1]);
+                    FlatBonus = modifierValue;
+                }
+                else
+                {
+                    ModifiedBy = modifier.ToAbility();
                 }
             }
+        }
 
-            var count = Convert.ToInt32(dieCount);
-            var size = Convert.ToInt32(dieSize);
+        string ModifierString
+        {
+            get
+            {
+                if (ModifiedBy != Ability.None)
+                {
+                    return $"+{ModifiedBy.ToShorthand()}";
+                }
+                else if (FlatBonus > 0)
+                {
+                    return $"+{FlatBonus.ToString()}";
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
 
-            var averageDamagePerDie = ((size / 2d) + 0.5);
+        public override string TokenText => Retokenize($"{Count.ToString()}d{((int)Size).ToString()}{ModifierString}");
 
-            var damageTotal = Math.Floor(count * averageDamagePerDie) + modifier;
+        (int total, int modifier) StructureDieRoll(Prototype.Model.Creature creature)
+        {
+            var averageDamagePerDie = ((Size.ToAverageValue() / 2d));
 
-            return (total: (int)damageTotal, count: count, size: size, modifier: modifier);
+            var modifier = FlatBonus + creature.GetModifierOrZero(ModifiedBy);
+
+            var damageTotal = Math.Floor(Count * averageDamagePerDie) + modifier;
+
+            return (total: (int)damageTotal, modifier: modifier);
         }
 
         public override string Format(Creature creature)
@@ -51,7 +76,7 @@ namespace CreatureScaler.Prototype.Model
 
             var modifierText = dieRoll.modifier > 0 ? $" + {dieRoll.modifier.ToString()}" : "";
 
-            var replacementText = $"{dieRoll.total.ToString()} ({dieRoll.count.ToString()}d{dieRoll.size.ToString()}{modifierText})";
+            var replacementText = $"{dieRoll.total.ToString()} ({Count.ToString()}d{((int)Size).ToString()}{modifierText})";
 
             return replacementText;
         }

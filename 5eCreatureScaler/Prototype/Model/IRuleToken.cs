@@ -2,9 +2,9 @@
 {
     public interface IRuleToken
     {
-        int DifficultyClass(Creature creature);
-
         int Attack(Creature creature);
+
+        int DifficultyClass(Creature creature);
 
         int Damage(Creature creature);
 

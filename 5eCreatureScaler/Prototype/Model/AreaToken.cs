@@ -12,5 +12,7 @@ namespace CreatureScaler.Prototype.Model
         }
 
         public override string TokenText => Retokenize(Area.ToString());
+
+        public override string Format(Creature creature) => Area.ToString();
     }
 }

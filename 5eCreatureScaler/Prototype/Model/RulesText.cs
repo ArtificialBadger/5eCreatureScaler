@@ -93,10 +93,10 @@ namespace CreatureScaler.Prototype.Model
             return newText;
         }
 
-        public double AverageAttack(Creature creature) => Tokens.PositiveSumOrZero(token => token.Attack(creature));
+        public double AverageAttack(Creature creature) => Tokens.PositiveSumOrZero((Func<IRuleToken, int>)(token => token.DifficultyClass((Creature)creature)));
 
         public double AverageDamage(Creature creature) => Tokens.PositiveSumOrZero(token => token.Damage(creature));
 
-        public double AverageDifficultyClass(Creature creature) => Tokens.PositiveSumOrZero(token => token.DifficultyClass(creature));
+        public double AverageDifficultyClass(Creature creature) => Tokens.PositiveSumOrZero((Func<IRuleToken, int>)(token => token.DifficultyClass((Creature)creature)));
     }
 }

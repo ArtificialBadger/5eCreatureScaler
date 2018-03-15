@@ -6,7 +6,7 @@ namespace CreatureScaler.Models
     {
         private static Dictionary<Die, double> averageValueMap = new Dictionary<Die, double>
         {
-            { Die.D2, .5 },
+            { Die.D2, 1.5 },
             { Die.D4, 2.5 },
             { Die.D6, 3.5 },
             { Die.D8, 4.5 },

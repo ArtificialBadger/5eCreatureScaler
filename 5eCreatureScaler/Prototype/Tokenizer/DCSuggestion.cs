@@ -1,9 +1,8 @@
-﻿using System;
+﻿using CreatureScaler.Prototype.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CreatureScaler.Platform;
-using CreatureScaler.Prototype.Model;
 
 namespace CreatureScaler.Prototype.Tokenizer
 {
@@ -16,7 +15,7 @@ namespace CreatureScaler.Prototype.Tokenizer
             (string before, string token, string after, Creature creature) = context;
             var bonus = Convert.ToInt32(Regex.Match(token, @"[0-9]+"));
 
-            var output = creature.FindMatchingStatisticsWithProficiency(bonus);
+            var output = creature.FindMatchingStatisticsWithProficiency(bonus - 8);
             
             return output
                 .Select(o => (combo: o, modString: o.ToModString()))

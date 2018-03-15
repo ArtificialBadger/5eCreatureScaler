@@ -32,7 +32,7 @@ namespace CreatureScaler.Prototype.Model
 
         int GetAttack(Prototype.Model.Creature creature)
         {
-            var total = creature.GetModifier(Ability) + (Proficient ? creature.ProficiencyBonus : 0);
+            var total = creature.GetModifierOrZero(Ability) + (Proficient ? creature.ProficiencyBonus : 0);
 
             return total;
         }
