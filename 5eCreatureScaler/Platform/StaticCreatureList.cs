@@ -1,4 +1,5 @@
 using CreatureScaler.Models;
+using CreatureScaler.Rules;
 
 namespace CreatureScaler.Platform
 {
@@ -121,7 +122,7 @@ namespace CreatureScaler.Platform
                 cannonAttack.MultiGroups.Add("ranged", 3);
                 creature.Attacks.Add(cannonAttack);
 
-                var buckShot = new Action() { Name = "Buckshot", Recharge = "5-6", Description = "The tridrone fires all nine cannons in its central cavity simultaniously in a 30 foot cone. Each creature in that area must succeed on a DC 14 Dexterity saving throw or take 19 (3d12) piercing damage or half as much on a successful save." };
+                var buckShot = new RulesText() { Name = "Buckshot", Recharge = "5-6", Text = "The tridrone fires all nine cannons in its central cavity simultaniously in a 30 foot cone. Each creature in that area must succeed on a DC 14 Dexterity saving throw or take 19 (3d12) piercing damage or half as much on a successful save." };
                 creature.Actions.Add(buckShot);
 
                 creature.Features.Add(new Feature() { Name = "Axiomatic Mind", Description = "The tridrone can't be compelled to act in a manner contrary to its nature or its instructions." });
@@ -154,7 +155,7 @@ namespace CreatureScaler.Platform
                 clawAttack.MultiGroups.Add("melee", 2);
                 creature.Attacks.Add(clawAttack);
 
-                var oilSpray = new Action() { Name = "Oil Spray", Description = "The quadrone spews slick, boiling oil in a 20 foot cone. When the oil appears, each creature standing in its area must succeed on a DC 15 dexterity saving throw or take 18 (4d8) fire damage and fall prone. On a successful save, the creature takes half damage and does not fall prone. When the oil is ignited, it erupts into flames and everyone inside the oil takes 18 (4d8) fire damage." };
+                var oilSpray = new RulesText() { Name = "Oil Spray", Text = "The quadrone spews slick, boiling oil in a 20 foot cone. When the oil appears, each creature standing in its area must succeed on a DC 15 dexterity saving throw or take 18 (4d8) fire damage and fall prone. On a successful save, the creature takes half damage and does not fall prone. When the oil is ignited, it erupts into flames and everyone inside the oil takes 18 (4d8) fire damage." };
                 creature.Actions.Add(oilSpray);
 
                 creature.Features.Add(new Feature() { Name = "Axiomatic Mind", Description = "The quadrone can't be compelled to act in a manner contrary to its nature or its instructions." });

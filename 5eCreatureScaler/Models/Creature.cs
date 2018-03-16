@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CreatureScaler.Rules;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -75,16 +76,17 @@ namespace CreatureScaler.Models
         #endregion
 
         #region actions
+
         public List<Attack> Attacks { get; set; } = new List<Attack>();
-        public List<Action> Actions { get; set; } = new List<Action>();
-        public List<Reaction> Reactions { get; set; } = new List<Reaction>();
+        public List<RulesText> Actions { get; set; } = new List<RulesText>();
+
         #endregion
 
         public int MaxDpr
         {
             get
             {
-                return this.Actions.Select(a => a.CalculateDamagePerRound()).Max();
+                return this.Actions.Select(a => (int)a.AverageDamage(this)).Max();
             }
         }
 

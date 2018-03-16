@@ -1,4 +1,5 @@
 ﻿using CreatureScaler.Models;
+using CreatureScaler.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +7,11 @@ using System.Text;
 
 namespace CreatureScaler.ViewModels
 {
-    public sealed class Creature
+    public sealed class CreatureViewModel
     {
-        public Creature(Models.Creature creature)
+        public CreatureViewModel(Models.Creature creature)
         {
+            this.Model = creature;
             this.Title = creature.Name;
             this.Subtitle = $"{creature.Size} {creature.Type}, {creature.Alignment.GetDisplayName()}";
 
@@ -44,10 +46,10 @@ namespace CreatureScaler.ViewModels
 
             this.AddMultiattack(creature);
 
-            foreach (var attack in creature.Attacks)
-            {
-                this.AddAction(attack, creature);
-            }
+            //foreach (var attack in creature.Attacks)
+            //{
+            //    this.AddAction(attack);
+            //}
 
             foreach (var action in creature.Actions)
             {
@@ -55,47 +57,7 @@ namespace CreatureScaler.ViewModels
             }
         }
 
-        public Creature(Prototype.Model.Creature creature)
-        {
-            this.Title = creature.Name;
-            this.Subtitle = $"{creature.Size} {creature.Type}, {creature.Alignment.GetDisplayName()}";
-
-            if (String.IsNullOrWhiteSpace(creature.ArmorClass.Description))
-            {
-                this.ArmorClass = $"{creature.ArmorClass.Value + creature.Statistics.ByAbility(Ability.Dexterity)?.Modifier ?? 0}";
-            }
-            else
-            {
-                this.ArmorClass = $"{creature.ArmorClass.Value + creature.Statistics.ByAbility(Ability.Dexterity)?.Modifier ?? 0} ({creature.ArmorClass.Description})";
-            }
-
-            this.HitPoints = $"{creature.Health} ({creature.HitDieCount}{creature.Size.ToHitDie().GetDisplayName()} + {creature.HitDieCount * creature.Statistics.FirstOrDefault(score => score.Ability == Models.Ability.Constitution)?.Modifier ?? 0}) ";
-
-            this.Speed = String.Join(", ", creature.Speeds.Select(s => $"{s.Mode.GetDisplayName()}{s.Distance}ft."));
-
-            this.Statistics.Add("STR", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Strength).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Strength).Modifier.GetDisplayForAbility()})");
-            this.Statistics.Add("DEX", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Dexterity).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Dexterity).Modifier.GetDisplayForAbility()})");
-            this.Statistics.Add("CON", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Constitution).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Constitution).Modifier.GetDisplayForAbility()})");
-            this.Statistics.Add("INT", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Intelligence).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Intelligence).Modifier.GetDisplayForAbility()})");
-            this.Statistics.Add("WIS", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Wisdom).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Wisdom).Modifier.GetDisplayForAbility()})");
-            this.Statistics.Add("CHA", $"{creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Charisma).Value} ({creature.Statistics.FirstOrDefault(s => s.Ability == Models.Ability.Charisma).Modifier.GetDisplayForAbility()})");
-
-            this.DamageImmunities = String.Join(", ", creature.DamageImmunities.Select(di => di.ToString()));
-            this.DamageResistances = String.Join(", ", creature.DamageResistances.Select(dr => dr.ToString()));
-            this.ConditionImmunities = String.Join(", ", creature.ConditionImmunities.Select(ci => ci.ToString()));
-            this.Senses = String.Join(", ", creature.Senses.Select(s => $"{s.SenseType} {s.Range}ft."));
-            this.Languages = String.Join(", ", creature.Languages.Select(l => l.GetDisplayName()));
-            this.Challenge = $"{creature.ChallengeRating.ListedChallengeRating} ({creature.ChallengeRating.ExperiencePoints} XP)";
-
-            this.Features = creature.Features.Select(f => new Feature(f)).ToList();
-
-            this.AddMultiattack(creature);
-            
-            foreach (var action in creature.Actions)
-            {
-                this.AddAction(action);
-            }
-        }
+        public Models.Creature Model { get; }
 
         public string Title { get; }
     
@@ -125,34 +87,22 @@ namespace CreatureScaler.ViewModels
 
         public IList<Action> Actions { get; } = new List<Action>();
 
-        private void AddAction(Models.Action action)
+        private void AddAction(RulesText action)
         {
             if (!String.IsNullOrWhiteSpace(action.Recharge))
             {
-                this.Actions.Add(new Action($"{action.Name} (Recharge {action.Recharge})", action.Description));
+                this.Actions.Add(new Action($"{action.Name} (Recharge {action.Recharge})", action.Format(this.Model)));
             }
             else
             {
-                this.Actions.Add(new Action(action.Name, action.Description));
-            }
-        }
-
-        private void AddAction(Prototype.Model.RulesText action)
-        {
-            if (!String.IsNullOrWhiteSpace(action.Recharge))
-            {
-                this.Actions.Add(new Action($"{action.Name} (Recharge {action.Recharge})", action.Text));
-            }
-            else
-            {
-                this.Actions.Add(new Action(action.Name, action.Text));
+                this.Actions.Add(new Action(action.Name, action.Format(this.Model)));
             }
         }
 
         private void AddMultiattack(Models.Creature creature)
         {
             var multiAttackGroups = new Dictionary<string, List<(string, int)>>();
-            if (creature.Actions.Any(a => a.MultiGroups.Any()) || creature.Attacks.Any(a => a.MultiGroups.Any()))
+            if (creature.Actions.Any(a => a.MultiGroups.Any()) || creature.Actions.Any(a => a.MultiGroups.Any()))
             {
                 foreach (var action in creature.Actions)
                 {
@@ -179,52 +129,6 @@ namespace CreatureScaler.ViewModels
 
                         multiAttackGroups[multiAttack.Key].Add((attack.Name, multiAttack.Value));
                     }
-                    
-                }
-
-                var multiGroupDescriptions = new List<string>();
-
-                foreach (var multiAttackGroup in multiAttackGroups)
-                {
-                    var multiAttackDescriptions = new List<string>();
-
-                    var orderedMultiAttackGroups = multiAttackGroup.Value.OrderBy(f => f.Item2);
-                    foreach (var group in orderedMultiAttackGroups)
-                    {
-                        if (group.Item2 > 1)
-                        {
-                            multiAttackDescriptions.Add($"{group.Item2.GetNaturalName()} {group.Item1.ToLowerInvariant()} attacks");
-                        }
-                        else
-                        {
-                            multiAttackDescriptions.Add($"{group.Item2.GetNaturalName()} {group.Item1.ToLowerInvariant()} attack");
-                        }
-                    }
-
-                    multiGroupDescriptions.Add(String.Join(" and ", multiAttackDescriptions));
-                }
-
-                Actions.Add(new Action("Multiattack", $"The {creature.Name.ToLowerInvariant()} makes {String.Join(" or ", multiGroupDescriptions)}"));
-            }
-        }
-
-        private void AddMultiattack(Prototype.Model.Creature creature)
-        {
-            var multiAttackGroups = new Dictionary<string, List<(string, int)>>();
-            if (creature.Actions.Any(a => a.MultiGroups.Any()))
-            {
-                foreach (var action in creature.Actions)
-                {
-                    foreach (var multiAttack in action.MultiGroups)
-                    {
-                        if (!multiAttackGroups.ContainsKey(multiAttack.Key))
-                        {
-                            multiAttackGroups.Add(multiAttack.Key, new List<(string, int)>());
-                        }
-
-                        multiAttackGroups[multiAttack.Key].Add((action.Name, multiAttack.Value));
-                    }
-
                 }
 
                 var multiGroupDescriptions = new List<string>();

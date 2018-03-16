@@ -34,7 +34,7 @@ namespace CreatureScaler.Controllers
                 scaledCreature = creatureScaler.ScaleCreature(creatureResolver.ResolveCreature(creatureName), newChallengeRating);
             }
 
-            return View("StatBlockView", new List<ViewModels.Creature>() { new ViewModels.Creature(scaledCreature) });
+            return View("StatBlockView", new List<ViewModels.CreatureViewModel>() { new ViewModels.CreatureViewModel(scaledCreature) });
         }
 
         //[HttpGet("{creatureName}")]
