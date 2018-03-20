@@ -1,5 +1,7 @@
 ﻿using CreatureScaler.Models;
 using CreatureScaler.Platform;
+using CreatureScaler.Rules;
+using CreatureScaler.RuleTokens;
 using System.Linq;
 
 namespace CreatureScaler.Adjustors
@@ -32,7 +34,7 @@ namespace CreatureScaler.Adjustors
             }
 
             return 
-                creature.Attacks.Any(attack => attack.AttackRollAbility == abilityToModify)
+                creature.Actions.Any(action => action.Get<AttackToken>(token => token.Ability == abilityToModify).Any())
                 ||
                 creature?.InnateSpellcasting?.SpellcastingAbility == abilityToModify
                 ||

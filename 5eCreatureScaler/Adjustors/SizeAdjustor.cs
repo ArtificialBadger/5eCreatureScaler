@@ -5,7 +5,7 @@ namespace CreatureScaler.Adjustors
 {
     public class SizeAdjustor : ICreatureAdjustor
     {
-        public uint EstimatedAdjustmentDistance => 2;
+        public uint EstimatedAdjustmentDistance => 1;
 
         public void AdjustDown(Creature creature)
         {
