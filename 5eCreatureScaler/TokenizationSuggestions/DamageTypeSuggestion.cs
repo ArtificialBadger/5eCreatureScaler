@@ -1,5 +1,5 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Tokenizer;
+using CreatureScaler.Tokenization;
 using System.Collections.Generic;
 
 namespace CreatureScaler.TokeizationSuggestions

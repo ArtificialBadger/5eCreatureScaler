@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CreatureScaler.Tokenizer
+namespace CreatureScaler.Tokenization
 {
     public class Tokenizer : ITokenizer
     {

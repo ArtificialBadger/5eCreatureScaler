@@ -1,4 +1,4 @@
-﻿namespace CreatureScaler.Tokenizer
+﻿namespace CreatureScaler.Tokenization
 {
     public interface IGrouper
     {

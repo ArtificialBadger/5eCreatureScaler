@@ -9,6 +9,17 @@ namespace CreatureScaler.Rules
 {
     public sealed class RulesText
     {
+        private string rulesText;
+
+        public static RulesText Create(string name, string rulesText)
+        {
+            return new RulesText()
+            {
+                Name = name,
+                Text = rulesText,
+            };
+        }
+
         private static Dictionary<string, Func<TokenContext, IRuleToken>> tokenMakers = new Dictionary<string, Func<TokenContext, IRuleToken>>
         {
             {"atk", context => new AttackToken(context)},
@@ -45,13 +56,14 @@ namespace CreatureScaler.Rules
         {
             get
             {
-                var reconstitutedString = Tokens.First().Context.Before
-                    + Tokens.Select(token => token.TokenText + token.Context.After);
+                var reconstitutedString = Tokens.Any() ? Tokens.First().Context.Before
+                    + Tokens.Select(token => token.TokenText + token.Context.After) : rulesText;
 
                 return reconstitutedString;
             }
             set
             {
+                rulesText = value;
                 Tokens = value
                     .SplitIncludingValuesBetween(new[] { "{(.*?)}" })
                     .Select(f => (record: f, split: f.token.Trim('{', '}').Split(':')))

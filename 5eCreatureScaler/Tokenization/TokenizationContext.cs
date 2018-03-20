@@ -1,6 +1,6 @@
 ﻿using CreatureScaler.Models;
 
-namespace CreatureScaler.Tokenizer
+namespace CreatureScaler.Tokenization
 {
     public class TokenizationContext
     {

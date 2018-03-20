@@ -1,5 +1,5 @@
 ﻿using CreatureScaler.Platform;
-using CreatureScaler.Tokenizer;
+using CreatureScaler.Tokenization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,9 +44,9 @@ namespace CreatureScaler
 
         public static Choice<T>.Set ChooseFirstIfSingle<T>(this Choice<T>.Set selector)
         {
-            if (selector.PossibleSelections.Count() == 1)
+            if (selector.Choices.Count() == 1)
             {
-                selector.PossibleSelections.Single().Choose();
+                selector.Choices.Single().Choose();
             }
 
             return selector;
