@@ -1,5 +1,5 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Rules;
+using CreatureScaler.Platform;
 using CreatureScaler.TokeizationSuggestions;
 using CreatureScaler.Tokenization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -75,6 +75,42 @@ namespace CreatureScaler.Test.TokenizationTests
             var rulesText = output.Format();
 
             var expected = @"Melee Weapon Attack: {attack:str+p} to hit, reach {reach:5} ft., one target. Hit: {dmg:1d8+str} {type:bludgeoning} damage, or {dmg:1d10+str:1} {type:bludgeoning} damage if used with two hands to make a melee attack, plus {dmg:1d6:0,1} {type:fire} damage.";
+
+            Assert.AreEqual(expected, rulesText);
+        }
+
+        [TestMethod]
+        public void SkippingFirstSuggestionYieldsMostLikelyRulesText()
+        {
+            var output = tokenizer.Tokenize(azer.Actions[0].Name, azer.Actions[0].RulesText.Text, azer);
+
+            output.Suggestions.First().Reject();
+
+            foreach (var suggestion in output.Suggestions.Skip(1))
+            {
+                suggestion.ChooseFirst();
+            }
+
+            var rulesText = output.Format();
+
+            var expected = @"Melee Weapon Attack: +5 to hit, reach {reach:5} ft., one target. Hit: {dmg:1d8+str} {type:bludgeoning} damage, or {dmg:1d10+str:1} {type:bludgeoning} damage if used with two hands to make a melee attack, plus {dmg:1d6:0,1} {type:fire} damage.";
+
+            Assert.AreEqual(expected, rulesText);
+        }
+
+        [TestMethod]
+        public void RejectAllYieldsOriginalText()
+        {
+            var output = tokenizer.Tokenize(azer.Actions[0].Name, azer.Actions[0].RulesText.Text, azer);
+            
+            foreach (var suggestion in output.Suggestions.Skip(1))
+            {
+                suggestion.Reject();
+            }
+
+            var rulesText = output.Format();
+
+            var expected = @"Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) bludgeoning damage, or 8 (1d10 + 3) bludgeoning damage if used with two hands to make a melee attack, plus 3 (1d6) fire damage.";
 
             Assert.AreEqual(expected, rulesText);
         }
