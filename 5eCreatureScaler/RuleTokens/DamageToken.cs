@@ -64,7 +64,7 @@ namespace CreatureScaler.RuleTokens
 
         (int total, int modifier) StructureDieRoll(Creature creature)
         {
-            var averageDamagePerDie = ((Size.ToAverageValue() / 2d));
+            var averageDamagePerDie = Size.ToAverageValue();
 
             var modifier = FlatBonus + creature.GetModifierOrZero(ModifiedBy);
 

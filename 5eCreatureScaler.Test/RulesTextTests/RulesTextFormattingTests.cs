@@ -9,96 +9,84 @@ namespace CreatureScaler.Test.RulesTextTests
     [TestClass]
     public class RulesTextFormattingTests
     {
+        private Creature azer = new Creature()
+        {
+            Statistics = AbilityScore.CreateStandard(16, 14, 15, 12, 10, 12),
+            ProficiencyBonus = 2,
+        };
+
         [TestMethod]
-        public void AreaTokenCorrectlyExtractsInformation()
+        public void AreaTokenCorrectlyFormatted()
         {
             var token = new AreaToken(TokenContext.Create(@"{area:5}"));
 
-            token.Area = 6;
-
-            var actual = token.TokenText;
-            var expected = @"{area:6}";
+            var actual = token.Format(azer);
+            var expected = @"5";
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void AttackTokenCorrectlyExtractsInformation()
+        public void AttackTokenCorrectlyFormatted()
         {
             var token = new AttackToken(TokenContext.Create(@"{attack:str+p}"));
 
-            token.Ability = Ability.Wisdom;
-            token.Proficient = false;
-
-            var actual = token.TokenText;
-            var expected = @"{attack:wis}";
+            var actual = token.Format(azer);
+            var expected = @"+5";
 
             Assert.AreEqual(expected, actual);
         }
         
         [TestMethod]
-        public void DamageTokenCorrectlyExtractsInformation()
+        public void DamageTokenCorrectlyFormatted()
         {
             var token = new DamageToken(TokenContext.Create(@"{damage:1d8+str:1,2}"));
 
-            token.Count = 2;
-            token.Size = Die.D10;
-            token.ModifiedBy = Ability.Intelligence;
-
-            var actual = token.TokenText;
-            var expected = @"{damage:2d10+int:1,2}";
+            var actual = token.Format(azer);
+            var expected = @"7 (1d8 + 3)";
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void DamageTypeTokenCorrectlyExtractsInformation()
+        public void DamageTypeTokenCorrectlyFormatted()
         {
             var token = new DamageTypeToken(TokenContext.Create(@"{type:bludgeoning}"));
 
-            token.DamageType = DamageType.Fire;
-
-            var actual = token.TokenText;
-            var expected = @"{type:fire}";
+            var actual = token.Format(azer);
+            var expected = @"bludgeoning";
 
             Assert.AreEqual(expected, actual);
         }
 
-        public void DCTokenCorrectlyExtractsInformation()
+        public void DCTokenCorrectlyFormatted()
         {
             var token = new DifficultyClassToken(TokenContext.Create(@"{DC:wisdom+p}"));
 
-            token.Ability = Ability.Charisma;
-            token.Proficient = true;
-
-            var actual = token.TokenText;
-            var expected = @"{dc:cha+p}";
+            var actual = token.Format(azer);
+            var expected = @"DC 10";
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void DistanceTokenCorrectlyExtractsInformation()
+        public void DistanceTokenCorrectlyFormatted()
         {
             var token = new DistanceToken(TokenContext.Create(@"{distance:5}"));
 
-            token.Distance = 6;
-
-            var actual = token.TokenText;
-            var expected = @"{distance:6}";
+            var actual = token.Format(azer);
+            var expected = @"5";
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void ReachTokenCorrectlyExtractsInformation()
+        public void ReachTokenCorrectlyFormatted()
         {
             var token = new ReachToken(TokenContext.Create(@"{reach:5}"));
 
-            token.Reach = 6;
-
-            var actual = token.TokenText;
-            var expected = @"{reach:6}";
+            var actual = token.Format(azer);
+            var expected = @"5";
 
             Assert.AreEqual(expected, actual);
         }
