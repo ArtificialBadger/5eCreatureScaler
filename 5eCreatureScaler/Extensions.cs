@@ -38,7 +38,7 @@ namespace CreatureScaler
             return new[] { item };
         }
 
-        private static double PositiveOperationOrZero<T>(this IEnumerable<T> items, Func<T, int> selector, Func<IEnumerable<int>, double> operation)
+        private static int PositiveOperationOrZero<T>(this IEnumerable<T> items, Func<T, int> selector, Func<IEnumerable<int>, int> operation)
         {
             var remaining = items.Select(item => selector(item)).Where(value => value >= 0).ToList();
             if (remaining.Any())
@@ -50,8 +50,10 @@ namespace CreatureScaler
                 return 0;
             }
         }
-        public static double PositiveAverageOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => f.Average());
-        public static double PositiveSumOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => f.Sum());
+        public static int PositiveAverageOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => (int)f.Average());
+        public static int PositiveSumOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => f.Sum());
+        public static int MaxOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => f.Max());
+
         public static IEnumerable<T> ToChosen<T>(this IEnumerable<Choice<T>.Set> sets)
         {
             return sets.Where(set => set.Accepted && !set.Rejected).Select(set => set.SelectedItem);
