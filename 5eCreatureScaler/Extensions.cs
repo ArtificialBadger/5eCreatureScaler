@@ -1,5 +1,4 @@
 ﻿using CreatureScaler.Platform;
-using CreatureScaler.Tokenization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,11 @@ namespace CreatureScaler
 {
     public static class Extensions
     {
+        public static string Stitch(this IEnumerable<string> strings, string separator = "")
+        {
+            return string.Join(separator, strings);
+        }
+
         public static bool Has(this string containerString, string containedString)
         {
             return containerString.IndexOf(containedString, StringComparison.OrdinalIgnoreCase) >= 0;

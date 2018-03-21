@@ -48,7 +48,7 @@ namespace CreatureScaler.TokeizationSuggestions
             }
             else if (context.Grouper.Current > 0)
             {
-                var groups = string.Join(",", Enumerable.Range(0, context.Grouper.Current + 1).Select(f => f.ToString()));
+                var groups = Enumerable.Range(0, context.Grouper.Current + 1).Select(f => f.ToString()).Stitch(",");
                 modifierStrings = modifierStrings.Select(f => $"{f}:{groups}").Concat(modifierStrings).ToList();
             }
 

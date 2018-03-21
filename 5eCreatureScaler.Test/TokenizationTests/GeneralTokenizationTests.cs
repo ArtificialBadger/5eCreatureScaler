@@ -61,5 +61,22 @@ namespace CreatureScaler.Test.TokenizationTests
             Assert.AreEqual(2, output.Suggestions[6].Choices.Count());
             Assert.AreEqual(1, output.Suggestions[7].Choices.Count());
         }
+
+        [TestMethod]
+        public void TakingFirstSuggestionYieldsMostLikelyRulesText()
+        {
+            var output = tokenizer.Tokenize(azer.Actions[0].Name, azer.Actions[0].RulesText.Text, azer);
+
+            foreach (var suggestion in output.Suggestions)
+            {
+                suggestion.Choices.First().Choose();
+            }
+
+            var rulesText = output.Format();
+
+            var expected = @"Melee Weapon Attack: {attack:str+p} to hit, reach {reach:5} ft., one target. Hit: {dmg:1d8+str} {type:bludgeoning} damage, or {dmg:1d10+str:1} {type:bludgeoning} damage if used with two hands to make a melee attack, plus {dmg:1d6:0,1} {type:fire} damage.";
+
+            Assert.AreEqual(expected, rulesText);
+        }
     }
 }
