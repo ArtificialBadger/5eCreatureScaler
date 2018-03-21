@@ -23,7 +23,7 @@ namespace CreatureScaler.Adjustors
 
         public bool Qualified(Creature creature)
         {
-            return creature.Attacks.Any();
+            return creature.Actions.Any();
         }
     }
 }

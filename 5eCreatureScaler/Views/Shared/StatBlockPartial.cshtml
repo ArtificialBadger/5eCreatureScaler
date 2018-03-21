@@ -1,6 +1,6 @@
 @using CreatureScaler.ViewModels
 
-@model CreatureScaler.ViewModels.Creature
+@model CreatureScaler.ViewModels.CreatureViewModel
 
 @{
     ViewData["Title"] = "Creature Statblock";
@@ -18,14 +18,14 @@
     <div>
     </div>
     <div class="top-stat-block">
-        <property-block>
+        <div class="property-block">
             <h4>
                 Armor Class
             </h4>
             <p>
                 @Model.ArmorClass
             </p>
-        </property-block>
+        </div>
         <div>
         </div>
         <div class="property-block">

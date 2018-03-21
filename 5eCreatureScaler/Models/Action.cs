@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CreatureScaler.Rules;
+using System.Collections.Generic;
 
 namespace CreatureScaler.Models
 {
@@ -16,7 +17,7 @@ namespace CreatureScaler.Models
             set; 
         } = new Dictionary<string, int>();
 
-        public string Description
+        public RulesText RulesText
         {
             get;
             set;
@@ -28,9 +29,9 @@ namespace CreatureScaler.Models
             set;
         }
 
-        public int CalculateDamagePerRound()
+        public double CalculateDamagePerRound(Creature creature)
         {
-            return 0;
+            return this.RulesText.AverageDamage(creature);
         }
     }
 }

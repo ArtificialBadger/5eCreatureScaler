@@ -77,18 +77,17 @@ namespace CreatureScaler.Models
 
         #region actions
 
-        public List<Attack> Attacks { get; set; } = new List<Attack>();
-        public List<RulesText> Actions { get; set; } = new List<RulesText>();
+        public List<Action> Actions { get; set; } = new List<Action>();
 
         #endregion
 
-        public int MaxDpr
-        {
-            get
-            {
-                return this.Actions.Select(a => (int)a.AverageDamage(this)).Max();
-            }
-        }
+        //public int MaxDpr
+        //{
+        //    get
+        //    {
+        //        return this.Actions.Select(a => (int)a.CalculateDamagePerRound(this)).Max();
+        //    }
+        //}
 
         public List<string> Tags
         {

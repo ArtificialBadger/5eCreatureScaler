@@ -87,15 +87,15 @@ namespace CreatureScaler.ViewModels
 
         public IList<Action> Actions { get; } = new List<Action>();
 
-        private void AddAction(RulesText action)
+        private void AddAction(Models.Action action)
         {
             if (!String.IsNullOrWhiteSpace(action.Recharge))
             {
-                this.Actions.Add(new Action($"{action.Name} (Recharge {action.Recharge})", action.Format(this.Model)));
+                this.Actions.Add(new Action($"{action.Name} (Recharge {action.Recharge})", action.RulesText.Format(this.Model)));
             }
             else
             {
-                this.Actions.Add(new Action(action.Name, action.Format(this.Model)));
+                this.Actions.Add(new Action(action.Name, action.RulesText.Format(this.Model)));
             }
         }
 
@@ -116,19 +116,6 @@ namespace CreatureScaler.ViewModels
                         multiAttackGroups[multiAttack.Key].Add((action.Name, multiAttack.Value));
                     }
                     
-                }
-
-                foreach (var attack in creature.Attacks)
-                {
-                    foreach (var multiAttack in attack.MultiGroups)
-                    {
-                        if (!multiAttackGroups.ContainsKey(multiAttack.Key))
-                        {
-                            multiAttackGroups.Add(multiAttack.Key, new List<(string, int)>());
-                        }
-
-                        multiAttackGroups[multiAttack.Key].Add((attack.Name, multiAttack.Value));
-                    }
                 }
 
                 var multiGroupDescriptions = new List<string>();
@@ -152,7 +139,6 @@ namespace CreatureScaler.ViewModels
 
                     multiGroupDescriptions.Add(String.Join(" and ", multiAttackDescriptions));
                 }
-
                 Actions.Add(new Action("Multiattack", $"The {creature.Name.ToLowerInvariant()} makes {String.Join(" or ", multiGroupDescriptions)}"));
             }
         }

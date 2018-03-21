@@ -1,5 +1,6 @@
 ﻿using CreatureScaler.Models;
 using CreatureScaler.RuleTokens;
+using CreatureScaler.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,13 @@ namespace CreatureScaler.Rules
 {
     public sealed class RulesText
     {
+        public static RulesText CreateMeleeAttack(int reach, Die damageDie, int damageDieCount, Creature creature, Ability attackAbilltyStat, DamageType damageType)
+        {
+            return new RulesText() { Text = "{attack:str+p} to hit, reach {reach:" + reach + "} ft., one target. Hit: {damage:" + damageDieCount + damageDie.GetDisplayName() + "+" + creature.Statistics.First(a => a.Ability == attackAbilltyStat).Modifier + "} {type:" + damageType + "} damage." };
+        }
+
+        // TODO CreateRangedAttack
+
         private static Dictionary<string, Func<TokenContext, IRuleToken>> tokenMakers = new Dictionary<string, Func<TokenContext, IRuleToken>>
         {
             {"atk", context => new AttackToken(context)},
@@ -22,30 +30,12 @@ namespace CreatureScaler.Rules
             {"distance", context => new DistanceToken(context)},
             {"dc", context => new DifficultyClassToken(context)},
         };
-
-        public string Name
-        {
-            get;
-            set;
-        }
-
-        public string Recharge
-        {
-            get;
-            set;
-        }
-
-        public IDictionary<string, int> MultiGroups
-        {
-            get;
-            set;
-        } = new Dictionary<string, int>();
         
         public string Text
         {
             get
             {
-                var reconstitutedString = Tokens.First().Context.Before
+                var reconstitutedString = (Tokens.FirstOrDefault()?.Context.Before ?? String.Empty)
                     + Tokens.Select(token => token.TokenText + token.Context.After);
 
                 return reconstitutedString;

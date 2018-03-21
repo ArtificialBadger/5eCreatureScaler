@@ -35,17 +35,18 @@ namespace CreatureScaler.Controllers
             creature.DamageImmunities = new List<DamageType>() { DamageType.Fire, DamageType.Lightning, DamageType.Acid };
             creature.ConditionImmunities = new List<Condition>() { Condition.Blinded, Condition.Deafened, Condition.Prone };
 
-            var ramAttack = new Attack { Name = "Ram", AttackRollAbility = Ability.Strength, Reach = 5 };
-            ramAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Bludgeoning, DamageDie = Die.D8, DamageDieCount = 2 });
-            creature.Attacks.Add(ramAttack);
+            var ramAttack = new Models.Action { Name = "Ram" };
+            ramAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D8, 4, creature, Ability.Strength, DamageType.Bludgeoning);
+            creature.Actions.Add(ramAttack);
 
-            var chooChooAttack = new Attack() { Name = "Choo Choo", AttackRollAbility = Ability.Strength, Reach = 30 };
-            chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Bludgeoning, DamageDie = Die.D8, DamageDieCount = 2 });
-            chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.None, DamageType = DamageType.Fire, DamageDie = Die.D8, DamageDieCount = 1 });
-            creature.Attacks.Add(chooChooAttack);
+            var chooChooAttack = new Models.Action() { Name = "Choo Choo" };
+            chooChooAttack.RulesText = new RulesText() { Text = "Thomas does a big ol choo-choo thing. every targer in a 30 foot cone centered on him takes {dmg:2d8+str} {type:bludgeoning} damage and {dmg:1d8} {type:fire} damage" };
+            //chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Bludgeoning, DamageDie = Die.D8, DamageDieCount = 2 });
+            //chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.None, DamageType = DamageType.Fire, DamageDie = Die.D8, DamageDieCount = 1 });
+            creature.Actions.Add(chooChooAttack);
 
             // creature.Actions.Add(new CreatureScaler.Models.Action() {Name="Choo Choo", Description="Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit:5 (1d6+2) bludgeoning damage"} );
-            creature.Actions.Add(new RulesText() { Name = "Steam Whistle", Recharge = "Recharge 5-6", Text = "Thomas blows hot steam in a 60-foot sphere centered on Thomas. Each creature in that area other than Thomas must make a DC 18 Dexterity saving throw, taking 35 (10d6) fire damage on a failed save, or half as much damage on a successful one." });
+            creature.Actions.Add(new Models.Action() { Name = "Steam Whistle", Recharge = "Recharge 5-6", RulesText = new RulesText() { Text = "Thomas blows hot steam in a 60-foot sphere centered on Thomas. Each creature in that area other than Thomas must make a DC 18 Dexterity saving throw, taking 35 (10d6) fire damage on a failed save, or half as much damage on a successful one." }});
 
             creature.Features.Add(new Feature() { Name = "Antimagic Susceptibility", Description = "Thomas is incapacitated while in the area of an anitmagic-field. If targeted by dispel magic, Thomas must suceed on a Constitution saving throw agains that caster's spell save DC or fall unconscious for 1 minute" });
             creature.Features.Add(new Feature() { Name = "False Appearance", Description = "While Thomas remains motionless, it is indistinguishable from a normal tank engine." });
@@ -58,76 +59,6 @@ namespace CreatureScaler.Controllers
             creature.Languages.Add(Language.DeepSpeech);
 
             return View("StatBlockView", new List<ViewModels.CreatureViewModel>() { new ViewModels.CreatureViewModel(creature) });
-        }
-
-        public IActionResult AnemicStatblock()
-        {
-            var creature = Creature.Create("Siggle", Size.Tiny, ChallengeRating.Create(1), AbilityScore.CreateStandard(8, 16, 10, 14, 11, 19), 4);
-
-            creature.Actions.Add(new RulesText() { Name = "Scratch", Text = "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit:3 (1d4+1) slashing damage" });
-
-            return View("StatBlockView", creature);
-        }
-
-        public IActionResult Behir()
-        {
-            var behir = new Models.Creature();
-
-            behir.Name = "Behir";
-
-            behir.Size = Size.Huge;
-            behir.Type = CreatureType.Monstrosity;
-            behir.Alignment = Alignment.NeutralEvil;
-
-            behir.ArmorClass = new ArmorClass(17, "natural armor");
-            behir.HitDieCount = 16;
-
-            behir.Speeds.Add(new Speed(MovementMode.Walk, 50));
-            behir.Speeds.Add(new Speed(MovementMode.Climb, 40));
-
-            behir.Statistics = AbilityScore.CreateStandard(23, 16, 18, 7, 14, 12);
-
-            behir.DamageImmunities.Add(DamageType.Lightning);
-
-            behir.Senses.Add(new Sense(SenseType.Darkvision, 60));
-
-            behir.Languages.Add(Language.Draconic);
-
-            behir.ChallengeRating = ChallengeRating.Create(11);
-
-            var biteAttack = new RulesText()
-            {
-                Name = "Bite",
-                Text = "Melee Weapon Attack: +10 to hit, reach 10ft., one target. Hit: 22(3d10 + 6) piercing damage. "
-            };
-            biteAttack.MultiGroups.Add("melee", 1);
-
-            var constrictAttack = new RulesText()
-            {
-                Name = "Constrict",
-                Text = "Melee Weapon Attack: + 10 to hit, reach 5 ft., one Large or smaller creature.Hit: 17(2d10 + 6) bludgeoning damage plus 17(2d10 + 6) slashing damage. The target is grappled (escape DC 16) if the behir isn't already constricting a creature, and the target is restrained until this grapple ends. "
-            };
-            constrictAttack.MultiGroups.Add("melee", 1);
-
-            var breathAttack = new RulesText()
-            {
-                Name = "Lightning Breath",
-                Recharge = "5-6",
-                Text = "The behir exhales a line of lightning that is 20 feet long and 5 feet wide.Each creature in that line must make a DC 16 Dexterity saving throw, taking 66(12d10) lightning damage on a failed save, or half as much damage on a successful one. "
-            };
-
-            var swallowAttack = new RulesText()
-            {
-                Name = "Swallow",
-                Text = "The behir makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is also swallowed, and the grapple ends.While swallowed, the target is blinded and restrained, it has total cover against attacks and other effects outside the behir, and it takes 21(6d6) acid damage at the start of each of the behir's turns. A behir can have only one creature swallowed at a time. If the behir takes 30 damage or more on a single turn from the swallowed creature, the behir must succeed on a DC 14 Constitution saving throw at the end of that turn or regurgitate the creature, which fa lls prone in a space within 10 feet of the behir.If the behir dies, a swallowed creature is no longer restrained by it and can escape from the corpse by using 15 feet of movement, exiting prone. "
-            };
-
-            behir.Actions.Add(biteAttack);
-            behir.Actions.Add(constrictAttack);
-            behir.Actions.Add(breathAttack);
-            behir.Actions.Add(swallowAttack);
-
-            return View("StatBlockView", new List<ViewModels.CreatureViewModel>() { new ViewModels.CreatureViewModel(behir) });
         }
 
         [HttpPost]

@@ -32,8 +32,6 @@ namespace CreatureScaler.Adjustors
             }
 
             return 
-                creature.Attacks.Any(attack => attack.AttackRollAbility == abilityToModify)
-                ||
                 creature?.InnateSpellcasting?.SpellcastingAbility == abilityToModify
                 ||
                 creature?.Spellcasting?.SpellcastingAbility == abilityToModify;
