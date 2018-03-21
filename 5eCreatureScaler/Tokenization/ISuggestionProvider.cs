@@ -1,6 +1,6 @@
 ﻿using CreatureScaler.Platform;
 
-namespace CreatureScaler.Tokenizer
+namespace CreatureScaler.Tokenization
 {
     public interface ISuggestionProvider
     {

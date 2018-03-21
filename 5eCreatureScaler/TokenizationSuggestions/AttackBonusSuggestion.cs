@@ -1,5 +1,5 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Tokenizer;
+using CreatureScaler.Tokenization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace CreatureScaler.TokeizationSuggestions
         protected override IEnumerable<Suggestion> SuggestReplacements(TokenizationContext context)
         {
             (string before, string token, string after, Creature creature) = context;
-            var bonus = Convert.ToInt32(Regex.Match(token, @"[0-9]+"));
+            var bonus = Convert.ToInt32(Regex.Match(token, @"[0-9]+").Value);
 
             var output = creature.FindMatchingStatisticsWithProficiency(bonus);
 

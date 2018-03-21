@@ -1,8 +1,8 @@
-﻿namespace CreatureScaler.Tokenizer
+﻿namespace CreatureScaler.Tokenization
 {
     internal class Grouper : IGrouper
     {
-        private int seed = 1;
+        private int seed = 0;
 
         public int Current => seed;
 

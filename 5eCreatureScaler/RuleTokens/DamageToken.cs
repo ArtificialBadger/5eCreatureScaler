@@ -21,7 +21,7 @@ namespace CreatureScaler.RuleTokens
             var dieSize = dieRoll[1];
             
             Count = Convert.ToInt32(dieCount);
-            Size = (Die)Convert.ToInt32(dieSize);
+            Size = dieSize.ToDie();
             
             if (split.Length > 1)
             {

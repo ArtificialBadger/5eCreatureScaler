@@ -17,6 +17,16 @@ namespace CreatureScaler.Rules
 
         // TODO CreateRangedAttack
 
+        private string rulesText;
+
+        public static RulesText Create(string rulesText)
+        {
+            return new RulesText()
+            {
+                Text = rulesText,
+            };
+        }
+
         private static Dictionary<string, Func<TokenContext, IRuleToken>> tokenMakers = new Dictionary<string, Func<TokenContext, IRuleToken>>
         {
             {"atk", context => new AttackToken(context)},
@@ -42,6 +52,7 @@ namespace CreatureScaler.Rules
             }
             set
             {
+                rulesText = value;
                 Tokens = value
                     .SplitIncludingValuesBetween(new[] { "{(.*?)}" })
                     .Select(f => (record: f, split: f.token.Trim('{', '}').Split(':')))

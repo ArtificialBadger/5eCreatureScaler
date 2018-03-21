@@ -1,5 +1,5 @@
 ﻿using CreatureScaler.Models;
-using CreatureScaler.Tokenizer;
+using CreatureScaler.Tokenization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,21 +29,32 @@ namespace CreatureScaler.TokeizationSuggestions
             var bonus = default(int);
             if (Int32.TryParse(bonusString, out bonus))
             {
-                modifierStrings.Add($"+{bonusString}");
-
                 foreach (var statistic in creature.FindMatchingStatistics(bonus))
                 {
-                    modifierStrings.Add(statistic);
+                    modifierStrings.Add($"+{statistic}");
                 }
+
+                modifierStrings.Add($"+{bonusString}");
+            }
+            else
+            {
+                modifierStrings.Add(string.Empty);
             }
 
             if (suggestSeparateGroup)
             {
                 context.Grouper.CreateNextGroup();
-                modifierStrings.AddRange(modifierStrings.Select(f => $"{f}:{context.Grouper.Current}").ToList());
+                modifierStrings = modifierStrings.Select(f => $"{f}:{context.Grouper.Current}").Concat(modifierStrings).ToList();
+            }
+            else if (context.Grouper.Current > 0)
+            {
+                var groups = string.Join(",", Enumerable.Range(0, context.Grouper.Current + 1).Select(f => f.ToString()));
+                modifierStrings = modifierStrings.Select(f => $"{f}:{groups}").Concat(modifierStrings).ToList();
             }
 
-            return modifierStrings.Select(f => new Suggestion(token, $"{{dmg:{f}}}"));
+            var outcome = modifierStrings.Select(f => new Suggestion(token, $"{{dmg:{baseString}{f}}}"));
+
+            return outcome;
         }
     }
 }

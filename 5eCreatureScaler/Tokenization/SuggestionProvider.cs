@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CreatureScaler.Tokenizer
+namespace CreatureScaler.Tokenization
 {
     public abstract class SuggestionProvider : ISuggestionProvider
     {

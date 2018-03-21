@@ -34,7 +34,7 @@ namespace CreatureScaler.Platform
             public bool Accepted { get; private set; } = false;
             public bool Rejected { get; private set; } = false;
 
-            public IReadOnlyList<Choice<T>> PossibleSelections => selections;
+            public IReadOnlyList<Choice<T>> Choices => selections;
             public T SelectedItem => selected.Item;
 
             public void Reject()

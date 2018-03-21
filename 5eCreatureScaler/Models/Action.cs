@@ -5,6 +5,14 @@ namespace CreatureScaler.Models
 {
     public sealed class Action
     {
+        public static Action Create(string name, string rulesText)
+        {
+            var action = new Action();
+            action.Name = name;
+            action.RulesText = new RulesText() { Text = rulesText };
+            return action;
+        }
+
         public string Name 
         { 
             get; 
