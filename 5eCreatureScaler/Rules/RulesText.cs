@@ -45,8 +45,10 @@ namespace CreatureScaler.Rules
         {
             get
             {
-                var reconstitutedString = (Tokens.FirstOrDefault()?.Context.Before ?? String.Empty)
-                    + Tokens.Select(token => token.TokenText + token.Context.After);
+                var reconstitutedString = Tokens.Any()
+                    ? Tokens.First().Context.Before + 
+                        string.Join(string.Empty, Tokens.Select(token => token.TokenText + token.Context.After))
+                    : rulesText;
 
                 return reconstitutedString;
             }
