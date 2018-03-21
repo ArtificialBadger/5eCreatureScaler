@@ -8,9 +8,20 @@ namespace CreatureScaler
 {
     public static class Extensions
     {
-        public static string Stitch(this IEnumerable<string> strings, string separator = "")
+        public static bool SequenceEqual<T>(this IEnumerable<T> enumerable, IEnumerable<T> other)
         {
-            return string.Join(separator, strings);
+            return Enumerable.SequenceEqual(enumerable, other);
+        }
+
+        public static T Act<T>(this T settable, Action<T> setFunc)
+        {
+            setFunc(settable);
+            return settable;
+        }
+
+        public static string Stitch<T>(this IEnumerable<T> strings, string separator = "")
+        {
+            return string.Join(separator, strings.Select(s => s.ToString()));
         }
 
         public static bool Has(this string containerString, string containedString)

@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace CreatureScaler.RuleTokens
 {
+    [TokenHead("type")]
     public class DamageTypeToken : Token
     {
         public DamageType DamageType { get; set; }

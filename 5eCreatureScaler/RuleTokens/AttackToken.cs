@@ -4,9 +4,11 @@ using System;
 
 namespace CreatureScaler.RuleTokens
 {
+    [TokenHead("attack")]
+    [TokenHead("atk")]
     public sealed class AttackToken : Token
     {
-        public Ability Ability { get; }
+        public Ability Ability { get; set;  }
         public bool Proficient { get; set; }
 
         public AttackToken(TokenContext context) : base(context)
@@ -25,8 +27,8 @@ namespace CreatureScaler.RuleTokens
                 }
             }
         }
-        
-        public override int Attack(Creature creature)
+
+        public int CalculateAttack(Creature creature)
         {
             return GetAttack(creature);
         }

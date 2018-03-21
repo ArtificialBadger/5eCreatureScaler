@@ -4,6 +4,7 @@ using System;
 
 namespace CreatureScaler.RuleTokens
 {
+    [TokenHead("reach")]
     public class ReachToken : Token
     {
         public int Reach { get; set; }
