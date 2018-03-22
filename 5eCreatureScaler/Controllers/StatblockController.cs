@@ -22,6 +22,13 @@ namespace CreatureScaler.Controllers
             return View("StatBlockView", new List<ViewModels.CreatureViewModel>() { monodrone, duodrone, tridrone, quadrone, pentadrone });
         }
 
+        public IActionResult Monodrone()
+        {
+            var monodrone = new ViewModels.CreatureViewModel(StaticCreatureList.Monodrone);
+
+            return View("StatBlockView", new List<ViewModels.CreatureViewModel>() { monodrone});
+        }
+
         public IActionResult Statblock()
         {
             var creature = Creature.Create("Thomas the Tank Engine", Size.Medium, ChallengeRating.Create(5), AbilityScore.CreateStandard(16, 9, 13, 1, 3, 25), 10);
@@ -36,16 +43,13 @@ namespace CreatureScaler.Controllers
             creature.ConditionImmunities = new List<Condition>() { Condition.Blinded, Condition.Deafened, Condition.Prone };
 
             var ramAttack = new Models.Action { Name = "Ram" };
-            ramAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D8, 4, creature, Ability.Strength, DamageType.Bludgeoning);
+            ramAttack.RulesText = new RulesText() { Text = "Melee weapon attack. {attack:str+p} to hit {dmg:2d8+str} {type:bludgeoning} damage" };
             creature.Actions.Add(ramAttack);
 
             var chooChooAttack = new Models.Action() { Name = "Choo Choo" };
             chooChooAttack.RulesText = new RulesText() { Text = "Thomas does a big ol choo-choo thing. every targer in a 30 foot cone centered on him takes {dmg:2d8+str} {type:bludgeoning} damage and {dmg:1d8} {type:fire} damage" };
-            //chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.Strength, DamageType = DamageType.Bludgeoning, DamageDie = Die.D8, DamageDieCount = 2 });
-            //chooChooAttack.DamageRolls.Add(new DamageRoll() { AbilityModifier = Ability.None, DamageType = DamageType.Fire, DamageDie = Die.D8, DamageDieCount = 1 });
             creature.Actions.Add(chooChooAttack);
 
-            // creature.Actions.Add(new CreatureScaler.Models.Action() {Name="Choo Choo", Description="Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit:5 (1d6+2) bludgeoning damage"} );
             creature.Actions.Add(new Models.Action() { Name = "Steam Whistle", Recharge = "Recharge 5-6", RulesText = new RulesText() { Text = "Thomas blows hot steam in a 60-foot sphere centered on Thomas. Each creature in that area other than Thomas must make a DC 18 Dexterity saving throw, taking 35 (10d6) fire damage on a failed save, or half as much damage on a successful one." }});
 
             creature.Features.Add(new Feature() { Name = "Antimagic Susceptibility", Description = "Thomas is incapacitated while in the area of an anitmagic-field. If targeted by dispel magic, Thomas must suceed on a Constitution saving throw agains that caster's spell save DC or fall unconscious for 1 minute" });

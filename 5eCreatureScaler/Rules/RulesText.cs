@@ -10,13 +10,6 @@ namespace CreatureScaler.Rules
 {
     public sealed class RulesText
     {
-        public static RulesText CreateMeleeAttack(int reach, Die damageDie, int damageDieCount, Creature creature, Ability attackAbilltyStat, DamageType damageType)
-        {
-            return new RulesText() { Text = "{attack:str+p} to hit, reach {reach:" + reach + "} ft., one target. Hit: {damage:" + damageDieCount + damageDie.GetDisplayName() + "+" + creature.Statistics.First(a => a.Ability == attackAbilltyStat).Modifier + "} {type:" + damageType + "} damage." };
-        }
-
-        // TODO CreateRangedAttack
-
         private string rulesText;
 
         public static RulesText Create(string rulesText)

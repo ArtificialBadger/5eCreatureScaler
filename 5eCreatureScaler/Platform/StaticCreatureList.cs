@@ -21,13 +21,13 @@ namespace CreatureScaler.Platform
 
                 bear.Features.Add(new Feature() { Name = "Keen Smell", Description = "The bear has advantage on Wisdom (Perception) checks that rely on smell" });
 
-                var biteAttack = new Action() { Name = "Bite" };
-                biteAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D8, 1, bear, Ability.Strength, DamageType.Slashing);
-                bear.Actions.Add(biteAttack);
+                //var biteAttack = new Action() { Name = "Bite" };
+                //biteAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D8, 1, bear, Ability.Strength, DamageType.Slashing);
+                //bear.Actions.Add(biteAttack);
 
-                var clawsAttack = new Action() { Name = "Claws" };
-                clawsAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D6, 2, bear, Ability.Strength, DamageType.Piercing);
-                bear.Actions.Add(clawsAttack);
+                //var clawsAttack = new Action() { Name = "Claws" };
+                //clawsAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D6, 2, bear, Ability.Strength, DamageType.Piercing);
+                //bear.Actions.Add(clawsAttack);
 
                 return bear;
             }
@@ -53,12 +53,13 @@ namespace CreatureScaler.Platform
                 creature.Languages.Add(Language.Modron);
 
                 var clawAttack = new Action() { Name = "Claw" };
-                clawAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D6, 2, creature, Ability.Dexterity, DamageType.Slashing);
+                clawAttack.RulesText = new RulesText() { Text = "Melee Weapon Attack. {attack:dex+p} to hit, {dmg:2d6+dex} {damage:slashing} damage" };
+                //clawAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D6, 2, creature, Ability.Dexterity, DamageType.Slashing);
                 clawAttack.MultiGroups.Add("melee", 2);
                 creature.Actions.Add(clawAttack);
 
                 var spikeAttack = new Action() { Name = "Spike Cannon" };
-                spikeAttack.RulesText = RulesText.CreateMeleeAttack(30, Die.D6, 2, creature, Ability.Dexterity, DamageType.Piercing);
+                //spikeAttack.RulesText = RulesText.CreateMeleeAttack(30, Die.D6, 2, creature, Ability.Dexterity, DamageType.Piercing);
                 spikeAttack.MultiGroups.Add("ranged", 2);
                 creature.Actions.Add(spikeAttack);
 
@@ -88,7 +89,7 @@ namespace CreatureScaler.Platform
                 creature.Languages.Add(Language.Modron);
 
                 var slamAttack = new Action() { Name = "Slam" };
-                slamAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D8, 2, creature, Ability.Strength, DamageType.Bludgeoning);
+                //slamAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D8, 2, creature, Ability.Strength, DamageType.Bludgeoning);
                 slamAttack.MultiGroups.Add("melee", 2);
                 creature.Actions.Add(slamAttack);
 
@@ -118,7 +119,7 @@ namespace CreatureScaler.Platform
                 creature.Languages.Add(Language.Modron);
 
                 var cannonAttack = new Action() { Name = "Cannon" };
-                cannonAttack.RulesText = RulesText.CreateMeleeAttack(120, Die.D4, 3, creature, Ability.None, DamageType.Bludgeoning);
+                //cannonAttack.RulesText = RulesText.CreateMeleeAttack(120, Die.D4, 3, creature, Ability.None, DamageType.Bludgeoning);
                 cannonAttack.MultiGroups.Add("ranged", 3);
                 creature.Actions.Add(cannonAttack);
 
@@ -152,7 +153,7 @@ namespace CreatureScaler.Platform
                 creature.Languages.Add(Language.Modron);
 
                 var clawAttack = new Action() { Name = "Claw" };
-                clawAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D12, 2, creature, Ability.Strength, DamageType.Slashing);
+                //clawAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D12, 2, creature, Ability.Strength, DamageType.Slashing);
                 clawAttack.MultiGroups.Add("melee", 2);
                 creature.Actions.Add(clawAttack);
 
@@ -189,17 +190,17 @@ namespace CreatureScaler.Platform
                 creature.Languages.Add(Language.Modron);
 
                 var spearAttack = new Action() { Name = "Spear" };
-                spearAttack.RulesText = RulesText.CreateMeleeAttack(10, Die.D8, 2, creature, Ability.Dexterity, DamageType.Piercing);
+                //spearAttack.RulesText = RulesText.CreateMeleeAttack(10, Die.D8, 2, creature, Ability.Dexterity, DamageType.Piercing);
                 spearAttack.MultiGroups.Add("melee", 1);
                 creature.Actions.Add(spearAttack);
 
                 var swordAttack = new Action() { Name = "Longsword" };
-                swordAttack.RulesText = RulesText.CreateMeleeAttack(10, Die.D8, 2, creature, Ability.Dexterity, DamageType.Slashing);
+                //swordAttack.RulesText = RulesText.CreateMeleeAttack(10, Die.D8, 2, creature, Ability.Dexterity, DamageType.Slashing);
                 swordAttack.MultiGroups.Add("melee", 1);
                 creature.Actions.Add(swordAttack);
 
                 var punchAttack = new Action() { Name = "Punch" };
-                punchAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D6, 2, creature, Ability.Dexterity, DamageType.Bludgeoning);
+                //punchAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D6, 2, creature, Ability.Dexterity, DamageType.Bludgeoning);
                 punchAttack.MultiGroups.Add("melee", 1);
                 creature.Actions.Add(punchAttack);
 
