@@ -4,6 +4,7 @@ using System;
 
 namespace CreatureScaler.RuleTokens
 {
+    [TokenHead("distance")]
     public class DistanceToken : Token
     {
         public int Distance { get; set; }

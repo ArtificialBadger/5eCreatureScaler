@@ -4,9 +4,10 @@ using System;
 
 namespace CreatureScaler.RuleTokens
 {
+    [TokenHead("dc")]
     public sealed class DifficultyClassToken : Token
     {
-        public Ability Ability { get; }
+        public Ability Ability { get; set; }
         public bool Proficient { get; set; }
 
         public DifficultyClassToken(TokenContext context) : base(context)
@@ -26,7 +27,7 @@ namespace CreatureScaler.RuleTokens
             }
         }
 
-        public override int DifficultyClass(Creature creature)
+        public int CalculateDifficultyClass(Creature creature)
         {
             return GetDifficultyClass(creature);
         }

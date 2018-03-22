@@ -1,10 +1,12 @@
-﻿using CreatureScaler.Models;
+﻿using System;
+using System.Linq;
+using CreatureScaler.Models;
 
 namespace CreatureScaler.Rules
 {
     public abstract class Token : IRuleToken
     {
-        public TokenContext Context { get; set; }
+        public TokenContext Context { get; }
 
         public string Type => Context.Head;
 
@@ -17,24 +19,21 @@ namespace CreatureScaler.Rules
 
         public abstract string Format(Creature creature);
 
-        public virtual int Attack(Creature creature)
-        {
-            return -1;
-        }
-
-        public virtual int DifficultyClass(Creature creature)
-        {
-            return -1;
-        }
-
-        public virtual int Damage(Creature creature)
-        {
-            return -1;
-        }
-
         protected string Retokenize(string tokenValue)
         {
-            return $"{{{Context.Head}:{tokenValue}}}";
+            return $"{{{Context.Head}:{tokenValue}{GetGroupString()}}}";
+        }
+
+        private string GetGroupString()
+        {
+            if (new [] { 0 }.SequenceEqual(Context.Groups))
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return $":{Context.Groups.Stitch(",")}";
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace CreatureScaler.TokeizationSuggestions
         {
             (string before, string token, string after, Creature creature) = context;
             var bonus = Convert.ToInt32(Regex.Match(token, @"[0-9]+").Value);
-
+            
             var output = creature.FindMatchingStatisticsWithProficiency(bonus);
 
             return output

@@ -1,5 +1,4 @@
 ﻿using CreatureScaler.Platform;
-using CreatureScaler.Tokenization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,22 @@ namespace CreatureScaler
 {
     public static class Extensions
     {
+        public static bool SequenceEqual<T>(this IEnumerable<T> enumerable, IEnumerable<T> other)
+        {
+            return Enumerable.SequenceEqual(enumerable, other);
+        }
+
+        public static T Act<T>(this T settable, Action<T> setFunc)
+        {
+            setFunc(settable);
+            return settable;
+        }
+
+        public static string Stitch<T>(this IEnumerable<T> strings, string separator = "")
+        {
+            return string.Join(separator, strings.Select(s => s.ToString()));
+        }
+
         public static bool Has(this string containerString, string containedString)
         {
             return containerString.IndexOf(containedString, StringComparison.OrdinalIgnoreCase) >= 0;
@@ -23,7 +38,7 @@ namespace CreatureScaler
             return new[] { item };
         }
 
-        private static double PositiveOperationOrZero<T>(this IEnumerable<T> items, Func<T, int> selector, Func<IEnumerable<int>, double> operation)
+        private static int PositiveOperationOrZero<T>(this IEnumerable<T> items, Func<T, int> selector, Func<IEnumerable<int>, int> operation)
         {
             var remaining = items.Select(item => selector(item)).Where(value => value >= 0).ToList();
             if (remaining.Any())
@@ -35,8 +50,10 @@ namespace CreatureScaler
                 return 0;
             }
         }
-        public static double PositiveAverageOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => f.Average());
-        public static double PositiveSumOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => f.Sum());
+        public static int PositiveAverageOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => (int)f.Average());
+        public static int PositiveSumOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => f.Sum());
+        public static int MaxOrZero<T>(this IEnumerable<T> items, Func<T, int> selector) => items.PositiveOperationOrZero(selector, f => f.Max());
+
         public static IEnumerable<T> ToChosen<T>(this IEnumerable<Choice<T>.Set> sets)
         {
             return sets.Where(set => set.Accepted && !set.Rejected).Select(set => set.SelectedItem);

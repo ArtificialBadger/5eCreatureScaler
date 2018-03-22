@@ -1,46 +1,54 @@
 ﻿using CreatureScaler.Models;
 using CreatureScaler.RuleTokens;
-using CreatureScaler.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Reflection;
+using CreatureScaler.ViewModels;
 
 namespace CreatureScaler.Rules
 {
     public sealed class RulesText
     {
-        private string rulesText;
-
-        public static RulesText Create(string rulesText)
+        #region static shit
+        private static Dictionary<string, Func<TokenContext, IRuleToken>> tokenMakers = new Dictionary<string, Func<TokenContext, IRuleToken>>();
+        private static void Add<T>(Func<TokenContext, T> creator)
+            where T : IRuleToken
         {
-            return new RulesText()
+            var heads = typeof(T).GetCustomAttributes<TokenHeadAttribute>().Select(t => t.Head);
+
+            foreach (var head in heads)
             {
-                Text = rulesText,
-            };
+                tokenMakers.Add(head, c => creator(c));
+            }
         }
-
-        private static Dictionary<string, Func<TokenContext, IRuleToken>> tokenMakers = new Dictionary<string, Func<TokenContext, IRuleToken>>
+        private static IRuleToken CreateToken(TokenContext context)
         {
-            {"atk", context => new AttackToken(context)},
-            {"attack", context => new AttackToken(context)},
-            {"reach", context => new ReachToken(context)},
-            {"type", context => new DamageTypeToken(context)},
-            {"t", context => new DamageTypeToken(context)},
-            {"damage", context => new DamageToken(context)},
-            {"dmg", context => new DamageToken(context)},
-            {"area", context => new AreaToken(context)},
-            {"distance", context => new DistanceToken(context)},
-            {"dc", context => new DifficultyClassToken(context)},
-        };
-        
+            return tokenMakers[context.Head](context);
+        }
+        static RulesText()
+        {
+            Add(context => new AttackToken(context));
+            Add(context => new ReachToken(context));
+            Add(context => new DamageTypeToken(context));
+            Add(context => new DamageToken(context));
+            Add(context => new AreaToken(context));
+            Add(context => new DistanceToken(context));
+            Add(context => new DifficultyClassToken(context));
+        }
+        #endregion
+
+        private string rulesText;
+        private readonly Func<TokenContext, IRuleToken> ruleTokenFactory = CreateToken;
+
         public string Text
         {
             get
             {
                 var reconstitutedString = Tokens.Any()
-                    ? Tokens.First().Context.Before + 
-                        string.Join(string.Empty, Tokens.Select(token => token.TokenText + token.Context.After))
+                    ? Tokens.First().Context.Before +
+                        Tokens.Select(token => token.TokenText + token.Context.After).Stitch()
                     : rulesText;
 
                 return reconstitutedString;
@@ -50,28 +58,13 @@ namespace CreatureScaler.Rules
                 rulesText = value;
                 Tokens = value
                     .SplitIncludingValuesBetween(new[] { "{(.*?)}" })
-                    .Select(f => (record: f, split: f.token.Trim('{', '}').Split(':')))
-                    .Select(f => (
-                        record: f.record,
-                        head: f.split[0],
-                        value: f.split[1],
-                        groups:
-                            f.split.Length > 2
-                            ? f.split[2].Split(',').Select(i => Convert.ToInt32(i)).ToArray()
-                            // default non-grouped tokens to group 0
-                            : new int[] { 0 }))
-                    .Select((f, i) =>
-                        new TokenContext()
-                        {
-                            TokenText = f.record.token,
-                            TokenValue = f.value,
-                            Groups = f.groups,
-                            After = f.record.after,
-                            Before = f.record.before,
-                            Head = f.head,
-                            Index = i,
-                        })
-                    .Select(context => tokenMakers[context.Head](context))
+
+                    .Select((f, i) => TokenContext.Create(f.token)
+                        .Act(t => t.After = f.after)
+                        .Act(t => t.Before = f.before)
+                        .Act(t => t.Index = i))
+
+                    .Select(context => ruleTokenFactory(context))
                     .ToArray();
             }
         }
@@ -90,11 +83,5 @@ namespace CreatureScaler.Rules
 
             return newText;
         }
-
-        public double AverageAttack(Creature creature) => Tokens.PositiveSumOrZero((Func<IRuleToken, int>)(token => token.DifficultyClass((Creature)creature)));
-
-        public double AverageDamage(Creature creature) => Tokens.PositiveSumOrZero(token => token.Damage(creature));
-
-        public double AverageDifficultyClass(Creature creature) => Tokens.PositiveSumOrZero((Func<IRuleToken, int>)(token => token.DifficultyClass((Creature)creature)));
     }
 }

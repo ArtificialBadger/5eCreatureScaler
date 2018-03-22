@@ -34,7 +34,7 @@ namespace CreatureScaler.Adjustors
             }
 
             return 
-                creature.Actions.Any(action => action.RulesText.Get<AttackToken>(token => token.Ability == abilityToModify).Any())
+                creature.Actions.Any(action => action.RulesText.Get<AttackToken>().Where(token => token.Ability == abilityToModify).Any())
                 ||
                 creature?.InnateSpellcasting?.SpellcastingAbility == abilityToModify
                 ||

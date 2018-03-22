@@ -39,7 +39,7 @@ namespace CreatureScaler.Models
 
         public double CalculateDamagePerRound(Creature creature)
         {
-            return this.RulesText.AverageDamage(creature);
+            return this.RulesText.MaximumDamagePerRound(creature);
         }
     }
 }

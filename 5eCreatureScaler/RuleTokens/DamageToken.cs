@@ -4,6 +4,8 @@ using System;
 
 namespace CreatureScaler.RuleTokens
 {
+    [TokenHead("damage")]
+    [TokenHead("dmg")]
     public class DamageToken : Token
     {
         public int Count { get; set; }
@@ -62,7 +64,7 @@ namespace CreatureScaler.RuleTokens
 
         (int total, int modifier) StructureDieRoll(Creature creature)
         {
-            var averageDamagePerDie = ((Size.ToAverageValue() / 2d));
+            var averageDamagePerDie = Size.ToAverageValue();
 
             var modifier = FlatBonus + creature.GetModifierOrZero(ModifiedBy);
 
@@ -82,7 +84,7 @@ namespace CreatureScaler.RuleTokens
             return replacementText;
         }
 
-        public override int Damage(Creature creature)
+        public int CalculateDamage(Creature creature)
         {
             return StructureDieRoll(creature).total;
         }

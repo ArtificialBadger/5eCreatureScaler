@@ -16,14 +16,15 @@ namespace CreatureScaler.Tokenization
 
         public string Format()
         {
-            var formattedString = Sets.First().context.Before 
-                + Sets.Select(choice => 
-                    choice.choices.Accepted && !choice.choices.Rejected 
-                    ? choice.choices.SelectedItem.Replacement 
-                    : choice.context.Token 
-                    + choice.context.After);
+            var formattedString = Sets.First().context.Before
+                + Sets.Select(choice => GetActual(choice) + choice.context.After).Stitch();
 
             return formattedString;
         }
+
+        private static string GetActual((TokenizationContext context, Choice<Suggestion>.Set choices) choice) => 
+            choice.choices.Accepted && !choice.choices.Rejected
+            ? choice.choices.SelectedItem.Replacement
+            : choice.context.Token;
     }
 }
