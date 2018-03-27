@@ -3,7 +3,7 @@ using CreatureScaler.Platform;
 
 namespace CreatureScaler.Adjustors
 {
-    public class ArmorClassAdjuster : ICreatureAdjustor
+    public class ArmorClassAdjustor : ICreatureAdjustor
     {
         public uint EstimatedAdjustmentDistance => 1;
 

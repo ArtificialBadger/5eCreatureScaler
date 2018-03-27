@@ -2,7 +2,7 @@
 
 namespace CreatureScaler.Platform
 {
-    internal interface ICreatureAdjustor
+    public interface ICreatureAdjustor
     {
         uint EstimatedAdjustmentDistance { get; }
         void AdjustUp(Creature creature);

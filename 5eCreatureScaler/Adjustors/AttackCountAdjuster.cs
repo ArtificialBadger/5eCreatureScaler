@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CreatureScaler.Adjustors
 {
-    public class AttackCountAdjuster : ICreatureAdjustor
+    public class AttackCountAdjustor : ICreatureAdjustor
     {
         public uint EstimatedAdjustmentDistance => throw new NotImplementedException();
 

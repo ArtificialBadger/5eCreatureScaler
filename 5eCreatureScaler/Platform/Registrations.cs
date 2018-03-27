@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CreatureScaler.Adjustors;
+using CreatureScaler.Data;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,14 @@ namespace CreatureScaler.Platform
         public static void Register(IServiceCollection services)
         {
             services.AddTransient<ICreatureResolver, StaticCreatureResolver>();
-            services.AddTransient<ICreatureScaler, DoppelCreatureScaler>();
+            services.AddTransient<ICreatureScaler, BasicCreatureScaler>();
+
+            services.AddTransient<MonsterByCRRepository>();
+            services.AddTransient<CRCalculator>();
+
+            services.AddTransient<ICreatureAdjustor, ArmorClassAdjustor>();
+            //services.AddTransient<ICreatureAdjustor, SizeAdjustor>();
+            //services.AddTransient<ICreatureAdjustor, StatisticAdjustor>();
         }
     }
 }

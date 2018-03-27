@@ -53,15 +53,15 @@ namespace CreatureScaler.Platform
                 creature.Languages.Add(Language.Modron);
 
                 var clawAttack = new Action() { Name = "Claw" };
-                clawAttack.RulesText = new RulesText() { Text = "Melee Weapon Attack. {attack:dex+p} to hit, {dmg:2d6+dex} {damage:slashing} damage" };
+                clawAttack.RulesText = new RulesText() { Text = "Melee Weapon Attack. {attack:dex+p} to hit, {dmg:2d6+dex} {type:slashing} damage" };
                 //clawAttack.RulesText = RulesText.CreateMeleeAttack(5, Die.D6, 2, creature, Ability.Dexterity, DamageType.Slashing);
                 clawAttack.MultiGroups.Add("melee", 2);
                 creature.Actions.Add(clawAttack);
 
                 var spikeAttack = new Action() { Name = "Spike Cannon" };
                 //spikeAttack.RulesText = RulesText.CreateMeleeAttack(30, Die.D6, 2, creature, Ability.Dexterity, DamageType.Piercing);
-                spikeAttack.MultiGroups.Add("ranged", 2);
-                creature.Actions.Add(spikeAttack);
+                //spikeAttack.MultiGroups.Add("ranged", 2);
+                //creature.Actions.Add(spikeAttack);
 
                 creature.Features.Add(new Feature() { Name = "Axiomatic Mind", Description = "The monodrone can't be compelled to act in a manner contrary to its nature or its instructions." });
                 creature.Features.Add(new Feature() { Name = "Disintegration", Description = "If the monodrone dies, its body disintegrates into dust, leaving behind its weapons and anything else it was carrying." });

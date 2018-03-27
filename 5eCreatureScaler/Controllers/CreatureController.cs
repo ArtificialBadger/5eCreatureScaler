@@ -36,24 +36,6 @@ namespace CreatureScaler.Controllers
 
             return View("StatBlockView", new List<ViewModels.CreatureViewModel>() { new ViewModels.CreatureViewModel(scaledCreature) });
         }
-
-        //[HttpGet("{creatureName}")]
-        //public IActionResult Scale(string creatureName)
-        //{
-        //    var newChallengeRating = 11;
-        //    Creature scaledCreature;
-
-        //    if (Guid.TryParse(creatureName, out Guid creatureGuid))
-        //    {
-        //        scaledCreature = creatureScaler.ScaleCreature(creatureResolver.ResolveCreature(creatureGuid), newChallengeRating);
-        //    }
-        //    else
-        //    {
-        //        scaledCreature = creatureScaler.ScaleCreature(creatureResolver.ResolveCreature(creatureName), newChallengeRating);
-        //    }
-
-        //    return View("StatBlockView", new List<ViewModels.Creature>() { new ViewModels.Creature(scaledCreature) });
-        //}
     }
 
 }
