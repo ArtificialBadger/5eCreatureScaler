@@ -10,7 +10,7 @@ namespace _5eCreatureScaler.Test
     {
         internal class CreatureAdjustorMock : ICreatureAdjustor
         {
-            public static ICreatureAdjustor Create(uint i)
+            public static ICreatureAdjustor Create(int i)
             {
                 return new CreatureAdjustorMock()
                 {
@@ -18,13 +18,11 @@ namespace _5eCreatureScaler.Test
                 };
             }
 
-            public uint EstimatedAdjustmentDistance { get; set; }
+            public AdjustmentAttribute AdjustmentAttribute => throw new System.NotImplementedException();
 
-            public void AdjustUp(Creature creature)
-            {
-            }
+            public int EstimatedAdjustmentDistance { get; set; }
 
-            public void AdjustDown(Creature creature)
+            public void Adjust(Creature creature)
             {
             }
 
@@ -39,7 +37,7 @@ namespace _5eCreatureScaler.Test
         {
             uint delta = 50;
 
-            var randomized = Enumerable.Range(1, 40).Select(f => (uint)f).Select(CreatureAdjustorMock.Create).Randomize(delta);
+            var randomized = Enumerable.Range(1, 40).Select(CreatureAdjustorMock.Create).Randomize(delta);
 
             var actual = randomized.Sum(f => f.EstimatedAdjustmentDistance);
 

@@ -14,16 +14,9 @@ namespace CreatureScaler.Platform
             return Math.Abs(i);
         }
 
-        internal static void Adjust(this ICreatureAdjustor adjustor, Creature creature, bool up)
-        {
-            var action = up ? new Action<Creature>(adjustor.AdjustUp) : new Action<Creature>(adjustor.AdjustDown);
-
-            action(creature);
-        }
-
         internal static IEnumerable<ICreatureAdjustor> Randomize(this IEnumerable<ICreatureAdjustor> adjustors, uint delta)
         {
-            uint total = 0;
+            int total = 0;
 
             uint distanceLimit = delta;
 

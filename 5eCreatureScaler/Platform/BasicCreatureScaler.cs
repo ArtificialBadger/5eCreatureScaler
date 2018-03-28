@@ -29,7 +29,7 @@ namespace CreatureScaler.Platform
 
             foreach (var adjustor in selectedAdjustors)
             {
-                adjustor.Adjust(newCreature, delta > 0);
+                adjustor.Adjust(newCreature);
             }
 
             return newCreature;

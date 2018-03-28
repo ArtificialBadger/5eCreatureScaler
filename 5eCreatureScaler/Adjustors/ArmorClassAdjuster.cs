@@ -5,14 +5,11 @@ namespace CreatureScaler.Adjustors
 {
     public class ArmorClassAdjustor : ICreatureAdjustor
     {
-        public uint EstimatedAdjustmentDistance => 1;
+        public AdjustmentAttribute AdjustmentAttribute => AdjustmentAttribute.Defensive;
 
-        public void AdjustDown(Creature creature)
-        {
-            creature.ArmorClass.Value -= 2;
-        }
+        public int EstimatedAdjustmentDistance => 1;
 
-        public void AdjustUp(Creature creature)
+        public void Adjust(Creature creature)
         {
             creature.ArmorClass.Value += 2;
         }

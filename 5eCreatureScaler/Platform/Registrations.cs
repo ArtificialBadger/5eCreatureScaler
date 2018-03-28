@@ -13,7 +13,8 @@ namespace CreatureScaler.Platform
         public static void Register(IServiceCollection services)
         {
             services.AddTransient<ICreatureResolver, StaticCreatureResolver>();
-            services.AddTransient<ICreatureScaler, BasicCreatureScaler>();
+            services.AddTransient<ICreatureScaler, ApexCreatureScaler>();
+            services.AddTransient<IAdjustorSelector, AllAdjustorSelector>();
 
             services.AddTransient<MonsterByCRRepository>();
             services.AddTransient<CRCalculator>();
